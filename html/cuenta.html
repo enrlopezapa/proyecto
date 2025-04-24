@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mi Cuenta - Marketplace</title>
+
+  <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="../css/index.css" />
+  <link rel="stylesheet" href="../css/cuenta.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="border-bottom py-2">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between">
+      <a href="../index.html" class="navbar-brand d-flex align-items-center">
+        <img src="../img/house-heart-fill.svg" alt="Logo">
+      </a>
+      <div class="navbar-search">
+        <form class="flex-grow-1 mx-3" method="get" action="productos.html">
+            <input type="search" class="form-control" placeholder="Busca productos..." aria-label="Buscar" name="busqueda">
+        </form>
+      </div>
+      <div>
+        <a href="carrito.html" class="btn btn-outline-primary me-2">Carrito</a>
+        <a href="login.html" class="btn btn-outline-primary me-2">Inicia sesión</a>
+      </div>
+    </div>
+    <nav class="border-bottom">
+        <div class="container">
+        <ul class="nav">
+            <li class="nav-item dropdown">
+              <div class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Todas las categorías</div>
+              <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="productos.html?category=fruta">Frutas</a></li>
+                  <li><a class="dropdown-item" href="productos.html?category=verdura">Verduras</a></li>
+                  <li><a class="dropdown-item" href="productos.html?category=oferta">Ofertas</a></li>
+                  <li><a class="dropdown-item" href="productos.html?category=local">Locales</a></li>
+              </ul>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+            <li class="nav-item"><a class="nav-link" href="nosotros.html">¿Quiénes somos?</a></li>
+            <li class="nav-item"><a class="nav-link" href="contacto.html">Contáctanos</a></li>
+        </ul>
+        </div>
+    </nav>
+  </header>
+
+  <!-- Sidebar + Panel -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-3 bg-light sidebar pt-4">
+        <ul class="nav flex-column">
+          <li class="nav-item"><a class="nav-link active" href="#" data-section="productos">Mis productos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" data-section="perfil">Editar perfil</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" data-section="favoritos">Mis favoritos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" data-section="compras">Mis compras</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" data-section="pedidos">Mis pedidos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" data-section="alertas">Mis alertas</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" data-section="seguridad">Seguridad</a></li>
+        </ul>
+      </div>
+      <div class="col-md-9 p-4" id="panel-content">
+        <!-- Aquí se cargará el contenido dinámico -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Añadir Producto -->
+  <div class="modal fade" id="modalProducto" tabindex="-1" aria-labelledby="modalProductoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <form class="modal-content" id="formNuevoProducto">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalProductoLabel">Añadir producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="nuevoNombre" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Precio</label>
+            <input type="text" class="form-control" id="nuevoPrecio" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Imagen (URL)</label>
+            <input type="text" class="form-control" id="nuevoImagen" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Guardar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Editar Producto -->
+<div class="modal fade" id="modalEditarProducto" tabindex="-1" aria-labelledby="modalEditarProductoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <form class="modal-content" id="formEditarProducto">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalEditarProductoLabel">Editar producto</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="productoEditandoId">
+          <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" class="form-control" id="editarNombre" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Precio</label>
+            <input type="text" class="form-control" id="editarPrecio" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Imagen (URL)</label>
+            <input type="text" class="form-control" id="editarImagen" required>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055">
+    <div id="toastConfirmacion" class="toast align-items-center text-bg-success border-0" role="alert">
+      <div class="d-flex">
+        <div class="toast-body">Acción realizada con éxito.</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer text-center">
+    <div class="container">
+      <p class="mb-1">&copy; 2025 Poner nombre!!!!!!!!!</p>
+      <p class="mb-0">Frutas y verduras frescas directo a tu mesa.</p>
+    </div>
+  </footer>
+
+  <script src="../js/jquery-3.7.1.min.js"></script>
+  <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/cuenta.js"></script>
+</body>
+</html>

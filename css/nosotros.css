@@ -1,0 +1,62 @@
+/* Secciones generales */
+section {
+    padding: 4rem 0;
+  }
+  
+  /* Títulos de sección */
+  .section-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--verde-oscuro);
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  /* Cards de misión, visión, valores */
+  .card {
+    background-color: var(--beige-claro);
+    border: 2px solid var(--verde-pasto);
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* Header de las tarjetas */
+  .card-header {
+    background-color: var(--verde-pasto);
+    color: var(--texto-claro);
+    font-weight: bold;
+    font-size: 1.2rem;
+    border-bottom: none;
+  }
+  
+  /* Historia - imagen y texto */
+  section.bg-light img {
+    border: 4px solid var(--verde-pasto);
+    border-radius: 10px;
+  }
+  
+  /* Equipo - imagen circular */
+  .rounded-circle {
+    border: 3px solid var(--verde-oscuro);
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+  }
+  
+  /* Nombres del equipo */
+  h3.h6 {
+    color: var(--verde-oscuro);
+    font-weight: 600;
+  }
+  
+  /* Compromiso social - parrafo centrado */
+  section.bg-light p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: var(--texto-oscuro);
+  }

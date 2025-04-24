@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Marketplace - Frutas y Verduras</title>
+
+  <!-- Bootstrap CSS local -->
+  <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
+  <!-- CSS personalizado -->
+  <link rel="stylesheet" href="../css/index.css" />
+  <link rel="stylesheet" href="../css/productos.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="border-bottom py-2">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between">
+      <a href="../index.html" class="navbar-brand d-flex align-items-center">
+        <img src="../img/house-heart-fill.svg" alt="Logo">
+      </a>
+      <div class="navbar-search">
+        <form class="flex-grow-1 mx-3" method="get" action="productos.html">
+            <input type="search" class="form-control" placeholder="Busca productos..." aria-label="Buscar" name="busqueda">
+        </form>
+      </div>
+      <div>
+        <a href="carrito.html" class="btn btn-outline-primary me-2">Carrito</a>
+        <a href="login.html" class="btn btn-outline-primary me-2">Inicia sesión</a>
+      </div>
+    </div>
+    <!-- Navegación -->
+    <nav class="border-bottom">
+        <div class="container">
+        <ul class="nav">
+            <li class="nav-item dropdown">
+            <div class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Todas las categorías</div>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="productos.html?category=fruta">Frutas</a></li>
+                <li><a class="dropdown-item" href="productos.html?category=verdura">Verduras</a></li>
+                <li><a class="dropdown-item" href="productos.html?category=oferta">Ofertas</a></li>
+                <li><a class="dropdown-item" href="productos.html?category=local">Locales</a></li>
+            </ul>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+            <li class="nav-item"><a class="nav-link" href="nosotros.html">¿Quienes somos?</a></li>
+            <li class="nav-item"><a class="nav-link" href="contacto.html">Contáctanos</a></li>
+        </ul>
+        </div>
+    </nav>
+  </header>
+
+  
+
+  <main class="container my-5">
+    <section class="container mt-5">
+        <h2 class="mb-4 text-center">Carrito de Compras</h2>
+      
+        <!-- Tabla de productos en el carrito -->
+        <div class="row">
+          <div class="col-12">
+            <table class="table table-bordered table-hover">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">Producto</th>
+                  <th scope="col">Precio Unitario</th>
+                  <th scope="col">Cantidad</th>
+                  <th scope="col">Total</th>
+                  <th scope="col">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Producto 1 -->
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img src="https://via.placeholder.com/50" alt="Producto" class="img-fluid me-3">
+                      <span>Producto 1</span>
+                    </div>
+                  </td>
+                  <td>$10.00</td>
+                  <td>
+                    <input type="number" class="form-control" value="1" min="1">
+                  </td>
+                  <td>$10.00</td>
+                  <td>
+                    <button class="btn btn-danger btn-sm">Eliminar</button>
+                  </td>
+                </tr>
+                <!-- Producto 2 -->
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img src="https://via.placeholder.com/50" alt="Producto" class="img-fluid me-3">
+                      <span>Producto 2</span>
+                    </div>
+                  </td>
+                  <td>$15.00</td>
+                  <td>
+                    <input type="number" class="form-control" value="2" min="1">
+                  </td>
+                  <td>$30.00</td>
+                  <td>
+                    <button class="btn btn-danger btn-sm">Eliminar</button>
+                  </td>
+                </tr>
+                <!-- Producto 3 -->
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img src="https://via.placeholder.com/50" alt="Producto" class="img-fluid me-3">
+                      <span>Producto 3</span>
+                    </div>
+                  </td>
+                  <td>$8.00</td>
+                  <td>
+                    <input type="number" class="form-control" value="1" min="1">
+                  </td>
+                  <td>$8.00</td>
+                  <td>
+                    <button class="btn btn-danger btn-sm">Eliminar</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      
+        <!-- Resumen del carrito -->
+        <div class="row">
+          <div class="col-12 col-md-4 offset-md-8">
+            <div class="card shadow-sm">
+              <div class="card-header bg-success text-white">
+                <strong>Resumen del Carrito</strong>
+              </div>
+              <div class="card-body">
+                <ul class="list-unstyled">
+                  <li class="d-flex justify-content-between">
+                    <span>Subtotal:</span>
+                    <span>$48.00</span>
+                  </li>
+                  <li class="d-flex justify-content-between">
+                    <span>Envío:</span>
+                    <span>Gratis</span>
+                  </li>
+                  <li class="d-flex justify-content-between">
+                    <span><strong>Total:</strong></span>
+                    <span><strong>$48.00</strong></span>
+                  </li>
+                </ul>
+                <button class="btn btn-success w-100">Proceder al Pago</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer text-center">
+    <div class="container">
+      <p class="mb-1">&copy; 2025 Poner nombre!!!!!!!!!</p>
+      <p class="mb-0">Frutas y verduras frescas directo a tu mesa.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS local -->
+  <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/jquery-3.7.1.min.js"></script>
+  <script src="../js/index.js"></script>
+</body>
+</html>

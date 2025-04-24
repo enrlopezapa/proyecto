@@ -1,0 +1,19 @@
+.sidebar {
+    min-height: 100vh;
+    border-right: 2px solid var(--verde-pasto);
+  }
+  
+  .sidebar .nav-link {
+    color: var(--verde-oscuro);
+    font-weight: bold;
+    padding: 10px 20px;
+  }
+  
+  .sidebar .nav-link.active,
+  .sidebar .nav-link:hover {
+    background-color: var(--verde-pasto);
+    color: white;
+    border-radius: 5px;
+  }
+  
+  

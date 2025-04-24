@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Marketplace - Frutas y Verduras</title>
+
+  <!-- Bootstrap CSS local -->
+  <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
+  <!-- CSS personalizado -->
+  <link rel="stylesheet" href="../css/index.css" />
+  <link rel="stylesheet" href="../css/productos.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="border-bottom py-2">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between">
+      <a href="../index.html" class="navbar-brand d-flex align-items-center">
+        <img src="../img/house-heart-fill.svg" alt="Logo">
+      </a>
+      <div class="navbar-search">
+        <form class="flex-grow-1 mx-3" method="get" action="productos.html">
+            <input type="search" class="form-control" placeholder="Busca productos..." aria-label="Buscar" name="busqueda">
+        </form>
+      </div>
+      <div>
+        <a href="carrito.html" class="btn btn-outline-primary me-2">Carrito</a>
+        <a href="login.html" class="btn btn-outline-primary me-2">Inicia sesión</a>
+      </div>
+    </div>
+    <!-- Navegación -->
+    <nav class="border-bottom">
+        <div class="container">
+        <ul class="nav">
+            <li class="nav-item dropdown">
+            <div class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Todas las categorías</div>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="productos.html?category=fruta">Frutas</a></li>
+                <li><a class="dropdown-item" href="productos.html?category=verdura">Verduras</a></li>
+                <li><a class="dropdown-item" href="productos.html?category=oferta">Ofertas</a></li>
+                <li><a class="dropdown-item" href="productos.html?category=local">Locales</a></li>
+            </ul>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+            <li class="nav-item"><a class="nav-link" href="nosotros.html">¿Quienes somos?</a></li>
+            <li class="nav-item"><a class="nav-link" href="contacto.html">Contáctanos</a></li>
+        </ul>
+        </div>
+    </nav>
+  </header>
+
+  
+
+  <main class="container my-5">
+    <section class="container mt-5">
+        <h2 class="text-center mb-4">Crear una Cuenta</h2>
+      
+        <!-- Contenedor para el formulario de registro -->
+        <div class="row justify-content-center">
+          <div class="col-12 col-md-6 col-lg-4">
+            <!-- Formulario de registro -->
+            <div class="card shadow-sm">
+              <div class="card-header bg-success text-white text-center">
+                <strong>Regístrate</strong>
+              </div>
+              <div class="card-body">
+                <form>
+                  <!-- Nombre completo -->
+                  <div class="mb-3">
+                    <label for="fullName" class="form-label">Nombre Completo</label>
+                    <input type="text" class="form-control" id="fullName" placeholder="Introduce tu nombre completo" required>
+                  </div>
+      
+                  <!-- Correo electrónico -->
+                  <div class="mb-3">
+                    <label for="emailReg" class="form-label">Correo Electrónico</label>
+                    <input type="email" class="form-control" id="emailReg" placeholder="Introduce tu correo electrónico" required>
+                  </div>
+      
+                  <!-- Contraseña -->
+                  <div class="mb-3">
+                    <label for="passwordReg" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="passwordReg" placeholder="Introduce tu contraseña" required>
+                  </div>
+      
+                  <!-- Confirmar Contraseña -->
+                  <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+                    <input type="password" class="form-control" id="confirmPassword" placeholder="Confirma tu contraseña" required>
+                  </div>
+      
+                  <!-- Aceptación de términos y condiciones -->
+                  <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="termsAndConditions" required>
+                    <label class="form-check-label" for="termsAndConditions">Acepto los <a href="#">términos y condiciones</a></label>
+                  </div>
+      
+                  <!-- Botón de registro -->
+                  <button type="submit" class="btn btn-success w-100">Registrarse</button>
+                </form>
+      
+                <!-- Opción para iniciar sesión si ya tiene cuenta -->
+                <p class="text-center mt-3">
+                  ¿Ya tienes cuenta? <a href="login.html" class="text-success">Inicia sesión aquí</a>
+                </p>
+              </div>
+            </div>
+      
+          </div>
+        </div>
+      </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer text-center">
+    <div class="container">
+      <p class="mb-1">&copy; 2025 Poner nombre!!!!!!!!!</p>
+      <p class="mb-0">Frutas y verduras frescas directo a tu mesa.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS local -->
+  <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/jquery-3.7.1.min.js"></script>
+  <script src="../js/index.js"></script>
+</body>
+</html>

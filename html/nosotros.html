@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Marketplace - Frutas y Verduras</title>
+
+  <!-- Bootstrap CSS local -->
+  <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
+  <!-- CSS personalizado -->
+  <link rel="stylesheet" href="../css/index.css" />
+  <link rel="stylesheet" href="../css/nosotros.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="border-bottom py-2">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between">
+      <a href="../index.html" class="navbar-brand d-flex align-items-center">
+        <img src="../img/house-heart-fill.svg" alt="Logo">
+      </a>
+      <div class="navbar-search">
+        <form class="flex-grow-1 mx-3" method="get" action="productos.html">
+            <input type="search" class="form-control" placeholder="Busca productos..." aria-label="Buscar" name="busqueda">
+        </form>
+      </div>
+      <div>
+        <a href="carrito.html" class="btn btn-outline-primary me-2">Carrito</a>
+        <a href="login.html" class="btn btn-outline-primary me-2">Inicia sesión</a>
+      </div>
+    </div>
+    <!-- Navegación -->
+    <nav class="border-bottom">
+        <div class="container">
+        <ul class="nav">
+            <li class="nav-item dropdown">
+            <div class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Todas las categorías</div>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="productos.html?category=fruta">Frutas</a></li>
+                <li><a class="dropdown-item" href="productos.html?category=verdura">Verduras</a></li>
+                <li><a class="dropdown-item" href="productos.html?category=oferta">Ofertas</a></li>
+                <li><a class="dropdown-item" href="productos.html?category=local">Locales</a></li>
+            </ul>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+            <li class="nav-item"><a class="nav-link" href="nosotros.html">¿Quienes somos?</a></li>
+            <li class="nav-item"><a class="nav-link" href="contacto.html">Contáctanos</a></li>
+        </ul>
+        </div>
+    </nav>
+  </header>
+
+  
+
+  <main class="container my-5">
+    <!-- Sección: Historia -->
+  <section id="historia" class="py-5 bg-light mb-4">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <img src="img/historia.jpg" alt="Nuestra historia" class="img-fluid rounded-3 shadow-lg"/>
+        </div>
+        <div class="col-md-6">
+          <h2 class="text-success mb-4">Nuestra Historia</h2>
+          <p>EcoMarket nació con el propósito de ofrecer productos frescos y de calidad, provenientes de agricultores locales que practican la agricultura sostenible. Desde su fundación, hemos mantenido el compromiso de ofrecer lo mejor a nuestros clientes y contribuir al bienestar de la comunidad.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección: Misión, Visión, Valores -->
+  <section class="py-5 mb-4">
+    <div class="container text-center">
+      <h2 class="text-success mb-5">Nuestros Pilares</h2>
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <article class="card border-light shadow-lg">
+            <div class="card-body">
+              <h3 class="h5 text-success">Misión</h3>
+              <p>Brindamos acceso a alimentos frescos, orgánicos y de calidad superior, promoviendo el bienestar y la salud de nuestros clientes a través de una alimentación natural y sostenible.</p>
+            </div>
+          </article>
+        </div>
+        <div class="col-md-4 mb-4">
+          <article class="card border-light shadow-lg">
+            <div class="card-body">
+              <h3 class="h5 text-success">Visión</h3>
+              <p>Convertirnos en la tienda online de productos orgánicos más confiable y sostenible del país, llevando la frescura de los alimentos directamente a tu hogar.</p>
+            </div>
+          </article>
+        </div>
+        <div class="col-md-4 mb-4">
+          <article class="card border-light shadow-lg">
+            <div class="card-body">
+              <h3 class="h5 text-success">Valores</h3>
+              <ul class="list-unstyled">
+                <li><i class="bi bi-check-circle-fill text-success"></i> Transparencia</li>
+                <li><i class="bi bi-check-circle-fill text-success"></i> Calidad</li>
+                <li><i class="bi bi-check-circle-fill text-success"></i> Sostenibilidad</li>
+                <li><i class="bi bi-check-circle-fill text-success"></i> Apoyo al comercio local</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección: Nuestro Equipo -->
+  <section class="py-5 bg-light mb-4">
+    <div class="container">
+      <h2 class="text-success text-center mb-5">Nuestro Equipo</h2>
+      <div class="row text-center">
+        <div class="col-md-3 mb-4">
+          <article class="card shadow-lg">
+            <img src="img/equipo1.jpg" class="card-img-top rounded-circle" alt="Ana López" />
+            <div class="card-body">
+              <h5 class="card-title">Ana López</h5>
+              <p class="card-text">Fundadora y CEO</p>
+            </div>
+          </article>
+        </div>
+        <div class="col-md-3 mb-4">
+          <article class="card shadow-lg">
+            <img src="img/equipo2.jpg" class="card-img-top rounded-circle" alt="Carlos Martínez" />
+            <div class="card-body">
+              <h5 class="card-title">Carlos Martínez</h5>
+              <p class="card-text">Logística y Operaciones</p>
+            </div>
+          </article>
+        </div>
+        <div class="col-md-3 mb-4">
+          <article class="card shadow-lg">
+            <img src="img/equipo3.jpg" class="card-img-top rounded-circle" alt="Lucía Torres" />
+            <div class="card-body">
+              <h5 class="card-title">Lucía Torres</h5>
+              <p class="card-text">Atención al cliente</p>
+            </div>
+          </article>
+        </div>
+        <div class="col-md-3 mb-4">
+          <article class="card shadow-lg">
+            <img src="img/equipo4.jpg" class="card-img-top rounded-circle" alt="Jorge Ramírez" />
+            <div class="card-body">
+              <h5 class="card-title">Jorge Ramírez</h5>
+              <p class="card-text">Marketing y Diseño</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección: Compromiso Social -->
+  <section class="py-5 bg-white mb-4">
+    <div class="container text-center">
+      <h2 class="text-success mb-4">Nuestro Compromiso Social</h2>
+      <p>En EcoMarket estamos comprometidos con el bienestar de nuestra comunidad. Colaboramos con asociaciones locales, promovemos el comercio justo y realizamos donaciones regulares de productos a quienes más lo necesitan.</p>
+      <a href="#contacto" class="btn btn-lg btn-success">Únete a nuestro compromiso</a>
+    </div>
+  </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer text-center">
+    <div class="container">
+      <p class="mb-1">&copy; 2025 Poner nombre!!!!!!!!!</p>
+      <p class="mb-0">Frutas y verduras frescas directo a tu mesa.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS local -->
+  <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/jquery-3.7.1.min.js"></script>
+  <script src="../js/index.js"></script>
+</body>
+</html>

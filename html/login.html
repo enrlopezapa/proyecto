@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Marketplace - Frutas y Verduras</title>
+
+  <!-- Bootstrap CSS local -->
+  <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
+  <!-- CSS personalizado -->
+  <link rel="stylesheet" href="../css/index.css" />
+  <link rel="stylesheet" href="../css/productos.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="border-bottom py-2">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between">
+      <a href="../index.html" class="navbar-brand d-flex align-items-center">
+        <img src="../img/house-heart-fill.svg" alt="Logo">
+      </a>
+      <div class="navbar-search">
+        <form class="flex-grow-1 mx-3" method="get" action="productos.html">
+            <input type="search" class="form-control" placeholder="Busca productos..." aria-label="Buscar" name="busqueda">
+        </form>
+      </div>
+      <div>
+        <a href="carrito.html" class="btn btn-outline-primary me-2">Carrito</a>
+        <a href="login.html" class="btn btn-outline-primary me-2">Inicia sesión</a>
+      </div>
+    </div>
+    <!-- Navegación -->
+    <nav class="border-bottom">
+        <div class="container">
+        <ul class="nav">
+            <li class="nav-item dropdown">
+            <div class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Todas las categorías</div>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="?category=fruta">Frutas</a></li>
+                <li><a class="dropdown-item" href="?category=verdura">Verduras</a></li>
+                <li><a class="dropdown-item" href="?category=oferta">Ofertas</a></li>
+                <li><a class="dropdown-item" href="?category=local">Locales</a></li>
+            </ul>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+            <li class="nav-item"><a class="nav-link" href="nosotros.html">¿Quienes somos?</a></li>
+            <li class="nav-item"><a class="nav-link" href="#">Contáctanos</a></li>
+        </ul>
+        </div>
+    </nav>
+  </header>
+
+  
+
+  <main class="container my-5">
+    <section class="container mt-5">
+        <h2 class="text-center mb-4">Iniciar Sesión</h2>
+      
+        <!-- Contenedor para el formulario de inicio de sesión y registro -->
+        <div class="row justify-content-center">
+          <div class="col-12 col-md-6 col-lg-4">
+            <!-- Formulario de inicio de sesión -->
+            <div class="card shadow-sm">
+              <div class="card-header bg-success text-white text-center">
+                <strong>Iniciar Sesión</strong>
+              </div>
+              <div class="card-body">
+                <form>
+                  <!-- Correo electrónico -->
+                  <div class="mb-3">
+                    <label for="email" class="form-label">Correo Electrónico</label>
+                    <input type="email" class="form-control" id="email" placeholder="Introduce tu correo" required>
+                  </div>
+      
+                  <!-- Contraseña -->
+                  <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" id="password" placeholder="Introduce tu contraseña" required>
+                  </div>
+      
+                  <!-- Recordarme -->
+                  <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">Recordarme</label>
+                  </div>
+      
+                  <!-- Botón de inicio de sesión -->
+                  <button type="submit" class="btn btn-success w-100">Iniciar Sesión</button>
+                </form>
+      
+                <!-- Opción para registrar una cuenta -->
+                <p class="text-center mt-3">
+                  ¿No tienes cuenta? <a href="registro.html" class="text-success">Regístrate aquí</a>
+                </p>
+
+                <!-- ES PRUEBAAAAAAA -->
+                <p class="text-center mt-3">
+                  PRUEBA (BORRAR) <a href="cuenta.html" class="text-success">PRUEBA</a>
+                </p>
+              </div>
+            </div>
+      
+          </div>
+        </div>
+      </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer text-center">
+    <div class="container">
+      <p class="mb-1">&copy; 2025 Poner nombre!!!!!!!!!</p>
+      <p class="mb-0">Frutas y verduras frescas directo a tu mesa.</p>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS local -->
+  <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/jquery-3.7.1.min.js"></script>
+  <script src="../js/index.js"></script>
+</body>
+</html>
