@@ -16,7 +16,7 @@
 <body>
 
   <!-- Header -->
-  <header class="border-bottom py-2">
+  <header class="border-bottom py-2 sticky-top">
     <div class="container d-flex flex-wrap align-items-center justify-content-between">
       <a href="../index.html" class="navbar-brand d-flex align-items-center">
         <img src="../img/house-heart-fill.svg" alt="Logo">
@@ -33,22 +33,31 @@
       </div>
     </div>
     <!-- Navegación -->
-    <nav class="border-bottom">
+    <nav class="navbar navbar-expand-lg navbar-dark mt-2"
+      style="background-color: var(--verde-oscuro); border-bottom: 2px solid var(--verde-pasto);">
       <div class="container">
-        <ul class="nav">
-          <li class="nav-item dropdown">
-            <div class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#">Todas las categorías</div>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="?category=fruta">Frutas</a></li>
-              <li><a class="dropdown-item" href="?category=verdura">Verduras</a></li>
-              <li><a class="dropdown-item" href="?category=oferta">Ofertas</a></li>
-              <li><a class="dropdown-item" href="?category=local">Locales</a></li>
-            </ul>
-          </li>
-          <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
-          <li class="nav-item"><a class="nav-link" href="nosotros.html">¿Quienes somos?</a></li>
-          <li class="nav-item"><a class="nav-link" href="contacto.html">Contáctanos</a></li>
-        </ul>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+          aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <ul class="navbar-nav flex-wrap">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Todas las categorías</a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="productos.html?category=fruta">Frutas</a></li>
+                <li><a class="dropdown-item" href="productos.html?category=verdura">Verduras</a></li>
+                <li><a class="dropdown-item" href="productos.html?category=oferta">Ofertas</a></li>
+                <li><a class="dropdown-item" href="productos.html?category=local">Locales</a></li>
+              </ul>
+            </li>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="productos.html">Productos</a></li>
+            <li class="nav-item"><a class="nav-link" href="nosotros.html">¿Quiénes somos?</a></li>
+            <li class="nav-item"><a class="nav-link" href="contacto.html">Contáctanos</a></li>
+          </ul>
+        </div>
       </div>
     </nav>
   </header>
@@ -59,81 +68,94 @@
     <div class="row">
       <!-- Filtros (Sidebar) -->
       <aside class="col-12 col-md-3 mb-4" aria-label="Filtros de productos">
-        <div class="position-sticky-sidebar">
-          <form method="GET">
-            <section class="card shadow-sm h-100">
-              <header class="card-header bg-success text-white">
-                <strong>Filtros</strong>
-              </header>
-              <div class="card-body">
+        <!-- Botón solo visible en mobile -->
+        <button class="btn btn-success w-100 mb-3 d-md-none" type="button" data-bs-toggle="collapse"
+          data-bs-target="#filtrosCollapse" aria-expanded="false" aria-controls="filtrosCollapse">
+          Filtros
+        </button>
+        <div id="filtrosCollapse" class="collapse d-md-block">
+          <div class="position-sticky-sidebar">
+            <form method="GET">
+              <section class="card shadow-sm h-100">
+                <header class="card-header bg-success text-white">
+                  <strong>Filtros</strong>
+                </header>
+                <div class="card-body">
 
-                <!-- Categoría -->
-                <div class="mb-3">
-                  <label for="categoria" class="form-label">Categoría</label>
-                  <select id="categoria" name="categoria" class="form-select">
-                    <option value="">Todas</option>
-                    <option>Frutas</option>
-                    <option>Verduras</option>
-                    <option>Locales</option>
-                    <option>Ofertas</option>
-                  </select>
-                </div>
-
-                <!-- Precio -->
-                <div class="mb-3 position-relative">
-                  <label for="precio" class="form-label">Precio máximo</label>
-                  <input type="range" id="precio" name="precio" class="form-range mt-4" min="0" max="100" step="1">
-                  <!-- Tooltip visible -->
-                  <div id="precioTooltip" class="position-absolute bg-success text-white px-2 py-1 rounded shadow" style="top:24px; left: 0; transform: translateX(-50%); white-space: nowrap;">
-                    100 €
+                  <!-- Categoría -->
+                  <div class="mb-3">
+                    <label for="categoria" class="form-label">Categoría</label>
+                    <select id="categoria" name="categoria" class="form-select">
+                      <option value="">Todas</option>
+                      <option>Frutas</option>
+                      <option>Verduras</option>
+                      <option>Locales</option>
+                      <option>Ofertas</option>
+                    </select>
                   </div>
-                </div>
 
-                <!-- Calificación -->
-                <div class="mb-3">
-                  <label class="form-label d-block">Calificación mínima</label>
-                  <div id="star-calification" class="text-warning fs-4" data-rating="0">
-                    <img src="../img/star.svg" data-value="1" title="1 estrella" class="img-fluid star" alt="estrella"/>
-                    <img src="../img/star.svg" data-value="2" title="2 estrellas" class="img-fluid star" alt="estrella"/>
-                    <img src="../img/star.svg" data-value="3" title="3 estrellas" class="img-fluid star" alt="estrella"/>
-                    <img src="../img/star.svg" data-value="4" title="4 estrellas" class="img-fluid star" alt="estrella"/>
-                    <img src="../img/star.svg" data-value="5" title="5 estrellas" class="img-fluid star" alt="estrella"/>
+                  <!-- Precio -->
+                  <div class="mb-3 position-relative">
+                    <label for="precio" class="form-label">Precio máximo</label>
+                    <input type="range" id="precio" name="precio" class="form-range mt-4" min="0" max="100" step="1">
+                    <!-- Tooltip visible -->
+                    <div id="precioTooltip" class="position-absolute bg-success text-white px-2 py-1 rounded shadow"
+                      style="top:24px; left: 0; transform: translateX(-50%); white-space: nowrap;">
+                      100 €
+                    </div>
                   </div>
-                  <input type="hidden" name="calificacion" id="calificacion" value="">
-                </div>
 
-                <!-- Stock disponible -->
-                <div class="form-check mb-3">
-                  <input class="form-check-input" type="checkbox" id="stock" name="stock">
-                  <label class="form-check-label" for="stock">
-                    Solo productos en stock
-                  </label>
-                </div>
+                  <!-- Calificación -->
+                  <div class="mb-3">
+                    <label class="form-label d-block">Calificación mínima</label>
+                    <div id="star-calification" class="text-warning fs-4" data-rating="0">
+                      <img src="../img/star.svg" data-value="1" title="1 estrella" class="img-fluid star"
+                        alt="estrella" />
+                      <img src="../img/star.svg" data-value="2" title="2 estrellas" class="img-fluid star"
+                        alt="estrella" />
+                      <img src="../img/star.svg" data-value="3" title="3 estrellas" class="img-fluid star"
+                        alt="estrella" />
+                      <img src="../img/star.svg" data-value="4" title="4 estrellas" class="img-fluid star"
+                        alt="estrella" />
+                      <img src="../img/star.svg" data-value="5" title="5 estrellas" class="img-fluid star"
+                        alt="estrella" />
+                    </div>
+                    <input type="hidden" name="calificacion" id="calificacion" value="">
+                  </div>
 
-                <!-- Próximamamente  -->
-                <div class="form-check mb-3">
-                  <input class="form-check-input" type="checkbox" id="proximamente" name="proximamente">
-                  <label class="form-check-label" for="proximamente">
-                    Próximamente
-                  </label>
-                </div>
+                  <!-- Stock disponible -->
+                  <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="stock" name="stock">
+                    <label class="form-check-label" for="stock">
+                      Solo productos en stock
+                    </label>
+                  </div>
 
-                <!-- Ordenar por -->
-                <div class="mb-3">
-                  <label for="ordenar" class="form-label">Ordenar por</label>
-                  <select id="ordenar" name="ordenar" class="form-select">
-                    <option value="">Seleccionar opcion</option>
-                    <option value="relevancia">Relevancia</option>
-                    <option value="precio_asc">Precio: más bajo</option>
-                    <option value="precio_desc">Precio: más alto</option>
-                    <option value="calificacion">Mejor calificación</option>
-                  </select>
-                </div>
+                  <!-- Próximamamente  -->
+                  <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" id="proximamente" name="proximamente">
+                    <label class="form-check-label" for="proximamente">
+                      Próximamente
+                    </label>
+                  </div>
 
-                <button type="button" class="btn btn-success w-100">Aplicar filtros</button>
-              </div>
-            </section>
-          </form>
+                  <!-- Ordenar por -->
+                  <div class="mb-3">
+                    <label for="ordenar" class="form-label">Ordenar por</label>
+                    <select id="ordenar" name="ordenar" class="form-select">
+                      <option value="">Seleccionar opcion</option>
+                      <option value="relevancia">Relevancia</option>
+                      <option value="precio_asc">Precio: más bajo</option>
+                      <option value="precio_desc">Precio: más alto</option>
+                      <option value="calificacion">Mejor calificación</option>
+                    </select>
+                  </div>
+
+                  <button type="button" class="btn btn-success w-100">Aplicar filtros</button>
+                </div>
+              </section>
+            </form>
+          </div>
         </div>
       </aside>
 
