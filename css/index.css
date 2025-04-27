@@ -38,38 +38,27 @@ body {
   padding-bottom: 0px !important;
 }
 
-header {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background-color: var(--verde-pasto); /* Fondo verde pasto */
-  color: var(--texto-claro); /* Texto blanco */
-  box-shadow: 0 4px 100px black; /* Sombra sutil */
-}
-
-header .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-header .navbar-brand img {
-  width: 100px;
-}
-
-header .navbar-search form input{
+header .navbar-search form input {
   flex-grow: 1;
   background-color: white;
-  border-color:transparent;
-  width: 700px;
+  border-color: transparent;
+  width: 500px; /* Un buen tamaño en desktop */
   margin: 0 1rem;
-  height: 60px;
+  height: 60px; /* Más alto */
+  font-size: 1.1rem; /* Letra legible */
+  padding: 0 1rem;
 }
 
 header .btn-outline-primary {
   border-color: var(--naranja-suave);
   background-color: var(--naranja-suave);
   color: var(--verde-oscuro);
+  font-size: 1.1rem;
+  width: 140px; /* Botones más anchos */
+  height: 60px; /* Botones más altos, mismo que el buscador */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 header .btn-outline-primary:hover {
@@ -77,61 +66,37 @@ header .btn-outline-primary:hover {
   color: var(--texto-claro);
 }
 
-/* Barra de navegación */
-nav {
-  background-color: var(--verde-oscuro);
-  margin-top: 0;
-  padding: 0.75rem 0; /* Padding vertical con unidades relativas */
-  font-size: 1.1rem;
-  font-weight: bold;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08); /* Sombra sutil hacia abajo */
-  border-bottom: 2px solid var(--verde-pasto);
-  
+/* Responsive para pantallas pequeñas */
+@media (max-width: 768px) {
+  header .container-fluid {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  header .navbar-brand,
+  header .d-flex.flex-wrap.justify-content-end {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+
+  header form {
+    width: 90%;
+  }
+
+  header .form-control {
+    width: 100%;
+    height: 50px; /* Un poco más bajo en móviles */
+    font-size: 1rem;
+  }
+
+  header .btn {
+    width: 140px;
+    height: 50px;
+    margin: 0 0.5rem;
+  }
 }
 
-/* Enlaces del menú */
-nav .nav-link {
-  color: var(--texto-claro);
-  padding: 0.5rem 1rem;
-  border-bottom: 2px solid var(--verde-oscuro);
-}
-
-/* Hover sobre enlaces */
-nav .nav-link:hover {
-  color: var(--amarillo-suave);
-  border-bottom: 2px solid var(--amarillo-suave);
-}
-
-/* Ítems desplegables */
-nav .nav-item.dropdown {
-  cursor: pointer;
-  position: relative;
-}
-
-/* Menú desplegable */
-nav .nav-item.dropdown .dropdown-menu {
-  background-color: var(--verde-pasto);
-  border: none;
-  border-radius: 0.375rem;
-  margin-top: 0.5rem;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Ítems dentro del dropdown */
-nav .dropdown-item {
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--texto-claro);
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  transition: background-color 0.2s ease;
-}
-
-/* Hover en ítems del dropdown */
-nav .dropdown-item:hover {
-  background-color: var(--amarillo-suave);
-  color: var(--verde-oscuro);
-}
 
 
 
@@ -470,28 +435,3 @@ footer .container p {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-@media (max-width: 768px) {
-  header .form-control {
-    width: 100% !important;
-  }
-
-  header .btn {
-    width: 100%;
-  }
-
-  header .d-flex.flex-column {
-    align-items: stretch;
-  }
-}
