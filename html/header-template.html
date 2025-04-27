@@ -1,17 +1,17 @@
 <template id="header-template">
     <header class="border-bottom py-2 sticky-top">
       <div class="container d-flex flex-wrap align-items-center justify-content-between">
-        <a href="index.html" class="navbar-brand d-flex align-items-center">
-          <img src="img/house-heart-fill.svg" alt="Logo">
+        <a id="index-link" href="index.html" class="navbar-brand d-flex align-items-center">
+          <img id="logo-link" src="img/house-heart-fill.svg" alt="Logo">
         </a>
         <div class="navbar-search">
-          <form class="flex-grow-1 mx-3" method="get" action="../proyecto/html/productos.html">
+          <form id="search-link" class="flex-grow-1 mx-3" method="get" action="../proyecto/html/productos.html">
             <input type="search" class="form-control" placeholder="Busca productos..." aria-label="Buscar" name="busqueda">
           </form>
         </div>
         <div>
-          <a href="html/carrito.html" class="btn btn-outline-primary me-2">Carrito</a>
-          <a href="html/login.html" class="btn btn-outline-primary me-2">Inicia sesión</a>
+          <a id="cart-link" href="html/carrito.html" class="btn btn-outline-primary me-2">Carrito</a>
+          <a id="login-link" href="html/login.html" class="btn btn-outline-primary me-2">Inicia sesión</a>
         </div>
       </div>
       <!-- Navegación -->
@@ -26,15 +26,15 @@
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Todas las categorías</a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="html/productos.html?category=fruta">Frutas</a></li>
-                  <li><a class="dropdown-item" href="html/productos.html?category=verdura">Verduras</a></li>
-                  <li><a class="dropdown-item" href="html/productos.html?category=oferta">Ofertas</a></li>
-                  <li><a class="dropdown-item" href="html/productos.html?category=local">Locales</a></li>
+                  <li><a id="productFruta-link" class="dropdown-item" href="html/productos.html?category=fruta">Frutas</a></li>
+                  <li><a id="productVerdura-link" class="dropdown-item" href="html/productos.html?category=verdura">Verduras</a></li>
+                  <li><a id="productOferta-link" class="dropdown-item" href="html/productos.html?category=oferta">Ofertas</a></li>
+                  <li><a id="productLocal-link" class="dropdown-item" href="html/productos.html?category=local">Locales</a></li>
                 </ul>
               </li>
-              <li class="nav-item"><a class="nav-link" href="html/productos.html">Productos</a></li>
-              <li class="nav-item"><a class="nav-link" href="html/nosotros.html">¿Quiénes somos?</a></li>
-              <li class="nav-item"><a class="nav-link" href="html/contacto.html">Contáctanos</a></li>
+              <li class="nav-item"><a id="producto-link" class="nav-link" href="html/productos.html">Productos</a></li>
+              <li class="nav-item"><a id="nosotros-link" class="nav-link" href="html/nosotros.html">¿Quiénes somos?</a></li>
+              <li class="nav-item"><a id="contacto-link" class="nav-link" href="html/contacto.html">Contáctanos</a></li>
             </ul>
           </div>
         </div>
