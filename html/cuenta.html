@@ -8,6 +8,10 @@
   <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css" />
   <link rel="stylesheet" href="../css/index.css" />
   <link rel="stylesheet" href="../css/cuenta.css" />
+  <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/jquery-3.7.1.min.js"></script>
+  <script src="../js/cuenta.js"></script>
+  <script type="module" src="../components/index.js"></script>
 </head>
 <body>
 
@@ -15,7 +19,7 @@
  <custom-header 
  bootstrap-css="../bootstrap/css/bootstrap.min.css" 
  custom-css="../css/index.css" 
- ruta-html="header-template.html"
+ ruta-html="../components/header/header-template.html"
  bootstrap-js="../bootstrap/js/bootstrap.bundle.min.js"
  jquery-js="../js/jquery-3.7.1.min.js"
  index-link="../index.html"
@@ -122,16 +126,6 @@
   </div>
 
   <!-- Footer -->
-  <footer class="footer text-center">
-    <div class="container">
-      <p class="mb-1">&copy; 2025 Poner nombre!!!!!!!!!</p>
-      <p class="mb-0">Frutas y verduras frescas directo a tu mesa.</p>
-    </div>
-  </footer>
-
-  <script src="../js/jquery-3.7.1.min.js"></script>
-  <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../js/cuenta.js"></script>
-  <script src="../js/header.js"></script>
+  <custom-footer bootstrap-css="../bootstrap/css/bootstrap.min.css" custom-css="../css/index.css" ruta-html="../components/footer/footer-template.html"></custom-footer>
 </body>
 </html>

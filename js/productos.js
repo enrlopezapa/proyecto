@@ -56,6 +56,30 @@ $(document).ready(function() {
 
 
 
+  $(document).ready(function () {
+    const $boton = $('#botonFiltro');
+    const $collapse = $('#filtrosCollapse');
+  
+    // Alternar visibilidad al hacer click
+    $boton.on('click', function () {
+      $collapse.collapse('toggle');
+    });
+  
+    // Cambiar texto del botón según el estado del colapso
+    $collapse.on('shown.bs.collapse', function () {
+      $boton.text('Cerrar filtros');
+    });
+  
+    $collapse.on('hidden.bs.collapse', function () {
+      $boton.text('Abrir Filtros');
+    });
+  });
+
+
+
+
+
+
 
 
 
@@ -110,44 +134,18 @@ $(document).ready(function() {
   
       productos.forEach(p => {
         const card = `
-          <article class="col-6 col-md-3">
-            <figure class="card h-100 product-card">
-              <img src="${p.imagen}" class="card-img-top" alt="${p.nombre}">
-              <figcaption class="card-body">
-                <div class="price">
-                  <span class="old-price">${p.precio_original} €</span>
-                  <span class="current-price">${p.precio_actual} €</span>
-                </div>
-                <p class="text-muted mb-0">${p.nombre}</p>
-                <div class="card-actions">
-                  <button class="btn-favorite" type="button">
-                    <img src="../img/heart.svg" alt="favorito">
-                  </button>
-                  <div class="rating">
-                    ${generarEstrellas(p.calificacion)}
-                  </div>
-                </div>
-                <div class="mt-3 d-flex justify-content-between">
-                  <form class="d-flex gap-2">
-                    <input type="hidden" name="productoId" value="${p.id}" />
-                    <input type="button" class="btn btn-outline-secondary btn-detalle" value="Ver detalles" />
-                    <input type="button" class="btn btn-buy" value="Comprar" />
-                  </form>
-                </div>
-              </figcaption>
-            </figure>
-          </article>
+          <product-card
+          ruta-html="../components/product-card/product-card-template.html"
+            image="${p.imagen}"
+            alt="${p.nombre}"
+            old-price="${p.precio_original} €"
+            price="${p.precio_actual} €"
+            title="${p.nombre}"
+            stars="${p.calificacion}">
+          </product-card>
         `;
         contenedor.append(card);
       });
-    }
-  
-    function generarEstrellas(calificacion) {
-      let estrellas = '';
-      for (let i = 1; i <= 5; i++) {
-        estrellas += `<img src="../img/${i <= calificacion ? 'star-fill' : 'star'}.svg" class="star" alt="${i <= calificacion ? '★' : '☆'}">`;
-      }
-      return estrellas;
     }
   });
   

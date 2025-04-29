@@ -11,6 +11,10 @@
   <!-- CSS personalizado -->
   <link rel="stylesheet" href="../css/index.css" />
   <link rel="stylesheet" href="../css/productos.css" />
+  <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/jquery-3.7.1.min.js"></script>
+  <script src="../js/productos.js"></script>
+  <script type="module" src="../components/index.js"></script>
 </head>
 
 <body>
@@ -19,7 +23,7 @@
   <custom-header 
   bootstrap-css="../bootstrap/css/bootstrap.min.css" 
   custom-css="../css/index.css" 
-  ruta-html="header-template.html"
+  ruta-html="../components/header/header-template.html"
   bootstrap-js="../bootstrap/js/bootstrap.bundle.min.js"
   jquery-js="../js/jquery-3.7.1.min.js"
   index-link="../index.html"
@@ -43,11 +47,11 @@
       <!-- Filtros (Sidebar) -->
       <aside class="col-12 col-md-3 mb-4" aria-label="Filtros de productos">
         <!-- Botón solo visible en mobile -->
-        <button class="btn btn-success w-100 mb-3 d-md-none" type="button" data-bs-toggle="collapse"
-          data-bs-target="#filtrosCollapse" aria-expanded="false" aria-controls="filtrosCollapse">
-          Filtros
+        <button id="botonFiltro" class="btn btn-success d-md-none w-100 mb-3" type="button" aria-expanded="false" aria-controls="#filtrosCollapse">
+          Abrir Filtros
         </button>
-        <div id="filtrosCollapse" class="collapse d-md-block">
+        
+        <div id="filtrosCollapse" class="collapse">
           <div class="position-sticky-sidebar">
             <form method="GET">
               <section class="card shadow-sm h-100">
@@ -700,18 +704,7 @@
   </div>
 
   <!-- Footer -->
-  <footer class="footer text-center">
-    <div class="container">
-      <p class="mb-1">&copy; 2025 Poner nombre!!!!!!!!!</p>
-      <p class="mb-0">Frutas y verduras frescas directo a tu mesa.</p>
-    </div>
-  </footer>
-
-  <!-- Bootstrap JS local -->
-  <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../js/jquery-3.7.1.min.js"></script>
-  <script src="../js/productos.js"></script>
-  <script src="../js/header.js"></script>
+  <custom-footer bootstrap-css="../bootstrap/css/bootstrap.min.css" custom-css="../css/index.css" ruta-html="../components/footer/footer-template.html"></custom-footer>
 </body>
 
 </html>
