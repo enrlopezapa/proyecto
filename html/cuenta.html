@@ -50,51 +50,52 @@
           <li class="nav-item"><a class="nav-link" href="#" data-section="seguridad">Seguridad</a></li>
         </ul>
       </div>
-      <div class="col-md-9 p-4" id="panel-content">
+      <div class="col-md-9 p-4 d-none d-md-block" id="panel-content">
         <!-- Aquí se cargará el contenido dinámico -->
       </div>
     </div>
   </div>
 
   <!-- Modal Añadir Producto -->
-  <div class="modal fade" id="modalProducto" tabindex="-1" aria-labelledby="modalProductoLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <form class="modal-content" id="formNuevoProducto">
-        <div class="modal-header">
-          <h5 class="modal-title" id="modalProductoLabel">Añadir producto</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+<div class="modal fade" id="modalProducto" tabindex="-1" aria-labelledby="modalProductoLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" id="formNuevoProducto" enctype="multipart/form-data">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalProductoLabel">Añadir producto</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label class="form-label">Nombre</label>
+          <input type="text" class="form-control" id="nuevoNombre" name="nombre" required>
         </div>
-        <div class="modal-body">
-          <div class="mb-3">
-            <label class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="nuevoNombre" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Precio</label>
-            <input type="text" class="form-control" id="nuevoPrecio" required>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Imagen (URL)</label>
-            <input type="text" class="form-control" id="nuevoImagen" required>
-          </div>
+        <div class="mb-3">
+          <label class="form-label">Precio</label>
+          <input type="text" class="form-control" id="nuevoPrecio" name="precio" required>
         </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-success">Guardar</button>
+        <div class="mb-3">
+          <label class="form-label">Imagen</label>
+          <input type="file" class="form-control" id="nuevoImagen" name="imagen" accept="image/*" required>
+          <!-- Imagen de previsualización -->
+          <img id="previewNueva" class="img-fluid mt-2 d-none" alt="Previsualización imagen" />
         </div>
-      </form>
-    </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success">Guardar</button>
+      </div>
+    </form>
   </div>
+</div>
 
   <!-- Modal Editar Producto -->
 <div class="modal fade" id="modalEditarProducto" tabindex="-1" aria-labelledby="modalEditarProductoLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <form class="modal-content" id="formEditarProducto">
+      <form class="modal-content" id="formEditarProducto" enctype="multipart/form-data">
         <div class="modal-header">
           <h5 class="modal-title" id="modalEditarProductoLabel">Editar producto</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
         <div class="modal-body">
-          <input type="hidden" id="productoEditandoId">
           <div class="mb-3">
             <label class="form-label">Nombre</label>
             <input type="text" class="form-control" id="editarNombre" required>
@@ -104,8 +105,10 @@
             <input type="text" class="form-control" id="editarPrecio" required>
           </div>
           <div class="mb-3">
-            <label class="form-label">Imagen (URL)</label>
-            <input type="text" class="form-control" id="editarImagen" required>
+            <label class="form-label">Imagen</label>
+            <input type="file" class="form-control" id="editarImagen" name="imagen" accept="image/*">
+            <!-- Imagen de previsualización -->
+          <img id="previewEditar" class="img-fluid mt-2 d-none" alt="Previsualización imagen" />
           </div>
         </div>
         <div class="modal-footer">
@@ -114,6 +117,103 @@
       </form>
     </div>
   </div>
+
+  <!-- Modal Crear Alerta -->
+<div class="modal fade" id="modalCrearAlerta" tabindex="-1" aria-labelledby="modalCrearAlertaLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" id="formCrearAlerta">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalCrearAlertaLabel">Crear alerta por correo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="alertaPalabraClave" class="form-label">Palabra clave</label>
+          <input type="text" class="form-control" id="alertaPalabraClave" name="palabra_clave" placeholder="Ej: Python, Marketing, Zapatos" required>
+        </div>
+        <div class="mb-3">
+          <label for="alertaCategoria" class="form-label">Categoría (opcional)</label>
+          <select class="form-select" id="alertaCategoria" name="categoria">
+            <option value="">-- Selecciona una categoría --</option>
+            <option value="tecnologia">Tecnología</option>
+            <option value="moda">Moda</option>
+            <option value="negocios">Negocios</option>
+            <option value="hogar">Hogar</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="alertaFrecuencia" class="form-label">Frecuencia</label>
+          <select class="form-select" id="alertaFrecuencia" name="frecuencia" required>
+            <option value="inmediata">Inmediatamente</option>
+            <option value="diaria">Una vez al día</option>
+            <option value="semanal">Una vez a la semana</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="alertaEmail" class="form-label">Correo electrónico</label>
+          <input type="email" class="form-control" id="alertaEmail" name="email" required>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="alertaActiva" name="activa" checked>
+          <label class="form-check-label" for="alertaActiva">
+            Activar alerta inmediatamente
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success">Crear alerta</button>
+      </div>
+    </form>
+  </div>
+</div>
+<!-- Modal Modificar Alerta -->
+<div class="modal fade" id="modalModificarAlerta" tabindex="-1" aria-labelledby="modalModificarAlertaLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" id="formCrearAlerta">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalModificarAlertaLabel">Modificar alerta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <div class="mb-3">
+          <label for="alertaPalabraClave" class="form-label">Palabra clave</label>
+          <input type="text" class="form-control" id="alertaPalabraClave" name="palabra_clave" placeholder="Ej: Python, Marketing, Zapatos" required>
+        </div>
+        <div class="mb-3">
+          <label for="alertaCategoria" class="form-label">Categoría (opcional)</label>
+          <select class="form-select" id="alertaCategoria" name="categoria">
+            <option value="">-- Selecciona una categoría --</option>
+            <option value="tecnologia">Tecnología</option>
+            <option value="moda">Moda</option>
+            <option value="negocios">Negocios</option>
+            <option value="hogar">Hogar</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="alertaFrecuencia" class="form-label">Frecuencia</label>
+          <select class="form-select" id="alertaFrecuencia" name="frecuencia" required>
+            <option value="inmediata">Inmediatamente</option>
+            <option value="diaria">Una vez al día</option>
+            <option value="semanal">Una vez a la semana</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="alertaEmail" class="form-label">Correo electrónico</label>
+          <input type="email" class="form-control" id="alertaEmail" name="email" required>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="alertaActiva" name="activa" checked>
+          <label class="form-check-label" for="alertaActiva">
+            Activar alerta inmediatamente
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success">Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+</div>
 
   <!-- Toast -->
   <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055">
@@ -127,5 +227,15 @@
 
   <!-- Footer -->
   <custom-footer bootstrap-css="../bootstrap/css/bootstrap.min.css" custom-css="../css/index.css" ruta-html="../components/footer/footer-template.html"></custom-footer>
+  <!-- Offcanvas solo en móviles -->
+<div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="offcanvasContent" aria-labelledby="offcanvasContentLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasContentLabel">Mi Cuenta</h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+    </div>
+    <div class="offcanvas-body d-md-none" id="offcanvas-body">
+      <!-- Aquí se carga el contenido dinámico en móviles -->
+    </div>
+  </div>
 </body>
 </html>

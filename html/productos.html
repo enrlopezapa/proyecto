@@ -47,94 +47,88 @@
       <!-- Filtros (Sidebar) -->
       <aside class="col-12 col-md-3 mb-4" aria-label="Filtros de productos">
         <!-- Botón solo visible en mobile -->
-        <button id="botonFiltro" class="btn btn-success d-md-none w-100 mb-3" type="button" aria-expanded="false" aria-controls="#filtrosCollapse">
-          Abrir Filtros
-        </button>
-        
-        <div id="filtrosCollapse" class="collapse">
-          <div class="position-sticky-sidebar">
-            <form method="GET">
-              <section class="card shadow-sm h-100">
-                <header class="card-header bg-success text-white">
-                  <strong>Filtros</strong>
-                </header>
-                <div class="card-body">
+        <button id="toggleFiltrosBtn" class="btn btn-success w-100 d-lg-none mb-3" type="button">
+    Abrir filtros
+  </button>
 
-                  <!-- Categoría -->
-                  <div class="mb-3">
-                    <label for="categoria" class="form-label">Categoría</label>
-                    <select id="categoria" name="categoria" class="form-select">
-                      <option value="">Todas</option>
-                      <option>Frutas</option>
-                      <option>Verduras</option>
-                      <option>Locales</option>
-                      <option>Ofertas</option>
-                    </select>
-                  </div>
-
-                  <!-- Precio -->
-                  <div class="mb-3 position-relative">
-                    <label for="precio" class="form-label">Precio máximo</label>
-                    <input type="range" id="precio" name="precio" class="form-range mt-4" min="0" max="100" step="1">
-                    <!-- Tooltip visible -->
-                    <div id="precioTooltip" class="position-absolute bg-success text-white px-2 py-1 rounded shadow"
-                      style="top:24px; left: 0; transform: translateX(-50%); white-space: nowrap;">
-                      100 €
-                    </div>
-                  </div>
-
-                  <!-- Calificación -->
-                  <div class="mb-3">
-                    <label class="form-label d-block">Calificación mínima</label>
-                    <div id="star-calification" class="text-warning fs-4" data-rating="0">
-                      <img src="../img/star.svg" data-value="1" title="1 estrella" class="img-fluid star"
-                        alt="estrella" />
-                      <img src="../img/star.svg" data-value="2" title="2 estrellas" class="img-fluid star"
-                        alt="estrella" />
-                      <img src="../img/star.svg" data-value="3" title="3 estrellas" class="img-fluid star"
-                        alt="estrella" />
-                      <img src="../img/star.svg" data-value="4" title="4 estrellas" class="img-fluid star"
-                        alt="estrella" />
-                      <img src="../img/star.svg" data-value="5" title="5 estrellas" class="img-fluid star"
-                        alt="estrella" />
-                    </div>
-                    <input type="hidden" name="calificacion" id="calificacion" value="">
-                  </div>
-
-                  <!-- Stock disponible -->
-                  <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" id="stock" name="stock">
-                    <label class="form-check-label" for="stock">
-                      Solo productos en stock
-                    </label>
-                  </div>
-
-                  <!-- Próximamamente  -->
-                  <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" id="proximamente" name="proximamente">
-                    <label class="form-check-label" for="proximamente">
-                      Próximamente
-                    </label>
-                  </div>
-
-                  <!-- Ordenar por -->
-                  <div class="mb-3">
-                    <label for="ordenar" class="form-label">Ordenar por</label>
-                    <select id="ordenar" name="ordenar" class="form-select">
-                      <option value="">Seleccionar opcion</option>
-                      <option value="relevancia">Relevancia</option>
-                      <option value="precio_asc">Precio: más bajo</option>
-                      <option value="precio_desc">Precio: más alto</option>
-                      <option value="calificacion">Mejor calificación</option>
-                    </select>
-                  </div>
-
-                  <button type="button" class="btn btn-success w-100">Aplicar filtros</button>
-                </div>
-              </section>
-            </form>
+  <!-- Contenedor de filtros -->
+  <div id="filtrosContainer" class="d-none d-lg-block">
+    <div class="position-sticky-sidebar">
+      <form method="GET">
+        <section class="card shadow-sm h-100">
+          <header class="card-header bg-success text-white">
+            <strong>Filtros</strong>
+          </header>
+          <div class="card-body">
+            <!-- Categoría -->
+            <div class="mb-3">
+              <label for="categoria" class="form-label">Categoría</label>
+              <select id="categoria" name="categoria" class="form-select">
+                <option value="">Todas</option>
+                <option>Frutas</option>
+                <option>Verduras</option>
+                <option>Locales</option>
+                <option>Ofertas</option>
+              </select>
+            </div>
+            <!-- Precio -->
+            <div class="mb-3 position-relative">
+              <label for="precio" class="form-label">Precio máximo</label>
+              <input type="range" id="precio" name="precio" class="form-range mt-4" min="0" max="100" step="1">
+              <!-- Tooltip visible -->
+              <div id="precioTooltip" class="position-absolute bg-success text-white px-2 py-1 rounded shadow"
+                style="top:24px; left: 0; transform: translateX(-50%); white-space: nowrap;">
+                100 €
+              </div>
+            </div>
+            <!-- Calificación -->
+            <div class="mb-3">
+              <label class="form-label d-block">Calificación mínima</label>
+              <div id="star-calification" class="text-warning fs-4" data-rating="0">
+                <img src="../img/star.svg" data-value="1" title="1 estrella" class="img-fluid star"
+                  alt="estrella" />
+                <img src="../img/star.svg" data-value="2" title="2 estrellas" class="img-fluid star"
+                  alt="estrella" />
+                <img src="../img/star.svg" data-value="3" title="3 estrellas" class="img-fluid star"
+                  alt="estrella" />
+                <img src="../img/star.svg" data-value="4" title="4 estrellas" class="img-fluid star"
+                  alt="estrella" />
+                <img src="../img/star.svg" data-value="5" title="5 estrellas" class="img-fluid star"
+                  alt="estrella" />
+              </div>
+              <input type="hidden" name="calificacion" id="calificacion" value="">
+            </div>
+            <!-- Stock disponible -->
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="checkbox" id="stock" name="stock">
+              <label class="form-check-label" for="stock">
+                Solo productos en stock
+              </label>
+            </div>
+            <!-- Próximamamente  -->
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="checkbox" id="proximamente" name="proximamente">
+              <label class="form-check-label" for="proximamente">
+                Próximamente
+              </label>
+            </div>
+            <!-- Ordenar por -->
+            <div class="mb-3">
+              <label for="ordenar" class="form-label">Ordenar por</label>
+              <select id="ordenar" name="ordenar" class="form-select">
+                <option value="">Seleccionar opcion</option>
+                <option value="relevancia">Relevancia</option>
+                <option value="precio_asc">Precio: más bajo</option>
+                <option value="precio_desc">Precio: más alto</option>
+                <option value="calificacion">Mejor calificación</option>
+              </select>
+            </div>
+            <button type="button" class="btn btn-success w-100">Aplicar filtros</button>
           </div>
-        </div>
+        </section>
+      </form>
+    </div>
+  </div>
       </aside>
 
       <!-- Grid de productos -->

@@ -55,26 +55,15 @@ $(document).ready(function() {
 
 
 
-
   $(document).ready(function () {
-    const $boton = $('#botonFiltro');
-    const $collapse = $('#filtrosCollapse');
-  
-    // Alternar visibilidad al hacer click
-    $boton.on('click', function () {
-      $collapse.collapse('toggle');
-    });
-  
-    // Cambiar texto del botón según el estado del colapso
-    $collapse.on('shown.bs.collapse', function () {
-      $boton.text('Cerrar filtros');
-    });
-  
-    $collapse.on('hidden.bs.collapse', function () {
-      $boton.text('Abrir Filtros');
-    });
-  });
+  const btn = document.getElementById("toggleFiltrosBtn");
+    const filtros = document.getElementById("filtrosContainer");
 
+    btn.addEventListener("click", () => {
+      filtros.classList.toggle("d-none");
+      btn.textContent = filtros.classList.contains("d-none") ? "Abrir filtros" : "Cerrar filtros";
+    });
+  })
 
 
 
