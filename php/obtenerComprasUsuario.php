@@ -15,7 +15,7 @@ $usuario_id = $_SESSION['usuario_id'];
 $sql = "SELECT 
             id,
             fecha_compra,
-            usuario_pagador_id,
+            nombre_pagador,
             direccion_entrega,
             destinatario
         FROM compras

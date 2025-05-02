@@ -41,18 +41,6 @@ CREATE TABLE precios_producto (
     producto_id CHAR(36) NOT NULL,
     precio DECIMAL(10,2) NOT NULL,
     fecha_inicio DATETIME NOT NULL,
-    fecha_fin DATETIME,
-    FOREIGN KEY (producto_id) REFERENCES productos(id)
-);
-
--- Trazabilidad de productos
-CREATE TABLE trazabilidad_producto (
-    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-    producto_id CHAR(36) NOT NULL,
-    evento VARCHAR(100),
-    ubicacion TEXT,
-    fecha_evento DATETIME DEFAULT CURRENT_TIMESTAMP,
-    notas TEXT,
     FOREIGN KEY (producto_id) REFERENCES productos(id)
 );
 
@@ -73,8 +61,6 @@ CREATE TABLE alertas_usuario (
     usuario_id CHAR(36) NOT NULL,
     categoria_id CHAR(36),
     nombre_clave VARCHAR(100),
-    unidad_min DECIMAL(10,2),
-    unidad_max DECIMAL(10,2),
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
     FOREIGN KEY (categoria_id) REFERENCES categorias(id)
@@ -85,11 +71,10 @@ CREATE TABLE compras (
     id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     fecha_compra DATETIME DEFAULT CURRENT_TIMESTAMP,
     usuario_comprador_id CHAR(36) NOT NULL,
-    usuario_pagador_id CHAR(36),
+    nombre_pagador CHAR(36) NOT NULL,
     direccion_entrega TEXT NOT NULL,
     destinatario VARCHAR(100) NOT NULL,
-    FOREIGN KEY (usuario_comprador_id) REFERENCES usuarios(id),
-    FOREIGN KEY (usuario_pagador_id) REFERENCES usuarios(id)
+    FOREIGN KEY (usuario_comprador_id) REFERENCES usuarios(id)
 );
 
 -- Estado de pedidos
@@ -114,25 +99,14 @@ CREATE TABLE detalle_compra (
     FOREIGN KEY (producto_id) REFERENCES productos(id)
 );
 
--- Últimas compras registradas por usuario
-CREATE TABLE compras_usuario (
-    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-    usuario_id CHAR(36) NOT NULL,
-    compra_id CHAR(36) NOT NULL,
-    fecha_guardado DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-    FOREIGN KEY (compra_id) REFERENCES compras(id)
-);
-
 -- Valoraciones de usuarios (como vendedores)
 CREATE TABLE valoraciones_usuario (
     id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-    vendedor_id CHAR(36) NOT NULL,
-    comprador_id CHAR(36) NOT NULL,
+    usuario_id CHAR(36) NOT NULL,
+    compra_id CHAR(36) NOT NULL,
     valoracion INT NOT NULL CHECK (valoracion BETWEEN 1 AND 5),
     comentario TEXT,
     fecha_valoracion DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (vendedor_id) REFERENCES usuarios(id),
-    FOREIGN KEY (comprador_id) REFERENCES usuarios(id),
-    UNIQUE (vendedor_id, comprador_id)
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    FOREIGN KEY (compra_id) REFERENCES compras(id),
 );

@@ -13,6 +13,7 @@ require_once 'conexion.php';
 $usuario_id = $_SESSION['usuario_id'];
 
 // Obtener estados de pedidos relacionados con compras del usuario
+// Aqui podriamos dar detalles de la compra como nombre_pagador, direccion_entrega y destinatario
 $sql = "SELECT 
             ep.id,
             ep.compra_id,
