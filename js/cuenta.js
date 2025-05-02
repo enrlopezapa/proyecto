@@ -36,7 +36,9 @@ $(document).ready(function () {
   });
 
 
-  const $panel = $('#panel-content');
+  const $panel = window.innerWidth < 768
+      ? $('#offcanvas-body')
+      : $('#panel-content');
   const toast = new bootstrap.Toast($('#toastConfirmacion'));
 
   function showToast(mensaje) {
@@ -190,11 +192,11 @@ $(document).ready(function () {
 
   function cargarSeguridad() {
     $.ajax({
-      url: '../php/obtenerPerfilUsuario.php',
+      url: '../php/obtenerSeguridadUsuario.php',
       method: 'GET',
       dataType: 'json',
-      success: function(perfil) {
-        console.log(perfil)
+      success: function(perfilSeguridad) {
+        console.log(perfilSeguridad)
       },
         error: function(xhr) {
           console.log("error al cargar el perfil seguridad")
@@ -264,6 +266,8 @@ $('#formNuevoProducto').on('submit', function (e) {
   const precio = $('#nuevoPrecio').val();
   const fileInput = $('#nuevoImagen')[0];
   const file = fileInput.files[0];
+  const fecha_prod = new Date().toISOString().slice(0, 19).replace('T', ' ');
+  const fecha_cad = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
   // Validaciones
   if (!file) {
@@ -287,32 +291,36 @@ $('#formNuevoProducto').on('submit', function (e) {
   const reader = new FileReader();
   reader.onload = function (event) {
     const imageBase64 = event.target.result;
+    const datosProducto = {
+      nombre: nombre,
+      descripcion: "",
+      imagen_url: imageBase64,
+      numero_lote: 0,
+      fecha_produccion: fecha_prod,
+      fecha_caducidad: fecha_cad,
+      unidad_medida: "kg",
+      cantidad_disponible: 1,
+      categoria_id: ""
+  };
 
-    const producto = $(`
-      <div class="col-md-4 producto">
-        <div class="card">
-          <img src="${imageBase64}" class="card-img-top" alt="${nombre}">
-          <div class="card-body">
-            <h5 class="card-title">${nombre}</h5>
-            <p class="card-text">Precio: ${precio}</p>
-            <div class="d-flex justify-content-between">
-              <button class="btn btn-outline-primary btn-sm btn-editar">Editar</button>
-              <button class="btn btn-outline-danger btn-sm btn-eliminar">Eliminar</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    `).hide();
+  $.ajax({
+      url: '../php/crearProducto.php',
+      type: 'POST',
+      data: JSON.stringify(datosProducto),
+      contentType: 'application/json',
+      success: function(response) {
+        showToast('Producto añadido');
+        console.log(response);
+      },
+      error: function(xhr, status, error) {
+        showToast('Error al crear el producto');
+        console.error(xhr.responseText);
+      }
+  });
 
-    const contenedor = window.innerWidth < 768
-      ? $('#offcanvas-body #lista-productos')
-      : $('#panel-content #lista-productos');
-
-    contenedor.prepend(producto);
-    producto.fadeIn();
+    cargarProductos()
 
     $('#modalProducto').modal('hide');
-    showToast('Producto añadido');
     $('#formNuevoProducto')[0].reset();
     $('#previewNueva').attr('src', '').addClass('d-none');
   };
@@ -405,19 +413,66 @@ $('#formEditarProducto').on('submit', function (e) {
     const reader = new FileReader();
     reader.onload = function (event) {
       const nuevaImagen = event.target.result;
-
-      productoEditando.find('.card-title').text(nuevoNombre);
-      productoEditando.find('.card-text').text('Precio: ' + nuevoPrecio);
-      productoEditando.find('img').attr('src', nuevaImagen);
-
+      const datosProducto = {
+        nombre: nuevoNombre,
+        descripcion: "",
+        imagen_url: nuevaImagen,
+        numero_lote: 0,
+        fecha_produccion: fecha_prod,
+        fecha_caducidad: fecha_cad,
+        unidad_medida: "kg",
+        cantidad_disponible: 1,
+        categoria_id: ""
+    };
+      $.ajax({
+        url: '../php/actualizarProducto.php',
+        type: 'POST',
+        data: JSON.stringify(datosProducto),
+        contentType: 'application/json',
+        success: function(response) {
+          showToast('Producto añadido');
+          console.log(response);
+        },
+        error: function(xhr, status, error) {
+          showToast('Error al crear el producto');
+          console.error(xhr.responseText);
+        }
+    });
+  
+      cargarProductos()
       $('#modalEditarProducto').modal('hide');
       showToast('Producto actualizado');
     };
     reader.readAsDataURL(file);
   } else {
+    const datosProducto = {
+      nombre: nuevoNombre,
+      descripcion: "",
+      imagen_url: "",
+      numero_lote: 0,
+      fecha_produccion: fecha_prod,
+      fecha_caducidad: fecha_cad,
+      unidad_medida: "kg",
+      cantidad_disponible: 1,
+      categoria_id: ""
+  };
     // Solo actualiza nombre y precio si no hay nueva imagen
-    productoEditando.find('.card-title').text(nuevoNombre);
-    productoEditando.find('.card-text').text('Precio: ' + nuevoPrecio);
+    $.ajax({
+      url: '../php/modificarProducto.php',
+      type: 'POST',
+      data: JSON.stringify(datosProducto),
+      contentType: 'application/json',
+      success: function(response) {
+        showToast('Producto añadido');
+        console.log(response);
+      },
+      error: function(xhr, status, error) {
+        showToast('Error al crear el producto');
+        console.error(xhr.responseText);
+      }
+  });
+
+    cargarProductos()
     $('#modalEditarProducto').modal('hide');
     showToast('Producto actualizado');
   }
@@ -445,6 +500,26 @@ $(document).on('click', '[data-bs-target="#modalCrearAlerta"]', function () {
       offcanvasInstance.hide();
     }
   }
+
+  const datosAlerta = {
+    categoria_id:1,
+    nombre_clave: "",
+};
+  $.ajax({
+    url: '../php/crearAlerta.php',
+    type: 'POST',
+    data: JSON.stringify(datosAlerta),
+    contentType: 'application/json',
+    success: function(response) {
+      showToast('Alerta añadida');
+      console.log(response);
+    },
+    error: function(xhr, status, error) {
+      showToast('Error al crear la alerta');
+      console.error(xhr.responseText);
+    }
+});
+cargarAlertas();
 });
 
 
@@ -505,9 +580,24 @@ $(document).on('click', '.editar-alerta', function() {
       var activa = $('#alertaActiva').prop('checked');
 
       // Aquí puedes hacer lo que necesites, como actualizar el DOM o enviar los datos al servidor
-      alertaCard.find('.card-title').text(nombre);
-      alertaCard.find('.card-text').text(descripcion);  // Modifica lo que necesitas en la alerta
-      alertaCard.find('.form-check-input').prop('checked', activa);
+      const datosAlerta = {
+        categoria_id:categoria,
+        nombre_clave:nombre,
+    };
+      $.ajax({
+        url: '../php/crearAlerta.php',
+        type: 'POST',
+        data: JSON.stringify(datosAlerta),
+        contentType: 'application/json',
+        success: function(response) {
+          showToast('Alerta añadida');
+          console.log(response);
+        },
+        error: function(xhr, status, error) {
+          showToast('Error al crear la alerta');
+          console.error(xhr.responseText);
+        }
+    });
 
       // Cerrar el modal
       $('#modalModificarAlerta').modal('hide');

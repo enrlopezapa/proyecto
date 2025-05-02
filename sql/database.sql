@@ -5,10 +5,18 @@ CREATE TABLE usuarios (
     email VARCHAR(100) UNIQUE NOT NULL,
     telefono VARCHAR(20),
     direccion TEXT,
+    valoracion_media DECIMAL(3,2) DEFAULT 0.00
+);
+
+CREATE TABLE seguridad_usuarios (
+    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    usuario_id CHAR(36) UNIQUE NOT NULL,
+    contrasena VARCHAR(255) NOT NULL,
     verificado BOOLEAN DEFAULT FALSE,
     codigo_verificacion VARCHAR(10),
     fecha_envio_codigo DATETIME,
-    valoracion_media DECIMAL(3,2) DEFAULT 0.00
+    fecha_ultimo_cambio_contrasena DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
 -- Tabla de categorías
@@ -18,7 +26,6 @@ CREATE TABLE categorias (
     descripcion TEXT
 );
 
--- Tabla de productos
 CREATE TABLE productos (
     id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     nombre VARCHAR(100) NOT NULL,
@@ -29,6 +36,7 @@ CREATE TABLE productos (
     fecha_caducidad DATE,
     unidad_medida VARCHAR(20),
     cantidad_disponible DECIMAL(10,2),
+    precio_actual DECIMAL(10,2),
     usuario_id CHAR(36) NOT NULL,
     categoria_id CHAR(36),
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
