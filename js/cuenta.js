@@ -45,7 +45,18 @@ $(document).ready(function () {
   }
 
   function cargarProductos() {
-    $('.modal').modal('hide');
+    $.ajax({
+        url: '../php/obtenerProductosUsuario.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function(productos) {
+          console.log(productos)
+        },
+          error: function(xhr) {
+            console.log("error al cargar los productos")
+          }
+        })
+          $('.modal').modal('hide');
     $panel.hide().html(`
         <h2>Mis productos</h2>
         <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#modalProducto">+ Añadir producto</button>
@@ -64,9 +75,20 @@ $(document).ready(function () {
             </div>
           </div>
         </div>`).fadeIn();
-  }
+    }
 
   function cargarAlertas() {
+    $.ajax({
+      url: '../php/obtenerAlertasUsuario.php',
+      method: 'GET',
+      dataType: 'json',
+      success: function(alertas) {
+        console.log(alertas)
+      },
+        error: function(xhr) {
+          console.log("error al cargar las alertas")
+        }
+      })
     $panel.hide().html(`
       <h2>Mis alertas</h2>
       <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#modalCrearAlerta">+ Añadir alerta</button>
@@ -91,6 +113,17 @@ $(document).ready(function () {
 }
 
   function cargarPerfil() {
+    $.ajax({
+      url: '../php/obtenerPerfilUsuario.php',
+      method: 'GET',
+      dataType: 'json',
+      success: function(perfil) {
+        console.log(perfil)
+      },
+        error: function(xhr) {
+          console.log("error al cargar el perfil")
+        }
+      })
     $panel.hide().html(`
         <h2>Editar perfil</h2>
         <form class="mt-3">
@@ -111,18 +144,62 @@ $(document).ready(function () {
   }
 
   function cargarFavoritos() {
+    $.ajax({
+      url: '../php/obtenerFavoritosUsuario.php',
+      method: 'GET',
+      dataType: 'json',
+      success: function(favoritos) {
+        console.log(favoritos)
+      },
+        error: function(xhr) {
+          console.log("error al cargar los favoritos")
+        }
+      })
     $panel.hide().html(`<h2>Mis favoritos</h2><p>Aquí aparecerán tus articulos favoritos.</p>`).fadeIn();
   }
 
   function cargarCompras() {
+    $.ajax({
+      url: '../php/obtenerComprasUsuario.php',
+      method: 'GET',
+      dataType: 'json',
+      success: function(compras) {
+        console.log(compras)
+      },
+        error: function(xhr) {
+          console.log("error al cargar las compras")
+        }
+      })
     $panel.hide().html(`<h2>Mis compras</h2><p>Aquí aparecerán tus compras realizadas.</p>`).fadeIn();
   }
 
   function cargarPedidos() {
+    $.ajax({
+      url: '../php/obtenerPedidosUsuario.php',
+      method: 'GET',
+      dataType: 'json',
+      success: function(pedidos) {
+        console.log(pedidos)
+      },
+        error: function(xhr) {
+          console.log("error al cargar los pedidos")
+        }
+      })
     $panel.hide().html(`<h2>Mis pedidos</h2><p>Consulta el estado de tus pedidos como vendedor.</p>`).fadeIn();
   }
 
   function cargarSeguridad() {
+    $.ajax({
+      url: '../php/obtenerPerfilUsuario.php',
+      method: 'GET',
+      dataType: 'json',
+      success: function(perfil) {
+        console.log(perfil)
+      },
+        error: function(xhr) {
+          console.log("error al cargar el perfil seguridad")
+        }
+      })
     $panel.hide().html(`
         <h2>Seguridad</h2>
         <form class="mt-3">
