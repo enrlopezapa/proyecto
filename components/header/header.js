@@ -123,12 +123,6 @@ export class CustomHeader extends HTMLElement {
       perfilDropdown?.classList.add('d-none');
       cartBtn?.classList.add('d-none');
     }
-    console.log({
-      usuarioLogueado: window.usuarioLogueado,
-      loginBtn,
-      perfilDropdown,
-      cartBtn
-    });
   }
   
 

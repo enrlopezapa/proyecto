@@ -14,9 +14,9 @@
   <script src="js/jquery-3.7.1.min.js"></script>
   <script src="js/index.js"></script>
   <?php session_start(); ?>
-<script>
-  window.usuarioLogueado = <?= isset($_SESSION['usuario']) ? 'true' : 'false' ?>;
-</script>
+  <script>
+    window.usuarioLogueado = <?= isset($_SESSION['usuario']) ? 'true' : 'false' ?>;
+  </script>
   <script type="module" src="components/index.js"></script>
 </head>
 

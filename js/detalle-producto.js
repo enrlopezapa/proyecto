@@ -58,7 +58,7 @@ $(document).ready(function () {
         const form = $(this).closest('form');
         const productoId = form.find('input[name="productoId"]').val();
       
-        $.post('php/agregar-carrito.php', { productoId }, function (res) {
+        $.post('../php/agregar-carrito.php', { productoId }, function (res) {
             showToast('Producto añadido');
         }).fail(function () {
             showToast('Error al añadir el producto');

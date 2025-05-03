@@ -101,7 +101,7 @@ $(document).ready(function() {
   
       // Llamada AJAX al backend
       $.ajax({
-        url: 'php/filtrar-productos.php',
+        url: 'php/filtrar-productos.php', //-------------------------------------------------------------------------------------------------------------------------------------------------------------
         method: 'POST',
         data: filtros,
         dataType: 'json',

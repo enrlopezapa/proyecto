@@ -13,7 +13,7 @@
 
   <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../js/jquery-3.7.1.min.js"></script>
-  <script src="../js/index.js"></script>
+  <script src="../js/login.js"></script>
   <script type="module" src="../components/index.js"></script>
 </head>
 <body>
@@ -54,7 +54,7 @@
                 <strong>Iniciar Sesión</strong>
               </div>
               <div class="card-body">
-                <form>
+                <form id="loginForm">
                   <!-- Correo electrónico -->
                   <div class="mb-3">
                     <label for="email" class="form-label">Correo Electrónico</label>
@@ -72,7 +72,8 @@
                     <input type="checkbox" class="form-check-input" id="rememberMe">
                     <label class="form-check-label" for="rememberMe">Recordarme</label>
                   </div>
-      
+                  
+                  <div id="error-message" class="alert alert-danger d-none text-center"></div>
                   <!-- Botón de inicio de sesión -->
                   <button type="submit" class="btn btn-success w-100">Iniciar Sesión</button>
                 </form>
@@ -87,6 +88,7 @@
                   PRUEBA (BORRAR) <a href="cuenta.html" class="text-success">PRUEBA</a>
                 </p>
               </div>
+            </div>
             </div>
       
           </div>

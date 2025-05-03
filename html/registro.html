@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="../css/productos.css" />
   <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../js/jquery-3.7.1.min.js"></script>
-  <script src="../js/index.js"></script>
+  <script src="../js/registro.js"></script>
   <script type="module" src="../components/index.js"></script>
 </head>
 <body>
@@ -42,62 +42,49 @@
 
   <main class="container my-5">
     <section class="container mt-5">
-        <h2 class="text-center mb-4">Crear una Cuenta</h2>
-      
-        <!-- Contenedor para el formulario de registro -->
-        <div class="row justify-content-center">
-          <div class="col-12 col-md-6 col-lg-4">
-            <!-- Formulario de registro -->
-            <div class="card shadow-sm">
-              <div class="card-header bg-success text-white text-center">
-                <strong>Regístrate</strong>
-              </div>
-              <div class="card-body">
-                <form>
-                  <!-- Nombre completo -->
-                  <div class="mb-3">
-                    <label for="fullName" class="form-label">Nombre Completo</label>
-                    <input type="text" class="form-control" id="fullName" placeholder="Introduce tu nombre completo" required>
-                  </div>
-      
-                  <!-- Correo electrónico -->
-                  <div class="mb-3">
-                    <label for="emailReg" class="form-label">Correo Electrónico</label>
-                    <input type="email" class="form-control" id="emailReg" placeholder="Introduce tu correo electrónico" required>
-                  </div>
-      
-                  <!-- Contraseña -->
-                  <div class="mb-3">
-                    <label for="passwordReg" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="passwordReg" placeholder="Introduce tu contraseña" required>
-                  </div>
-      
-                  <!-- Confirmar Contraseña -->
-                  <div class="mb-3">
-                    <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
-                    <input type="password" class="form-control" id="confirmPassword" placeholder="Confirma tu contraseña" required>
-                  </div>
-      
-                  <!-- Aceptación de términos y condiciones -->
-                  <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="termsAndConditions" required>
-                    <label class="form-check-label" for="termsAndConditions">Acepto los <a href="#">términos y condiciones</a></label>
-                  </div>
-      
-                  <!-- Botón de registro -->
-                  <button type="submit" class="btn btn-success w-100">Registrarse</button>
-                </form>
-      
-                <!-- Opción para iniciar sesión si ya tiene cuenta -->
-                <p class="text-center mt-3">
-                  ¿Ya tienes cuenta? <a href="login.html" class="text-success">Inicia sesión aquí</a>
-                </p>
-              </div>
+      <h2 class="text-center mb-4">Crear una Cuenta</h2>
+  
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-6 col-lg-4">
+          <div class="card shadow-sm">
+            <div class="card-header bg-success text-white text-center">
+              <strong>Regístrate</strong>
             </div>
-      
+            <div class="card-body">
+              <form id="registerForm">
+                <div class="mb-3">
+                  <label for="fullName" class="form-label">Nombre Completo</label>
+                  <input type="text" class="form-control" id="fullName" required>
+                </div>
+                <div class="mb-3">
+                  <label for="emailReg" class="form-label">Correo Electrónico</label>
+                  <input type="email" class="form-control" id="emailReg" required>
+                </div>
+                <div class="mb-3">
+                  <label for="passwordReg" class="form-label">Contraseña</label>
+                  <input type="password" class="form-control" id="passwordReg" required>
+                </div>
+                <div class="mb-3">
+                  <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+                  <input type="password" class="form-control" id="confirmPassword" required>
+                </div>
+                <div class="mb-3 form-check">
+                  <input type="checkbox" class="form-check-input" id="termsAndConditions" required>
+                  <label class="form-check-label" for="termsAndConditions">Acepto los <a href="#">términos y condiciones</a></label>
+                </div>
+                <div id="register-error" class="alert alert-danger d-none mt-3"></div>
+                <div id="register-success" class="alert alert-success d-none mt-3"></div>
+                <button type="submit" class="btn btn-success w-100">Registrarse</button>
+              </form>
+  
+              <p class="text-center mt-3">
+                ¿Ya tienes cuenta? <a href="login.html" class="text-success">Inicia sesión aquí</a>
+              </p>
+            </div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
   </main>
 
   <!-- Footer -->

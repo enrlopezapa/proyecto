@@ -7,7 +7,7 @@ $(document).ready(function () {
   productos = []
   // Array de productos
   $.ajax({
-        url: 'php/traerProductos.php',  // El archivo PHP que acabamos de crear
+        url: '../php/traerProductos.php',  // El archivo PHP que acabamos de crear
         method: 'GET',  // En este caso no necesitas un POST ya que estamos trayendo todos los productos
         contentType: 'application/json',
         success: function (data) {

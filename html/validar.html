@@ -12,9 +12,8 @@
   <link rel="stylesheet" href="../css/productos.css" />
   <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../js/jquery-3.7.1.min.js"></script>
-  <script src="../js/carrito.js"></script>
+  <script src="../js/validar.js"></script>
   <script type="module" src="../components/index.js"></script>
-  <script src="https://www.paypal.com/sdk/js?client-id=TU_CLIENT_ID&currency=USD"></script>
 </head>
 <body>
 
@@ -43,35 +42,36 @@
 
   <main class="container my-5">
     <section class="container mt-5">
-        <h2 class="mb-4 text-center">Carrito de Compras</h2>
-      
-        <!-- Tabla de productos en el carrito -->
-        <div class="row">
-          <div class="col-12">
-            <table class="table table-bordered table-hover">
-              <thead class="thead-dark">
-                <tr>
-                  <th scope="col">Producto</th>
-                  <th scope="col">Precio Unitario</th>
-                  <th scope="col">Cantidad</th>
-                  <th scope="col">Total</th>
-                  <th scope="col">Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                
-              </tbody>
-            </table>
+        <h2 class="text-center mb-4">Validar Cuenta</h2>
+    
+        <div class="row justify-content-center">
+          <div class="col-12 col-md-6 col-lg-4">
+            <div class="card shadow-sm">
+              <div class="card-header bg-success text-white text-center">
+                <strong>Ingresa tu código</strong>
+              </div>
+              <div class="card-body">
+                <form id="verifyForm">
+                  <div class="mb-3">
+                    <label for="email" class="form-label">Correo Electrónico</label>
+                    <input type="email" class="form-control" id="email" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="codigo" class="form-label">Código de Verificación</label>
+                    <input type="text" class="form-control" id="codigo" required>
+                  </div>
+                  <div id="verify-success" class="alert alert-success d-none mt-3"></div>
+                <div id="verify-error" class="alert alert-danger d-none mt-3"></div>
+                  <button type="submit" class="btn btn-success w-100">Validar Cuenta</button>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
-      
-        <!-- Resumen del carrito -->
-        <div id="resumen-carrito-container"></div>
       </section>
   </main>
 
   <!-- Footer -->
   <custom-footer bootstrap-css="../bootstrap/css/bootstrap.min.css" custom-css="../css/index.css" ruta-html="../components/footer/footer-template.html"></custom-footer>
-
 </body>
 </html>
