@@ -4,9 +4,11 @@ function cargarCarrito() {
         tbody.empty();
 
         let subtotal = 0;
+        const productoIds = []; // Aquí almacenaremos los IDs de los productos
 
         productos.forEach(producto => {
             subtotal += parseFloat(producto.precio);
+            productoIds.push(producto.id); // Guardar ID
 
             const fila = `
                 <tr>
@@ -18,7 +20,8 @@ function cargarCarrito() {
             tbody.append(fila);
         });
 
-        renderResumenCarrito(subtotal);
+        // Pasar también los IDs al render del resumen
+        renderResumenCarrito(subtotal, productoIds);
     });
 }
 
@@ -30,8 +33,9 @@ function eliminarProducto(id) {
     }, 'json');
 }
 
-function renderResumenCarrito(subtotal) {
-    const total = subtotal; // Envío es gratis
+function renderResumenCarrito(subtotal, productoIds) {
+    const total = subtotal;
+
     const resumenHTML = `
     <div class="row mt-5">
       <div class="col-12 col-md-4 offset-md-8">
@@ -62,7 +66,6 @@ function renderResumenCarrito(subtotal) {
 
     $('#resumen-carrito-container').html(resumenHTML);
 
-    // Aquí se carga el botón de PayPal ----------------------------------------------------------------------------------------------------- credenciales sandbox Paypal
     paypal.Buttons({
         createOrder: function(data, actions) {
             return actions.order.create({
@@ -76,9 +79,22 @@ function renderResumenCarrito(subtotal) {
         onApprove: function(data, actions) {
             return actions.order.capture().then(function(details) {
                 alert('Pago completado por ' + details.payer.name.given_name);
-                // Aquí podrías redirigir, limpiar carrito, guardar en base de datos, etc.
-                // Redirigir después del pago
-                window.location.href = "gracias.html";  // Página de agradecimiento o éxito
+
+                // Enviar los IDs de productos al servidor
+                $.ajax({
+                    url: '../php/marcarProductosVendidos.php',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ productos: productoIds }),
+                    success: function(response) {
+                        console.log('Productos marcados como vendidos:', response);
+                        window.location.href = "gracias.html";
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error al actualizar productos:", error);
+                        alert("Ocurrió un error al actualizar los productos. Por favor contáctanos.");
+                    }
+                });
             });
         },
         onError: function(err) {
@@ -90,7 +106,7 @@ function renderResumenCarrito(subtotal) {
 
 $(document).ready(function() {
     cargarCarrito();
-
+    renderResumenCarrito(10);
     $('#carrito-table').on('click', '.eliminar', function() {
         const id = $(this).data('id');
         eliminarProducto(id);

@@ -40,7 +40,8 @@ CREATE TABLE productos (
     precio_actual DECIMAL(10,2),
     usuario_id CHAR(36) NOT NULL,
     categoria_id CHAR(36),
-    valoracion_media DECIMAL(3,2) DEFAULT 0.00
+    valoracion_media DECIMAL(3,2) DEFAULT 0.00,
+    vendido BOOLEAN
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
     FOREIGN KEY (categoria_id) REFERENCES categorias(id)
 );
