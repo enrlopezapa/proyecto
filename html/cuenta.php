@@ -41,13 +41,26 @@
     <div class="row">
       <div class="col-md-3 bg-light sidebar pt-4">
         <ul class="nav flex-column">
-          <li class="nav-item"><a class="nav-link active" href="#" data-section="productos">Mis productos</a></li>
-          <li class="nav-item"><a class="nav-link" href="#" data-section="perfil">Editar perfil</a></li>
-          <li class="nav-item"><a class="nav-link" href="#" data-section="favoritos">Mis favoritos</a></li>
-          <li class="nav-item"><a class="nav-link" href="#" data-section="compras">Mis compras</a></li>
-          <li class="nav-item"><a class="nav-link" href="#" data-section="pedidos">Mis pedidos</a></li>
-          <li class="nav-item"><a class="nav-link" href="#" data-section="alertas">Mis alertas</a></li>
-          <li class="nav-item"><a class="nav-link" href="#" data-section="seguridad">Seguridad</a></li>
+          <?php 
+          session_start();
+          $isAdmin = isset($_SESSION['admin']) && $_SESSION['admin'] === true;
+          if (!$isAdmin){ ?>
+            <li class="nav-item"><a class="nav-link active" href="#" data-section="productos">Mis productos</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-section="perfil">Editar perfil</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-section="favoritos">Mis favoritos</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-section="compras">Mis compras</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-section="pedidos">Mis pedidos</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-section="alertas">Mis alertas</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-section="seguridad">Seguridad</a></li>
+          <?php }else{ ?>
+            <li class="nav-item"><a class="nav-link" href="#" data-section="admin-productos">Gestionar productos</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-section="admin-usuarios">Gestionar usuarios</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-section="admin-compras">Gestionar compras</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-section="admin-filtros">Gestionar filtros</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-section="admin-pedidos">Gestionar pedidos</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-section="admin-categorias">Gestionar categorías</a></li>
+          <?php }
+          session_write_close(); ?>
         </ul>
       </div>
       <div class="col-md-9 p-4 d-none d-md-block" id="panel-content">

@@ -491,9 +491,16 @@ footer .container p {
     align-items: center;
   }
 
-  header .navbar-brand {
+  header div:nth-child(1){
     order: 0;
+    display: flex;
+    justify-content: center;
     margin-bottom: 0.5rem;
+  }
+
+  header div:nth-child(1) img{
+    width: 60px;
+    margin: auto; /*ALINEAR EL LOGOOOOOOOOOOOOO*/
   }
 
   header div:nth-child(3) { /* El div donde están los botones */
@@ -517,16 +524,8 @@ footer .container p {
     font-size: 1rem;
   }
 
-  header .btn {
-    width: 140px;
-    height: 50px;
-    font-size: 1rem;
-  }
-
-  nav .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  nav .dropdown-toggle {
+    display: none;
   }
 
   nav .navbar-toggler {

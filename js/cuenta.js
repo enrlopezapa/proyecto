@@ -16,29 +16,35 @@ $(document).ready(function () {
         case 'pedidos': return cargarPedidos;
         case 'alertas': return cargarAlertas;
         case 'seguridad': return cargarSeguridad;
+        case 'admin-productos': return cargarAdminProductos; //CORREGIR DATOOOOOOOOOOOOOOOOOOOOOOOOOOS
+        case 'admin-usuarios': return cargarAdminUsuarios; //CORREGIR DATOOOOOOOOOOOOOOOOOOOOOOOOOOS
+        case 'admin-compras': return cargarAdminCompras; //CORREGIR DATOOOOOOOOOOOOOOOOOOOOOOOOOOS
+        case 'admin-filtros': return cargarAdminFiltros; //CORREGIR DATOOOOOOOOOOOOOOOOOOOOOOOOOOS
+        case 'admin-pedidos': return cargarAdminPedidos; //CORREGIR DATOOOOOOOOOOOOOOOOOOOOOOOOOOS
+        case 'admin-categorias': return cargarAdminCategorias; //CORREGIR DATOOOOOOOOOOOOOOOOOOOOOOOOOOS
         default: return () => $panel.html('<p>Sección no encontrada</p>');
       }
     }
 
+      
     if (window.innerWidth < 768) {
       renderizarSeccion = renderizarSeccion();
-      renderizarSeccion(); // ejecuta la función
+      renderizarSeccion();
 
       // Copiar el HTML generado al #offcanvas-body
       $('#offcanvas-body').html($('#panel-content').html());
 
       const offcanvas = new bootstrap.Offcanvas('#offcanvasContent');
       offcanvas.show();
-    } else {
+    } else{
       renderizarSeccion = renderizarSeccion();
-      renderizarSeccion(); // solo ejecuta
+      renderizarSeccion();
+
     }
   });
 
 
-  const $panel = window.innerWidth < 768
-      ? $('#offcanvas-body')
-      : $('#panel-content');
+  const $panel =  $('#panel-content');
   const toast = new bootstrap.Toast($('#toastConfirmacion'));
 
   function showToast(mensaje) {

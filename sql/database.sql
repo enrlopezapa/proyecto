@@ -5,6 +5,7 @@ CREATE TABLE usuarios (
     email VARCHAR(100) UNIQUE NOT NULL,
     telefono VARCHAR(20),
     direccion TEXT,
+    administrador BOOLEAN,
     valoracion_media DECIMAL(3,2) DEFAULT 0.00
 );
 
