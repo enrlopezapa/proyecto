@@ -4,137 +4,21 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
+  productos = []
   // Array de productos
-  const productos = [
-    {
-      imgSrc: 'img/manzana.svg',
-      alt: 'Manzanas',
-      oldPrice: '4,00 €',
-      currentPrice: '3,00 €',
-      description: 'Manzanas rojas',
-      rating: 4,  // Número de estrellas llenas (del 1 al 5)
-    },
-    {
-      imgSrc: 'img/manzana.svg',
-      alt: 'Manzanas',
-      oldPrice: '4,00 €',
-      currentPrice: '3,00 €',
-      description: 'Manzanas rojas',
-      rating: 3,
-    },
-    {
-      imgSrc: 'img/manzana.svg',
-      alt: 'Manzanas',
-      oldPrice: '4,00 €',
-      currentPrice: '3,00 €',
-      description: 'Manzanas rojas',
-      rating: 5,
-    },
-    {
-      imgSrc: 'img/manzana.svg',
-      alt: 'Manzanas',
-      oldPrice: '4,00 €',
-      currentPrice: '3,00 €',
-      description: 'Manzanas rojas',
-      rating: 2,
-    },
-    {
-      imgSrc: 'img/manzana.svg',
-      alt: 'Manzanas',
-      oldPrice: '4,00 €',
-      currentPrice: '3,00 €',
-      description: 'Manzanas rojas',
-      rating: 4,  // Número de estrellas llenas (del 1 al 5)
-    },
-    {
-      imgSrc: 'img/manzana.svg',
-      alt: 'Manzanas',
-      oldPrice: '4,00 €',
-      currentPrice: '3,00 €',
-      description: 'Manzanas rojas',
-      rating: 3,
-    },
-    {
-      imgSrc: 'img/manzana.svg',
-      alt: 'Manzanas',
-      oldPrice: '4,00 €',
-      currentPrice: '3,00 €',
-      description: 'Manzanas rojas',
-      rating: 5,
-    },
-    {
-      imgSrc: 'img/manzana.svg',
-      alt: 'Manzanas',
-      oldPrice: '4,00 €',
-      currentPrice: '3,00 €',
-      description: 'Manzanas rojas',
-      rating: 2,
-    },
-    {
-      imgSrc: 'img/manzana.svg',
-      alt: 'Manzanas',
-      oldPrice: '4,00 €',
-      currentPrice: '3,00 €',
-      description: 'Manzanas rojas',
-      rating: 4,  // Número de estrellas llenas (del 1 al 5)
-    },
-    {
-      imgSrc: 'img/manzana.svg',
-      alt: 'Manzanas',
-      oldPrice: '4,00 €',
-      currentPrice: '3,00 €',
-      description: 'Manzanas rojas',
-      rating: 3,
-    },
-    {
-      imgSrc: 'img/manzana.svg',
-      alt: 'Manzanas',
-      oldPrice: '4,00 €',
-      currentPrice: '3,00 €',
-      description: 'Manzanas rojas',
-      rating: 5,
-    },
-    {
-      imgSrc: 'img/manzana.svg',
-      alt: 'Manzanas',
-      oldPrice: '4,00 €',
-      currentPrice: '3,00 €',
-      description: 'Manzanas rojas',
-      rating: 2,
-    },
-    {
-      imgSrc: 'img/manzana.svg',
-      alt: 'Manzanas',
-      oldPrice: '4,00 €',
-      currentPrice: '3,00 €',
-      description: 'Manzanas rojas',
-      rating: 4,  // Número de estrellas llenas (del 1 al 5)
-    },
-    {
-      imgSrc: 'img/manzana.svg',
-      alt: 'Manzanas',
-      oldPrice: '4,00 €',
-      currentPrice: '3,00 €',
-      description: 'Manzanas rojas',
-      rating: 3,
-    },
-    {
-      imgSrc: 'img/manzana.svg',
-      alt: 'Manzanas',
-      oldPrice: '4,00 €',
-      currentPrice: '3,00 €',
-      description: 'Manzanas rojas',
-      rating: 5,
-    },
-    {
-      imgSrc: 'img/manzana.svg',
-      alt: 'Manzanas',
-      oldPrice: '4,00 €',
-      currentPrice: '3,00 €',
-      description: 'Manzanas rojas',
-      rating: 2,
-    },
-  ];
+  $.ajax({
+        url: 'php/traerProductos.php',  // El archivo PHP que acabamos de crear
+        method: 'GET',  // En este caso no necesitas un POST ya que estamos trayendo todos los productos
+        contentType: 'application/json',
+        success: function (data) {
+            console.log('Datos de productos:', data);
+            productos = JSON.parse(data);
+          
+        },
+        error: function (xhr) {
+            console.error('Error al obtener los productos:', xhr.responseText);
+        }
+    });
 
   // Función para generar un artículo de producto
   function generarProducto(producto,pos) {

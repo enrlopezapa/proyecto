@@ -5,14 +5,16 @@ $(document).ready(function () {
         $('#toastConfirmacion .toast-body').text(mensaje);
         toast.show();
     }
-    // Obtener el productoId (debería ser enviado desde el HTML o desde una base de datos)
-    const productoId = "manzana123"; // Este sería el ID del producto que ya se ha pasado al HTML (por ejemplo, a través de PHP).
-
-    // Datos simulados de historial de precios (en un escenario real, estos vendrían de una base de datos)
-    const historialPrecios = {
-        fechas: ['Ene', 'Feb', 'Mar', 'Abr', 'May'], // Meses
-        precios: [3.5, 3.3, 3.1, 3.0, 3.0] // Precios del producto en esos meses
-    };
+    $.ajax({
+        url: '../php/obtenerProductosUsuario.php',
+        method: 'GET',
+        success: function(datosProducto) {
+          console.log(datosProducto)
+        },
+          error: function(xhr) {
+            console.log("error al cargar los datosProducto")
+          }
+        })
 
     // Configuración del gráfico de historial de precios
     const ctx = document.getElementById('graficoPrecios').getContext('2d');

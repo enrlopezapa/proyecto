@@ -18,38 +18,40 @@ $(document).ready(function() {
         $('#toastConfirmacion .toast-body').text(mensaje);
         toast.show();
     }
-    // Ver detalles
+
+
+
+
+
+    // Boton Ver detalles
     $('.btn-detalle').on('click', function () {
       const form = $(this).closest('form')
-      const productoId = form.find('input[name="productoId"]').val()
-  
-      const postForm = $('<form>', {
-        method: 'POST',
-        action: 'detalle-producto.html'
-      }).append($('<input>', {
-        type: 'hidden',
-        name: 'productoId',
-        value: productoId
-      }))
-  
-      $('body').append(postForm)
-      postForm.submit()
+      const producto_id = form.find('input[name="productoId"]').val()
+      //Creamos la cookie
+      document.cookie = `producto_id=${producto_id}; path=/; max-age=86400`;
+
+      window.location.href = 'detalle-producto.html';
     })
   
-    // Comprar
-     $('.btn-buy').on('click', function () {
-        const form = $(this).closest('form');
-        const productoId = form.find('input[name="productoId"]').val();
-      
-        $.post('php/agregar-carrito.php', { productoId }, function (res) {
-            showToast('Producto añadido');
-        }).fail(function () {
-            showToast('Error al añadir el producto');
-        });
+
+
+
+
+
+
+    // Boton Comprar
+    $('.btn-buy').on('click', function () {
+      const form = $(this).closest('form');
+      const productoId = form.find('input[name="productoId"]').val();
+  
+      // Enviar por fetch a PHP (sesión)
+      $.post('agregar_a_carrito.php', { productoId: productoId }, function (data) {
+        showToast('Producto agregado al carrito');
+        console.log(data);
       });
-  })
+    });
 
-
+  });
 
 
 

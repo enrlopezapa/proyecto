@@ -57,6 +57,7 @@ export class CustomHeader extends HTMLElement {
 
         // Modificar rutas dinámicamente
         this.updateLinks(shadowRoot);
+        this.updateSessionButtons(shadowRoot);
 
         // Activar funcionalidad
         this.setupDropdown(shadowRoot);
@@ -105,6 +106,31 @@ export class CustomHeader extends HTMLElement {
       });
     }
   }
+
+  updateSessionButtons(shadowRoot) {
+    const isLoggedIn = window.usuarioLogueado === true || window.usuarioLogueado === 'true';
+  
+    const loginBtn = shadowRoot.querySelector('#login-link');
+    const perfilDropdown = shadowRoot.querySelector('#perfil-dropdown');
+    const cartBtn = shadowRoot.querySelector('#cart-link');
+  
+    if (isLoggedIn) {
+      perfilDropdown?.classList.remove('d-none');
+      cartBtn?.classList.remove('d-none');
+      loginBtn?.classList.add('d-none');
+    } else {
+      loginBtn?.classList.remove('d-none');
+      perfilDropdown?.classList.add('d-none');
+      cartBtn?.classList.add('d-none');
+    }
+    console.log({
+      usuarioLogueado: window.usuarioLogueado,
+      loginBtn,
+      perfilDropdown,
+      cartBtn
+    });
+  }
+  
 
   setupNavbarToggler(shadowRoot) {
     const toggler = shadowRoot.querySelector('.navbar-toggler');

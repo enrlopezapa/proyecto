@@ -10,8 +10,21 @@
           </form>
         </div>
         <div>
-          <a id="cart-link" href="html/carrito.html" class="btn btn-outline-primary me-2">Carrito</a>
-          <a id="login-link" href="html/login.html" class="btn btn-outline-primary me-2">Inicia sesión</a>
+          <a id="login-link" href="html/login.html" class="btn btn-outline-primary me-2 d-none">Inicia sesión</a>
+        
+          <!-- Dropdown de perfil -->
+          <div class="btn-group d-none" id="perfil-dropdown">
+            <button type="button" class="btn btn-outline-primary dropdown-toggle me-2" data-bs-toggle="dropdown" aria-expanded="false">
+              Perfil
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" id="perfil-link" href="html/perfil.html">Ver perfil</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="php/logout.php">Cerrar sesión</a></li>
+            </ul>
+          </div>
+        
+          <a id="cart-link" href="html/carrito.html" class="btn btn-outline-primary me-2 d-none">Carrito</a>
         </div>
       </div>
       <!-- Navegación -->

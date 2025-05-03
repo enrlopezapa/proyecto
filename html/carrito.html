@@ -13,7 +13,9 @@
   <script src="../bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../js/jquery-3.7.1.min.js"></script>
   <script src="../js/index.js"></script>
+  <script src="../js/carrito.js"></script>
   <script type="module" src="../components/index.js"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=TU_CLIENT_ID&currency=USD"></script>
 </head>
 <body>
 
@@ -58,89 +60,14 @@
                 </tr>
               </thead>
               <tbody>
-                <!-- Producto 1 -->
-                <tr>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <img src="https://via.placeholder.com/50" alt="Producto" class="img-fluid me-3">
-                      <span>Producto 1</span>
-                    </div>
-                  </td>
-                  <td>$10.00</td>
-                  <td>
-                    <input type="number" class="form-control" value="1" min="1">
-                  </td>
-                  <td>$10.00</td>
-                  <td>
-                    <button class="btn btn-danger btn-sm">Eliminar</button>
-                  </td>
-                </tr>
-                <!-- Producto 2 -->
-                <tr>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <img src="https://via.placeholder.com/50" alt="Producto" class="img-fluid me-3">
-                      <span>Producto 2</span>
-                    </div>
-                  </td>
-                  <td>$15.00</td>
-                  <td>
-                    <input type="number" class="form-control" value="2" min="1">
-                  </td>
-                  <td>$30.00</td>
-                  <td>
-                    <button class="btn btn-danger btn-sm">Eliminar</button>
-                  </td>
-                </tr>
-                <!-- Producto 3 -->
-                <tr>
-                  <td>
-                    <div class="d-flex align-items-center">
-                      <img src="https://via.placeholder.com/50" alt="Producto" class="img-fluid me-3">
-                      <span>Producto 3</span>
-                    </div>
-                  </td>
-                  <td>$8.00</td>
-                  <td>
-                    <input type="number" class="form-control" value="1" min="1">
-                  </td>
-                  <td>$8.00</td>
-                  <td>
-                    <button class="btn btn-danger btn-sm">Eliminar</button>
-                  </td>
-                </tr>
+                
               </tbody>
             </table>
           </div>
         </div>
       
         <!-- Resumen del carrito -->
-        <div class="row">
-          <div class="col-12 col-md-4 offset-md-8">
-            <div class="card shadow-sm">
-              <div class="card-header bg-success text-white">
-                <strong>Resumen del Carrito</strong>
-              </div>
-              <div class="card-body">
-                <ul class="list-unstyled">
-                  <li class="d-flex justify-content-between">
-                    <span>Subtotal:</span>
-                    <span>$48.00</span>
-                  </li>
-                  <li class="d-flex justify-content-between">
-                    <span>Envío:</span>
-                    <span>Gratis</span>
-                  </li>
-                  <li class="d-flex justify-content-between">
-                    <span><strong>Total:</strong></span>
-                    <span><strong>$48.00</strong></span>
-                  </li>
-                </ul>
-                <button class="btn btn-success w-100">Proceder al Pago</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div id="resumen-carrito-container"></div>
       </section>
   </main>
 
