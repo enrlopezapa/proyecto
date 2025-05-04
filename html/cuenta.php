@@ -56,7 +56,7 @@
             <li class="nav-item"><a class="nav-link" href="#" data-section="admin-productos">Gestionar productos</a></li>
             <li class="nav-item"><a class="nav-link" href="#" data-section="admin-usuarios">Gestionar usuarios</a></li>
             <li class="nav-item"><a class="nav-link" href="#" data-section="admin-compras">Gestionar compras</a></li>
-            <li class="nav-item"><a class="nav-link" href="#" data-section="admin-filtros">Gestionar filtros</a></li>
+            <li class="nav-item"><a class="nav-link" href="#" data-section="admin-alertas">Gestionar alertas</a></li>
             <li class="nav-item"><a class="nav-link" href="#" data-section="admin-pedidos">Gestionar pedidos</a></li>
             <li class="nav-item"><a class="nav-link" href="#" data-section="admin-categorias">Gestionar categorías</a></li>
           <?php }

@@ -25,12 +25,12 @@ VALUES
 ('cat-ddd-004', 'Cárnicos', 'Carnes de alta calidad y frescas');
 
 -- Productos
-INSERT INTO productos (id, nombre, descripcion, imagen_url, numero_lote, fecha_produccion, fecha_caducidad, unidad_medida, cantidad_disponible, precio_actual, usuario_id, categoria_id, valoracion_media, vendido)
+INSERT INTO productos (id, nombre, descripcion, imagen_url, fecha_produccion, unidad_medida, precio_actual, usuario_id, categoria_id, valoracion_media, vendido)
 VALUES 
-('prod-aaa-001', 'Leche Entera', 'Leche de vaca 1L', 'http://imagen.com/leche.jpg', 'L001', '2025-04-01', '2025-06-01', 'Litro', 100, 1.50, '11111111-1111-1111-1111-111111111111', 'cat-aaa-001', 4.7, FALSE),
-('prod-bbb-002', 'Manzana Roja', 'Manzana roja orgánica', 'http://imagen.com/manzana.jpg', 'F001', '2025-04-15', '2025-05-15', 'Kg', 50, 2.00, '22222222-2222-2222-2222-222222222222', 'cat-bbb-002', 4.3, FALSE),
-('prod-ccc-003', 'Lechuga', 'Lechuga fresca y crujiente', 'http://imagen.com/lechuga.jpg', 'V001', '2025-04-05', '2025-05-05', 'Kg', 200, 0.90, '33333333-3333-3333-3333-333333333333', 'cat-ccc-003', 4.0, FALSE),
-('prod-ddd-004', 'Pechuga de Pollo', 'Pechuga de pollo fresca', 'http://imagen.com/pechuga_pollo.jpg', 'C001', '2025-04-10', '2025-06-10', 'Kg', 150, 5.00, '44444444-4444-4444-4444-444444444444', 'cat-ddd-004', 4.5, TRUE);
+('prod-aaa-001', 'Leche Entera', 'Leche de vaca 1L', 'http://imagen.com/leche.jpg', '2025-04-01', 'Litro', 1.50, '11111111-1111-1111-1111-111111111111', 'cat-aaa-001', 4.7, FALSE),
+('prod-bbb-002', 'Manzana Roja', 'Manzana roja orgánica', 'http://imagen.com/manzana.jpg', '2025-04-15', 'Kg', 2.00, '22222222-2222-2222-2222-222222222222', 'cat-bbb-002', 4.3, FALSE),
+('prod-ccc-003', 'Lechuga', 'Lechuga fresca y crujiente', 'http://imagen.com/lechuga.jpg', '2025-04-05', 'Kg', 0.90, '33333333-3333-3333-3333-333333333333', 'cat-ccc-003', 4.0, FALSE),
+('prod-ddd-004', 'Pechuga de Pollo', 'Pechuga de pollo fresca', 'http://imagen.com/pechuga_pollo.jpg', '2025-06-10', 'Kg', 5.00, '44444444-4444-4444-4444-444444444444', 'cat-ddd-004', 4.5, TRUE);
 
 -- Precios producto
 INSERT INTO precios_producto (id, producto_id, precio, fecha_inicio)

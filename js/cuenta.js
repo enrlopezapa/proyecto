@@ -16,10 +16,10 @@ $(document).ready(function () {
         case 'pedidos': return cargarPedidos;
         case 'alertas': return cargarAlertas;
         case 'seguridad': return cargarSeguridad;
-        case 'admin-productos': return cargarAdminProductos; //CORREGIR DATOOOOOOOOOOOOOOOOOOOOOOOOOOS
+        case 'admin-productos': return cargarAdminProductos;
         case 'admin-usuarios': return cargarAdminUsuarios; //CORREGIR DATOOOOOOOOOOOOOOOOOOOOOOOOOOS
         case 'admin-compras': return cargarAdminCompras; //CORREGIR DATOOOOOOOOOOOOOOOOOOOOOOOOOOS
-        case 'admin-filtros': return cargarAdminFiltros; //CORREGIR DATOOOOOOOOOOOOOOOOOOOOOOOOOOS
+        case 'admin-alertas': return cargarAdminAlertas; //CORREGIR DATOOOOOOOOOOOOOOOOOOOOOOOOOOS
         case 'admin-pedidos': return cargarAdminPedidos; //CORREGIR DATOOOOOOOOOOOOOOOOOOOOOOOOOOS
         case 'admin-categorias': return cargarAdminCategorias; //CORREGIR DATOOOOOOOOOOOOOOOOOOOOOOOOOOS
         default: return () => $panel.html('<p>Sección no encontrada</p>');
@@ -52,6 +52,275 @@ $(document).ready(function () {
     toast.show();
   }
 
+  function cargarAdminProductos() {
+    $.ajax({
+      url: '../php/obtenerProductosAdmin.php',
+      method: 'GET',
+      dataType: 'json',
+      success: function(productos) {
+        console.log(productos);
+
+      },
+      error: function(xhr) {
+        console.log("error al cargar productos como admin");
+      }
+    });
+  
+    $panel.hide().html(`<h2>Administración de productos</h2><div class="container mt-4">
+  <input type="text" class="form-control mb-3" placeholder="Buscar producto...">
+
+  <table class="table table-striped">
+    <thead class="thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Precio</th>
+        <th>Categoría</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Aquí irían los productos, esto es solo un ejemplo estático -->
+      <tr>
+        <td>1</td>
+        <td>Producto A</td>
+        <td>$10</td>
+        <td>Electrónica</td>
+        <td>
+          <button class="btn btn-primary btn-sm editar-producto-admin">Editar</button>
+          <button class="btn btn-danger btn-sm eliminar-producto-admin">Eliminar</button>
+        </td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>Producto B</td>
+        <td>$20</td>
+        <td>Hogar</td>
+        <td>
+          <button class="btn btn-primary btn-sm editar-producto-admin">Editar</button>
+          <button class="btn btn-danger btn-sm eliminar-producto-admin">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>`).fadeIn();
+  }
+
+  function cargarAdminUsuarios() {
+    $.ajax({
+      url: '../php/obtenerUsuariosAdmin.php',
+      method: 'GET',
+      dataType: 'json',
+      success: function(usuarios) {
+        let filas = usuarios.map(usuario => `
+          <tr>
+            <td>${usuario.id}</td>
+            <td>${usuario.nombre}</td>
+            <td>${usuario.email}</td>
+            <td>${usuario.telefono}</td>
+            <td>${usuario.administrador ? 'Sí' : 'No'}</td>
+            <td>
+              <button class="btn btn-primary btn-sm editar-usuario-admin">Editar</button>
+              <button class="btn btn-danger btn-sm eliminar-usuario-admin">Eliminar</button>
+            </td>
+          </tr>
+        `).join('');
+  
+        const html = `
+          <h2>Administración de usuarios</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Teléfono</th>
+                <th>Admin</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>${filas}</tbody>
+          </table>
+        `;
+        $panel.hide().html(html).fadeIn();
+      },
+      error: function() {
+        console.error("Error al cargar usuarios");
+      }
+    });
+  }
+
+
+  function cargarAdminCompras() {
+    $.ajax({
+      url: '../php/obtenerComprasAdmin.php',
+      method: 'GET',
+      dataType: 'json',
+      success: function(compras) {
+        let filas = compras.map(c => `
+          <tr>
+            <td>${c.id}</td>
+            <td>${c.usuario_nombre}</td>
+            <td>${c.fecha_compra}</td>
+            <td>$${c.total}</td>
+            <td>
+              <button class="btn btn-primary btn-sm editar-compra-admin">Editar</button>
+              <button class="btn btn-danger btn-sm eliminar-compra-admin">Eliminar</button>
+            </td>
+          </tr>
+        `).join('');
+  
+        const html = `
+          <h2>Administración de compras</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Fecha</th>
+                <th>Total</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>${filas}</tbody>
+          </table>
+        `;
+        $panel.hide().html(html).fadeIn();
+      },
+      error: function() {
+        console.error("Error al cargar compras");
+      }
+    });
+  }
+
+  function cargarAdminPedidos() {
+    $.ajax({
+      url: '../php/obtenerPedidosAdmin.php',
+      method: 'GET',
+      dataType: 'json',
+      success: function(pedidos) {
+        let filas = pedidos.map(p => `
+          <tr>
+            <td>${p.id}</td>
+            <td>${p.usuario_nombre}</td>
+            <td>${p.estado}</td>
+            <td>${p.fecha_pedido}</td>
+            <td>
+              <button class="btn btn-primary btn-sm editar-pedido-admin">Editar</button>
+              <button class="btn btn-danger btn-sm eliminar-pedido-admin">Eliminar</button>
+            </td>
+          </tr>
+        `).join('');
+  
+        const html = `
+          <h2>Administración de pedidos</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>${filas}</tbody>
+          </table>
+        `;
+        $panel.hide().html(html).fadeIn();
+      },
+      error: function() {
+        console.error("Error al cargar pedidos");
+      }
+    });
+  }
+
+  function cargarAdminCategorias() {
+    $.ajax({
+      url: '../php/obtenerCategoriasAdmin.php',
+      method: 'GET',
+      dataType: 'json',
+      success: function(categorias) {
+        let filas = categorias.map(cat => `
+          <tr>
+            <td>${cat.id}</td>
+            <td>${cat.nombre}</td>
+            <td>${cat.descripcion}</td>
+            <td>
+              <button class="btn btn-primary btn-sm editar-categoria-admin">Editar</button>
+              <button class="btn btn-danger btn-sm eliminar-categoria-admin">Eliminar</button>
+            </td>
+          </tr>
+        `).join('');
+  
+        const html = `
+          <h2>Administración de categorías</h2>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>${filas}</tbody>
+          </table>
+        `;
+        $panel.hide().html(html).fadeIn();
+      },
+      error: function() {
+        console.error("Error al cargar categorías");
+      }
+    });
+  }
+  
+  function cargarAdminAlertas() {
+    $.ajax({
+      url: '../php/obtenerAlertasAdmin.php',
+      method: 'GET',
+      dataType: 'json',
+      success: function(alertas) {
+        let filas = alertas.map(alerta => `
+          <tr>
+            <td>${alerta.id}</td>
+            <td>${alerta.nombre_clave}</td>
+            <td>${alerta.usuario_nombre}</td>
+            <td>${alerta.fecha_creacion}</td>
+            <td>
+              <button class="btn btn-primary btn-sm editar-alerta-admin">Editar</button>
+              <button class="btn btn-danger btn-sm eliminar-alerta-admin">Eliminar</button>
+            </td>
+          </tr>
+        `).join('');
+  
+        const html = `
+          <h2>Administración de alertas</h2>
+          <div class="container mt-4">
+            <input type="text" class="form-control mb-3" placeholder="Buscar alerta...">
+            <table class="table table-striped">
+              <thead class="thead-dark">
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre clave</th>
+                  <th>Usuario</th>
+                  <th>Fecha de creación</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>${filas}</tbody>
+            </table>
+          </div>
+        `;
+        $panel.hide().html(html).fadeIn();
+      },
+      error: function() {
+        console.error("Error al cargar alertas");
+      }
+    });
+  }
+    
+  
   function cargarProductos() {
     $.ajax({
         url: '../php/obtenerProductosUsuario.php',
@@ -235,6 +504,38 @@ $(document).ready(function () {
 
 
 
+  async function subirImagenAImgur(base64Data) {
+    const clientId = 'ee44c21a97e88d1';
+    const response = await fetch('https://api.imgur.com/3/image', {
+      method: 'POST',
+      headers: {
+        Authorization: 'Client-ID ' + clientId,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        image: base64Data.split(',')[1], // quitamos el encabezado "data:image/jpeg;base64,"
+        type: 'base64'
+      })
+    });
+  
+    const data = await response.json();
+    if (data.success) {
+      return data.data.link;
+    } else {
+      throw new Error('Error al subir la imagen a Imgur');
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -265,7 +566,7 @@ $('#nuevoImagen').on('change', function () {
 });
 
 // Manejo del formulario para añadir nuevo producto
-$('#formNuevoProducto').on('submit', function (e) {
+$('#formNuevoProducto').on('submit', async function (e) {
   e.preventDefault();
 
   const nombre = $('#nuevoNombre').val();
@@ -273,62 +574,50 @@ $('#formNuevoProducto').on('submit', function (e) {
   const fileInput = $('#nuevoImagen')[0];
   const file = fileInput.files[0];
   const fecha_prod = new Date().toISOString().slice(0, 19).replace('T', ' ');
-  const fecha_cad = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
   // Validaciones
-  if (!file) {
-    alert('Por favor selecciona una imagen.');
+  if (!file || !file.type.startsWith('image/') || file.size > 5 * 1024 * 1024) {
+    alert('Imagen inválida.');
     return;
   }
 
-  if (!file.type.startsWith('image/')) {
-    alert('El archivo seleccionado no es una imagen válida.');
-    $('#nuevoImagen').val('');
-    return;
-  }
-
-  const maxSize = 5 * 1024 * 1024;
-  if (file.size > maxSize) {
-    alert('La imagen no debe superar los 5 MB.');
-    return;
-  }
-
-  // Leer la imagen como Base64 y crear el producto
   const reader = new FileReader();
-  reader.onload = function (event) {
-    const imageBase64 = event.target.result;
-    const datosProducto = {
-      nombre: nombre,
-      descripcion: "",
-      imagen_url: imageBase64,
-      numero_lote: 0,
-      fecha_produccion: fecha_prod,
-      fecha_caducidad: fecha_cad,
-      unidad_medida: "kg",
-      cantidad_disponible: 1,
-      categoria_id: ""
-  };
+  reader.onload = async function (event) {
+    try {
+      const imageUrl = await subirImagenAImgur(event.target.result);
 
-  $.ajax({
-      url: '../php/crearProducto.php',
-      type: 'POST',
-      data: JSON.stringify(datosProducto),
-      contentType: 'application/json',
-      success: function(response) {
-        showToast('Producto añadido');
-        console.log(response);
-      },
-      error: function(xhr, status, error) {
-        showToast('Error al crear el producto');
-        console.error(xhr.responseText);
-      }
-  });
+      const datosProducto = {
+        nombre,
+        descripcion: "",
+        imagen_url: imageUrl,
+        fecha_produccion: fecha_prod,
+        unidad_medida: "kg",
+        cantidad_disponible: 1,
+        categoria_id: "",
+        precio_actual: precio
+      };
 
-    cargarProductos()
-
-    $('#modalProducto').modal('hide');
-    $('#formNuevoProducto')[0].reset();
-    $('#previewNueva').attr('src', '').addClass('d-none');
+      $.ajax({
+        url: '../php/crearProducto.php',
+        type: 'POST',
+        data: JSON.stringify(datosProducto),
+        contentType: 'application/json',
+        success: function(response) {
+          showToast('Producto añadido');
+          console.log(response);
+          cargarProductos();
+          $('#modalProducto').modal('hide');
+          $('#formNuevoProducto')[0].reset();
+          $('#previewNueva').attr('src', '').addClass('d-none');
+        },
+        error: function(xhr) {
+          showToast('Error al crear el producto');
+          console.error(xhr.responseText);
+        }
+      });
+    } catch (err) {
+      alert('Error al subir imagen: ' + err.message);
+    }
   };
 
   reader.readAsDataURL(file);
@@ -417,49 +706,50 @@ $('#formEditarProducto').on('submit', function (e) {
     }
 
     const reader = new FileReader();
-    reader.onload = function (event) {
-      const nuevaImagen = event.target.result;
-      const datosProducto = {
-        nombre: nuevoNombre,
-        descripcion: "",
-        imagen_url: nuevaImagen,
-        numero_lote: 0,
-        fecha_produccion: fecha_prod,
-        fecha_caducidad: fecha_cad,
-        unidad_medida: "kg",
-        cantidad_disponible: 1,
-        categoria_id: ""
+reader.onload = async function (event) {
+  try {
+    const nuevaImagenUrl = await subirImagenAImgur(event.target.result);
+
+    const datosProducto = {
+      id: productoEditando.data('id'),
+      nombre: nuevoNombre,
+      descripcion: "",
+      imagen_url: nuevaImagenUrl,
+      fecha_produccion: fecha_prod,
+      unidad_medida: "kg",
+      precio_actual: nuevoPrecio,
+      categoria_id: ""
     };
-      $.ajax({
-        url: '../php/actualizarProducto.php',
-        type: 'POST',
-        data: JSON.stringify(datosProducto),
-        contentType: 'application/json',
-        success: function(response) {
-          showToast('Producto añadido');
-          console.log(response);
-        },
-        error: function(xhr, status, error) {
-          showToast('Error al crear el producto');
-          console.error(xhr.responseText);
-        }
+
+    $.ajax({
+      url: '../php/actualizarProducto.php',
+      type: 'POST',
+      data: JSON.stringify(datosProducto),
+      contentType: 'application/json',
+      success: function(response) {
+        showToast('Producto actualizado');
+        console.log(response);
+        cargarProductos();
+        $('#modalEditarProducto').modal('hide');
+      },
+      error: function(xhr) {
+        showToast('Error al actualizar producto');
+        console.error(xhr.responseText);
+      }
     });
-  
-      cargarProductos()
-      $('#modalEditarProducto').modal('hide');
-      showToast('Producto actualizado');
-    };
-    reader.readAsDataURL(file);
+
+  } catch (err) {
+    alert('Error al subir imagen a Imgur');
+  }
+};
+reader.readAsDataURL(file);
   } else {
     const datosProducto = {
       nombre: nuevoNombre,
       descripcion: "",
       imagen_url: "",
-      numero_lote: 0,
       fecha_produccion: fecha_prod,
-      fecha_caducidad: fecha_cad,
       unidad_medida: "kg",
-      cantidad_disponible: 1,
       categoria_id: ""
   };
     // Solo actualiza nombre y precio si no hay nueva imagen
