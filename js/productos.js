@@ -1,144 +1,139 @@
-$(document).ready(function() {
-    // Establecemos el evento de clic sobre la imagen
-    $('.btn-favorite img').click(function() {
-      // Comprobamos si la imagen actual es "imagen1.jpg"
-      if ($(this).attr('src') === '../img/heart.svg') {
-        $(this).attr('src', '../img/heart-fill.svg'); // Cambiamos la imagen a imagen2.jpg
-      } else {
-        $(this).attr('src', '../img/heart.svg'); // Si ya es imagen2.jpg, volvemos a imagen1.jpg
-      }
-    });
-  });
-  
+$(document).ready(function () {
 
-  $(document).ready(function () {
-    const toast = new bootstrap.Toast($('#toastConfirmacion'));
+  const toast = new bootstrap.Toast($('#toastConfirmacion'));
 
     function showToast(mensaje) {
         $('#toastConfirmacion .toast-body').text(mensaje);
         toast.show();
     }
+  // Obtener productos al cargar
+  cargarProductos();
 
-
-
-
-
-    // Boton Ver detalles
-    $('.btn-detalle').on('click', function () {
-      const form = $(this).closest('form')
-      const producto_id = form.find('input[name="productoId"]').val()
-      //Creamos la cookie
-      document.cookie = `producto_id=${producto_id}; path=/; max-age=86400`;
-
-      window.location.href = 'detalle-producto.html';
-    })
-  
-
-
-
-
-
-
-    // Boton Comprar
-    $('.btn-buy').on('click', function () {
-      const form = $(this).closest('form');
-      const productoId = form.find('input[name="productoId"]').val();
-  
-      // Enviar por fetch a PHP (sesión)
-      $.post('agregar_a_carrito.php', { productoId: productoId }, function (data) {
-        showToast('Producto agregado al carrito');
-        console.log(data);
-      });
-    });
-
-  });
-
-
-
-
-
-  $(document).ready(function () {
-  const btn = document.getElementById("toggleFiltrosBtn");
-    const filtros = document.getElementById("filtrosContainer");
-
-    btn.addEventListener("click", () => {
-      filtros.classList.toggle("d-none");
-      btn.textContent = filtros.classList.contains("d-none") ? "Abrir filtros" : "Cerrar filtros";
-    });
-  })
-
-
-
-
-
-
-
-
-
-
-  
-
-  $(document).ready(function () {
-    const toast = new bootstrap.Toast($('#toastConfirmacion'));
-
-    function showToast(mensaje) {
-        $('#toastConfirmacion .toast-body').text(mensaje);
-        toast.show();
-    }
     // Al hacer clic en "Aplicar filtros"
-    $('.btn-success').on('click', function () {
-      const form = $(this).closest('form');
-  
-      // Obtener valores de filtros
-      const filtros = {
-        categoria: form.find('#categoria').val(),
-        precio: form.find('#precio').val(),
-        calificacion: form.find('[name="calificacion"]').val(),
-        stock: form.find('#stock').is(':checked') ? 1 : 0,
-        proximamente: form.find('#proximamente').is(':checked') ? 1 : 0,
-        ordenar: form.find('#ordenar').val()
-      };
-  
-      // Llamada AJAX al backend
-      $.ajax({
-        url: 'php/filtrar-productos.php', //-------------------------------------------------------------------------------------------------------------------------------------------------------------
-        method: 'POST',
-        data: filtros,
-        dataType: 'json',
-        success: function (productos) {
-          mostrarProductos(productos); // Mostrar los productos devueltos
-        },
-        error: function () {
-            showToast('Error al cargar los productos');
-        }
-      });
-    });
-  
-    function mostrarProductos(productos) {
-      const contenedor = $('#productos-container'); // Asegúrate de tener este div
-      contenedor.empty();
-  
-      if (productos.length === 0) {
-        contenedor.append('<p>No se encontraron productos con esos filtros.</p>');
-        return;
-      }
-  
-      productos.forEach(p => {
-        const card = `
-          <product-card
-          ruta-html="../components/product-card/product-card-template.html"
-            image="${p.imagen}"
-            alt="${p.nombre}"
-            old-price="${p.precio_original} €"
-            price="${p.precio_actual} €"
-            title="${p.nombre}"
-            stars="${p.calificacion}">
-          </product-card>
-        `;
-        contenedor.append(card);
-      });
+$('.btn.btn-success').on('click', function () {
+  const form = $('#filtrosContainer form');
+
+  // Obtener valores de los filtros
+  const filtros = {
+    categoria: form.find('#categoria').val(),
+    precio: form.find('#precio').val(),
+    calificacion: form.find('#calificacion').val() || 0, // Del input hidden
+    ordenar: form.find('#ordenar').val()
+  };
+
+  // Llamada AJAX al backend para filtrar
+  $.ajax({
+    url: '../php/filtrarProductos.php', // asegúrate de que esta ruta es correcta
+    method: 'POST',
+    data: filtros,
+    dataType: 'json',
+    success: function (productos) {
+      mostrarProductos(productos); // ya definida más arriba
+    },
+    error: function () {
+      showToast('Error al aplicar filtros');
     }
   });
+});
+
+  function cargarProductos() {
+    $.ajax({
+      url: '../php/traerProductosBuscados.php',
+      method: 'GET',
+      dataType: 'json',
+      success: function (productos) {
+        mostrarProductos(productos);
+      },
+      error: function () {
+        $('#productos-container').html('<p>Error al cargar productos.</p>');
+      }
+    });
+  }
+
+  function mostrarProductos(productos) {
+    const contenedor = $('#productos-container');
+    contenedor.empty();
+
+    if (productos.length === 0) {
+      contenedor.append('<p>No se encontraron productos.</p>');
+      return;
+    }
+
+    productos.forEach(p => {
+      const estrellas = generarEstrellas(p.calificacion);
+
+      const card = `
+        <article class="col-6 col-md-3">
+          <figure class="card h-100 product-card">
+            <img src="${p.imagen}" class="card-img-top" alt="${p.nombre}">
+            <figcaption class="card-body">
+              <div class="price">
+                <span class="old-price">${p.precio_original} €</span>
+                <span class="current-price">${p.precio_actual} €</span>
+              </div>
+              <p class="text-muted mb-0">${p.nombre}</p>
+              <div class="card-actions">
+                <button class="btn-favorite" type="button">
+                  <img src="../img/heart.svg" alt="favorito">
+                </button>
+                <div class="rating">${estrellas}</div>
+              </div>
+              <div class="mt-3 d-flex justify-content-between">
+                <form class="d-flex gap-2">
+                  <input type="hidden" name="productoId" value="${p.id}" />
+                  <button type="button" class="btn btn-outline-secondary btn-detalle">Ver detalles</button>
+                  <button type="button" class="btn btn-buy">Comprar</button>
+                </form>
+              </div>
+            </figcaption>
+          </figure>
+        </article>
+      `;
+      contenedor.append(card);
+    });
+
+    // Reasignar eventos dinámicos
+    asignarEventos();
+  }
+
+  function generarEstrellas(calificacion) {
+    let estrellas = '';
+    for (let i = 1; i <= 5; i++) {
+      estrellas += `<img src="../img/${i <= calificacion ? 'star-fill' : 'star'}.svg" class="star" alt="${i <= calificacion ? '★' : '☆'}">`;
+    }
+    return estrellas;
+  }
+
+  function asignarEventos() {
+    $('.btn-favorite img').off().on('click', function () {
+      const img = $(this);
+      img.attr('src', img.attr('src') === '../img/heart.svg' ? '../img/heart-fill.svg' : '../img/heart.svg');
+    });
+
+    $('.btn-detalle').off().on('click', function () {
+      const productoId = $(this).closest('form').find('input[name="productoId"]').val();
+      document.cookie = `producto_id=${productoId}; path=/; max-age=86400`;
+      window.location.href = 'detalle-producto.html';
+    });
+
+    $('.btn-buy').off().on('click', function () {
+      const productoId = $(this).closest('form').find('input[name="productoId"]').val();
+      $.post('agregar_a_carrito.php', { productoId }, function () {
+        const toast = new bootstrap.Toast($('#toastConfirmacion'));
+        $('#toastConfirmacion .toast-body').text('Producto agregado al carrito');
+        toast.show();
+      });
+    });
+  }
+});
+
+
+
+
+
+
+
+
   
 
 

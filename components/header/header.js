@@ -18,6 +18,7 @@ export class CustomHeader extends HTMLElement {
     this.productoLink = this.getAttribute('producto-link');
     this.nosotrosLink = this.getAttribute('nosotros-link');
     this.contactoLink = this.getAttribute('contacto-link');
+    this.rutaCategoriasphp = this.getAttribute('ruta-categoriasphp');
   }
 
   connectedCallback() {
@@ -57,11 +58,12 @@ export class CustomHeader extends HTMLElement {
 
         // Modificar rutas dinámicamente
         this.updateLinks(shadowRoot);
-        this.updateSessionButtons(shadowRoot);
-
+        
         // Activar funcionalidad
         this.setupDropdown(shadowRoot);
         this.setupNavbarToggler(shadowRoot);
+        this.updateSessionButtons(shadowRoot);
+        this.loadCategorias(shadowRoot);
 
         // (Opcional) Incluir Bootstrap JS si quieres usarlo también
         const bootstrapScript = document.createElement('script');
@@ -92,15 +94,24 @@ export class CustomHeader extends HTMLElement {
   setupDropdown(shadowRoot) {
     const dropdownToggle = shadowRoot.querySelector('.dropdown-toggle');
     const dropdownMenu = shadowRoot.querySelector('.dropdown-menu');
-
+  
     if (dropdownToggle && dropdownMenu) {
       dropdownToggle.addEventListener('click', (e) => {
-        e.preventDefault();
+        e.stopPropagation(); // Evita que el evento se propague
         dropdownMenu.classList.toggle('show');
       });
-
+  
+      // Escucha los clics dentro del shadowRoot
+      shadowRoot.addEventListener('click', (e) => {
+        if (!dropdownToggle.contains(e.target)) {
+          dropdownMenu.classList.remove('show');
+        }
+      });
+  
+      // Escucha los clics fuera del shadowRoot
       document.addEventListener('click', (e) => {
-        if (!shadowRoot.contains(e.target)) {
+        const path = e.composedPath();
+        if (!path.includes(shadowRoot.host)) {
           dropdownMenu.classList.remove('show');
         }
       });
@@ -108,21 +119,55 @@ export class CustomHeader extends HTMLElement {
   }
 
   updateSessionButtons(shadowRoot) {
-    const isLoggedIn = window.usuarioLogueado === true || window.usuarioLogueado === 'true';
-  
     const loginBtn = shadowRoot.querySelector('#login-link');
     const perfilDropdown = shadowRoot.querySelector('#perfil-dropdown');
     const cartBtn = shadowRoot.querySelector('#cart-link');
-  
-    if (isLoggedIn) {
+    if(window.usuarioLogueado === true || window.usuarioLogueado === 'true' || window.usuarioLogueado === 1){
       perfilDropdown?.classList.remove('d-none');
       cartBtn?.classList.remove('d-none');
       loginBtn?.classList.add('d-none');
-    } else {
+    } else{
       loginBtn?.classList.remove('d-none');
       perfilDropdown?.classList.add('d-none');
       cartBtn?.classList.add('d-none');
     }
+  }
+
+  loadCategorias(shadowRoot) {
+    const categoriasContainer = shadowRoot.querySelector('#categorias-dropdown');
+  
+    if (!categoriasContainer || !this.rutaCategoriasphp) return;
+  
+    fetch(this.rutaCategoriasphp, {
+      credentials: 'include' // Esto es CLAVE para que se envíe la cookie de sesión
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('No se pudieron obtener las categorías');
+        }
+        return response.json();
+      })
+      .then(categorias => {
+        // Crear el menú <ul> dinámicamente
+        const ul = document.createElement('ul');
+        ul.classList.add('dropdown-menu');
+  
+        categorias.forEach(nombre => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.classList.add('dropdown-item');
+          a.href = `html/productos.html?category=${encodeURIComponent(nombre.toLowerCase())}`;
+          a.textContent = nombre;
+          li.appendChild(a);
+          ul.appendChild(li);
+        });
+  
+        // Agregar el <ul> dentro del contenedor
+        categoriasContainer.appendChild(ul);
+      })
+      .catch(error => {
+        console.error('Error cargando categorías:', error);
+      });
   }
   
 
@@ -137,3 +182,4 @@ export class CustomHeader extends HTMLElement {
     }
   }
 }
+

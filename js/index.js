@@ -1,98 +1,71 @@
 $(document).ready(function () {
-  // Establecemos el evento de clic sobre la imagen
-  
-});
+  function cargarProductos(categoria, carruselID) {
+    $.ajax({
+      url: '../php/traerProductos.php',
+      method: 'GET',
+      data: { categoria: categoria }, // Enviamos la categoría por GET
+      success: function (data) {
+        const productos = JSON.parse(data);
+        let contentHTML = '';
+        let productosEnSlide = '';
 
-$(document).ready(function () {
-  productos = []
-  // Array de productos
-  $.ajax({
-        url: '../php/traerProductos.php',  // El archivo PHP que acabamos de crear
-        method: 'GET',  // En este caso no necesitas un POST ya que estamos trayendo todos los productos
-        contentType: 'application/json',
-        success: function (data) {
-            console.log('Datos de productos:', data);
-            productos = JSON.parse(data);
-          
-        },
-        error: function (xhr) {
-            console.error('Error al obtener los productos:', xhr.responseText);
-        }
-    });
+        productos.forEach((producto, i) => {
+          let stars = '';
+          for (let j = 1; j <= 5; j++) {
+            stars += `<img src="img/${j <= producto.rating ? 'star-fill' : 'star'}.svg" class="star" alt="estrella">`;
+          }
 
-  // Función para generar un artículo de producto
-  function generarProducto(producto,pos) {
-    let stars = '';
-    for (let i = 1; i <= 5; i++) {
-      if (i <= producto.rating) {
-        stars += `<img src="img/star-fill.svg" alt="estrella llena" class="star">`;
-      } else {
-        stars += `<img src="img/star.svg" alt="estrella vacia" class="star">`;
-      }
-    }
+          const anadirClase = ((i + 1) % 4 === 2 || (i + 1) % 4 === 3) ? 'd-none d-md-block' : '';
 
-    if((pos+1) % 4 === 2 || (pos+1) % 4 === 3){
-      anadirClase = "d-none d-md-block";
-    }
-    else{
-      anadirClase = "";
-    }
-
-    return `
+          productosEnSlide += `
             <article class="col-6 col-md-3 ${anadirClase}">
-                <figure class="card h-100 product-card">
-                    <img src="${producto.imgSrc}" class="card-img-top" alt="${producto.alt}">
-                    <figcaption class="card-body">
-                        <div class="price">
-                            <span class="old-price">${producto.oldPrice}</span>
-                            <span class="current-price">${producto.currentPrice}</span>
-                        </div>
-                        <p class="text-muted mb-0">${producto.description}</p>
-                        <div class="card-actions">
-                            <button class="btn-favorite">
-                                <img src="img/heart.svg" alt="favorito">
-                            </button>
-                            <div class="rating">
-                                ${stars}
-                            </div>
-                            <button class="btn btn-buy">Comprar</button>
-                        </div>
-                    </figcaption>
-                </figure>
-            </article>
-        `;
+              <figure class="card h-100 product-card">
+                <img src="${producto.imgSrc}" class="card-img-top" alt="${producto.alt}">
+                <figcaption class="card-body">
+                  <div class="price">
+                    <span class="old-price">${producto.oldPrice}</span>
+                    <span class="current-price">${producto.currentPrice}</span>
+                  </div>
+                  <p class="text-muted mb-0">${producto.description}</p>
+                  <div class="card-actions">
+                    <button class="btn-favorite"><img src="img/heart.svg" alt="favorito"></button>
+                    <div class="rating">${stars}</div>
+                    <button class="btn btn-buy">Comprar</button>
+                  </div>
+                </figcaption>
+              </figure>
+            </article>`;
+
+          if ((i + 1) % 4 === 0 || i === productos.length - 1) {
+            const isActive = (i + 1) === 4 ? 'active' : '';
+            contentHTML += `
+              <div class="carousel-item ${isActive}">
+                <div class="row">${productosEnSlide}</div>
+              </div>`;
+            productosEnSlide = '';
+          }
+        });
+
+        $(`#${carruselID} .carousel-inner`).html(contentHTML);
+      },
+      error: function (xhr) {
+        console.error(`Error al cargar productos de ${categoria}:`, xhr.responseText);
+      }
+    });
   }
 
-  // Llenar el carrusel con los productos
-  let contentHTML = '';
-  let itemsCount = productos.length;
-  let productosEnSlide = "";
-  // Recorrer los productos y generar los slides
-  for (let i = 0; i < itemsCount; i++) {
-    const producto = productos[i];
-    const isActive = i === 3 ? 'active' : '';  // Primer slide activo
-    productosEnSlide += generarProducto(producto,i)
-    if ((i+1) % 4 == 0) {
-      contentHTML += `
-            <div class="carousel-item ${isActive}">
-                <div class="row">
-                    ${productosEnSlide}
-                </div>
-            </div>
-        `;
-      productosEnSlide = ""
-    }
-  }
+  // Cargar los tres carruseles
+  cargarProductos('todos', 'carouselProductos1');
+  cargarProductos('fruta', 'carouselProductos2');
+  cargarProductos('verdura', 'carouselProductos3');
 
-  // Insertar los productos generados dentro del contenedor del carrusel
-  $('#carouselProductos1 .carousel-inner').html(contentHTML);
+  $(document).on('click', '.btn-favorite img', function () {
+    const src = $(this).attr('src');
+    $(this).attr('src', src.includes('fill') ? 'img/heart.svg' : 'img/heart-fill.svg');
+  });
 
-  $('.btn-favorite img').click(function () {
-    // Comprobamos si la imagen actual es "imagen1.jpg"
-    if ($(this).attr('src') === 'img/heart.svg') {
-      $(this).attr('src', 'img/heart-fill.svg'); // Cambiamos la imagen a imagen2.jpg
-    } else {
-      $(this).attr('src', 'img/heart.svg'); // Si ya es imagen2.jpg, volvemos a imagen1.jpg
-    }
+  $('.btn-category').on('click', function () {
+    const categoria = $(this).find('span').text().toLowerCase();
+    window.location.href = `html/productos.html?category=${categoria}`;
   });
 });

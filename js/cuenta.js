@@ -54,166 +54,196 @@ $(document).ready(function () {
 
   function cargarAdminProductos() {
     $.ajax({
-      url: '../php/obtenerProductosAdmin.php',
-      method: 'GET',
-      dataType: 'json',
-      success: function(productos) {
-        console.log(productos);
+        url: '../php/obtenerProductosAdmin.php',
+        method: 'GET',
+        dataType: 'json',
+        success: function(productos) {
+            console.log(productos);
 
-      },
-      error: function(xhr) {
-        console.log("error al cargar productos como admin");
-      }
+            let filas = '';
+            productos.forEach(function(producto, index) {
+                filas += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${producto.nombre}</td>
+                        <td>${producto.descripcion}</td>
+                        <td><img src="${producto.imagen_url}" alt="${producto.nombre}" style="width: 50px; height: auto;"></td>
+                        <td>${producto.fecha_produccion}</td>
+                        <td>${producto.unidad_medida}</td>
+                        <td>$${producto.precio_actual}</td>
+                        <td>${producto.nombre_usuario}</td>
+                        <td>${producto.nombre_categoria}</td>
+                        <td>${producto.valoracion_media}</td>
+                        <td>${producto.vendido ? 'Sí' : 'No'}</td>
+                        <td>
+                            <button class="btn btn-primary btn-sm editar-producto-admin" data-id="${index + 1}">Editar</button>
+                            <button class="btn btn-danger btn-sm eliminar-producto-admin" data-id="${index + 1}">Eliminar</button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            $panel.hide().html(`
+                <h2>Administración de productos</h2>
+                <div class="container mt-4">
+                    <input type="text" class="form-control mb-3" placeholder="Buscar producto...">
+
+                    <table class="table table-striped">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
+                                <th>Imagen</th>
+                                <th>Fecha Producción</th>
+                                <th>Unidad Medida</th>
+                                <th>Precio</th>
+                                <th>Usuario</th>
+                                <th>Categoría</th>
+                                <th>Valoración</th>
+                                <th>Vendido</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${filas}
+                        </tbody>
+                    </table>
+                </div>
+            `).fadeIn();
+        },
+        error: function(xhr) {
+            console.log("Error al cargar productos como admin");
+        }
     });
-  
-    $panel.hide().html(`<h2>Administración de productos</h2><div class="container mt-4">
-  <input type="text" class="form-control mb-3" placeholder="Buscar producto...">
+}
 
-  <table class="table table-striped">
-    <thead class="thead-dark">
-      <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Precio</th>
-        <th>Categoría</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Aquí irían los productos, esto es solo un ejemplo estático -->
-      <tr>
-        <td>1</td>
-        <td>Producto A</td>
-        <td>$10</td>
-        <td>Electrónica</td>
-        <td>
-          <button class="btn btn-primary btn-sm editar-producto-admin">Editar</button>
-          <button class="btn btn-danger btn-sm eliminar-producto-admin">Eliminar</button>
-        </td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>Producto B</td>
-        <td>$20</td>
-        <td>Hogar</td>
-        <td>
-          <button class="btn btn-primary btn-sm editar-producto-admin">Editar</button>
-          <button class="btn btn-danger btn-sm eliminar-producto-admin">Eliminar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>`).fadeIn();
-  }
-
-  function cargarAdminUsuarios() {
-    $.ajax({
+function cargarAdminUsuarios() {
+  $.ajax({
       url: '../php/obtenerUsuariosAdmin.php',
       method: 'GET',
       dataType: 'json',
       success: function(usuarios) {
-        let filas = usuarios.map(usuario => `
-          <tr>
-            <td>${usuario.id}</td>
-            <td>${usuario.nombre}</td>
-            <td>${usuario.email}</td>
-            <td>${usuario.telefono}</td>
-            <td>${usuario.administrador ? 'Sí' : 'No'}</td>
-            <td>
-              <button class="btn btn-primary btn-sm editar-usuario-admin">Editar</button>
-              <button class="btn btn-danger btn-sm eliminar-usuario-admin">Eliminar</button>
-            </td>
-          </tr>
-        `).join('');
-  
-        const html = `
-          <h2>Administración de usuarios</h2>
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Email</th>
-                <th>Teléfono</th>
-                <th>Admin</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>${filas}</tbody>
-          </table>
-        `;
-        $panel.hide().html(html).fadeIn();
+          let filas = '';
+          usuarios.forEach(function(usuario, index) {
+              filas += `
+                  <tr>
+                      <td>${index + 1}</td>
+                      <td>${usuario.nombre}</td>
+                      <td>${usuario.email}</td>
+                      <td>${usuario.telefono || '—'}</td>
+                      <td>${usuario.direccion || '—'}</td>
+                      <td>${usuario.administrador ? 'Sí' : 'No'}</td>
+                      <td>${usuario.valoracion_media}</td>
+                      <td>
+                          <button class="btn btn-primary btn-sm editar-usuario-admin" data-id="${usuario.id}">Editar</button>
+                          <button class="btn btn-danger btn-sm eliminar-usuario-admin" data-id="${usuario.id}">Eliminar</button>
+                      </td>
+                  </tr>
+              `;
+          });
+
+          const html = `
+              <h2>Administración de usuarios</h2>
+              <div class="container mt-4">
+                  <input type="text" class="form-control mb-3" placeholder="Buscar usuario...">
+                  <table class="table table-striped">
+                      <thead class="thead-dark">
+                          <tr>
+                              <th>#</th>
+                              <th>Nombre</th>
+                              <th>Email</th>
+                              <th>Teléfono</th>
+                              <th>Dirección</th>
+                              <th>Administrador</th>
+                              <th>Valoración</th>
+                              <th>Acciones</th>
+                          </tr>
+                      </thead>
+                      <tbody>${filas}</tbody>
+                  </table>
+              </div>
+          `;
+          $panel.hide().html(html).fadeIn();
       },
       error: function() {
-        console.error("Error al cargar usuarios");
+          console.error("Error al cargar usuarios");
       }
-    });
-  }
+  });
+}
 
 
-  function cargarAdminCompras() {
-    $.ajax({
-      url: '../php/obtenerComprasAdmin.php',
-      method: 'GET',
-      dataType: 'json',
-      success: function(compras) {
-        let filas = compras.map(c => `
-          <tr>
-            <td>${c.id}</td>
-            <td>${c.usuario_nombre}</td>
-            <td>${c.fecha_compra}</td>
-            <td>$${c.total}</td>
-            <td>
-              <button class="btn btn-primary btn-sm editar-compra-admin">Editar</button>
-              <button class="btn btn-danger btn-sm eliminar-compra-admin">Eliminar</button>
-            </td>
-          </tr>
-        `).join('');
-  
-        const html = `
-          <h2>Administración de compras</h2>
+function cargarAdminCompras() {
+  $.ajax({
+    url: '../php/obtenerComprasAdmin.php',
+    method: 'GET',
+    dataType: 'json',
+    success: function(compras) {
+      let filas = compras.map(c => `
+        <tr>
+          <td>${c.id}</td>
+          <td>${c.usuario_nombre}</td>
+          <td>${c.fecha_compra}</td>
+          <td>${c.nombre_pagador}</td>
+          <td>${c.destinatario}</td>
+          <td>${c.direccion_entrega}</td>
+          <td>
+            <button class="btn btn-primary btn-sm editar-compra-admin" data-id="${c.id}">Editar</button>
+            <button class="btn btn-danger btn-sm eliminar-compra-admin" data-id="${c.id}">Eliminar</button>
+          </td>
+        </tr>
+      `).join('');
+
+      const html = `
+        <h2>Administración de compras</h2>
+        <div class="container mt-4">
           <table class="table table-striped">
             <thead>
               <tr>
                 <th>ID</th>
                 <th>Usuario</th>
                 <th>Fecha</th>
-                <th>Total</th>
+                <th>Pagador</th>
+                <th>Destinatario</th>
+                <th>Dirección de entrega</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>${filas}</tbody>
           </table>
-        `;
-        $panel.hide().html(html).fadeIn();
-      },
-      error: function() {
-        console.error("Error al cargar compras");
-      }
-    });
-  }
+        </div>
+      `;
+      $panel.hide().html(html).fadeIn();
+    },
+    error: function() {
+      console.error("Error al cargar compras");
+    }
+  });
+}
 
-  function cargarAdminPedidos() {
-    $.ajax({
-      url: '../php/obtenerPedidosAdmin.php',
-      method: 'GET',
-      dataType: 'json',
-      success: function(pedidos) {
-        let filas = pedidos.map(p => `
-          <tr>
-            <td>${p.id}</td>
-            <td>${p.usuario_nombre}</td>
-            <td>${p.estado}</td>
-            <td>${p.fecha_pedido}</td>
-            <td>
-              <button class="btn btn-primary btn-sm editar-pedido-admin">Editar</button>
-              <button class="btn btn-danger btn-sm eliminar-pedido-admin">Eliminar</button>
-            </td>
-          </tr>
-        `).join('');
-  
-        const html = `
-          <h2>Administración de pedidos</h2>
+function cargarAdminPedidos() {
+  $.ajax({
+    url: '../php/obtenerPedidosAdmin.php',
+    method: 'GET',
+    dataType: 'json',
+    success: function(pedidos) {
+      let filas = pedidos.map(p => `
+        <tr>
+          <td>${p.id}</td>
+          <td>${p.usuario_nombre}</td>
+          <td>${p.estado}</td>
+          <td>${p.fecha_pedido}</td>
+          <td>${p.notas || ''}</td>
+          <td>
+            <button class="btn btn-primary btn-sm editar-pedido-admin" data-id="${p.id}">Editar</button>
+            <button class="btn btn-danger btn-sm eliminar-pedido-admin" data-id="${p.id}">Eliminar</button>
+          </td>
+        </tr>
+      `).join('');
+
+      const html = `
+        <h2>Administración de pedidos</h2>
+        <div class="container mt-4">
           <table class="table table-striped">
             <thead>
               <tr>
@@ -221,40 +251,43 @@ $(document).ready(function () {
                 <th>Usuario</th>
                 <th>Estado</th>
                 <th>Fecha</th>
+                <th>Notas</th>
                 <th>Acciones</th>
               </tr>
             </thead>
             <tbody>${filas}</tbody>
           </table>
-        `;
-        $panel.hide().html(html).fadeIn();
-      },
-      error: function() {
-        console.error("Error al cargar pedidos");
-      }
-    });
-  }
+        </div>
+      `;
+      $panel.hide().html(html).fadeIn();
+    },
+    error: function() {
+      console.error("Error al cargar pedidos");
+    }
+  });
+}
 
-  function cargarAdminCategorias() {
-    $.ajax({
-      url: '../php/obtenerCategoriasAdmin.php',
-      method: 'GET',
-      dataType: 'json',
-      success: function(categorias) {
-        let filas = categorias.map(cat => `
-          <tr>
-            <td>${cat.id}</td>
-            <td>${cat.nombre}</td>
-            <td>${cat.descripcion}</td>
-            <td>
-              <button class="btn btn-primary btn-sm editar-categoria-admin">Editar</button>
-              <button class="btn btn-danger btn-sm eliminar-categoria-admin">Eliminar</button>
-            </td>
-          </tr>
-        `).join('');
-  
-        const html = `
-          <h2>Administración de categorías</h2>
+function cargarAdminCategorias() {
+  $.ajax({
+    url: '../php/obtenerCategoriasAdmin.php',
+    method: 'GET',
+    dataType: 'json',
+    success: function(categorias) {
+      let filas = categorias.map(cat => `
+        <tr>
+          <td>${cat.id}</td>
+          <td>${cat.nombre}</td>
+          <td>${cat.descripcion || ''}</td>
+          <td>
+            <button class="btn btn-primary btn-sm editar-categoria-admin" data-id="${cat.id}">Editar</button>
+            <button class="btn btn-danger btn-sm eliminar-categoria-admin" data-id="${cat.id}">Eliminar</button>
+          </td>
+        </tr>
+      `).join('');
+
+      const html = `
+        <h2>Administración de categorías</h2>
+        <div class="container mt-4">
           <table class="table table-striped">
             <thead>
               <tr>
@@ -266,59 +299,63 @@ $(document).ready(function () {
             </thead>
             <tbody>${filas}</tbody>
           </table>
-        `;
-        $panel.hide().html(html).fadeIn();
-      },
-      error: function() {
-        console.error("Error al cargar categorías");
-      }
-    });
-  }
-  
-  function cargarAdminAlertas() {
-    $.ajax({
-      url: '../php/obtenerAlertasAdmin.php',
-      method: 'GET',
-      dataType: 'json',
-      success: function(alertas) {
-        let filas = alertas.map(alerta => `
-          <tr>
-            <td>${alerta.id}</td>
-            <td>${alerta.nombre_clave}</td>
-            <td>${alerta.usuario_nombre}</td>
-            <td>${alerta.fecha_creacion}</td>
-            <td>
-              <button class="btn btn-primary btn-sm editar-alerta-admin">Editar</button>
-              <button class="btn btn-danger btn-sm eliminar-alerta-admin">Eliminar</button>
-            </td>
-          </tr>
-        `).join('');
-  
-        const html = `
-          <h2>Administración de alertas</h2>
-          <div class="container mt-4">
-            <input type="text" class="form-control mb-3" placeholder="Buscar alerta...">
-            <table class="table table-striped">
-              <thead class="thead-dark">
-                <tr>
-                  <th>ID</th>
-                  <th>Nombre clave</th>
-                  <th>Usuario</th>
-                  <th>Fecha de creación</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>${filas}</tbody>
-            </table>
-          </div>
-        `;
-        $panel.hide().html(html).fadeIn();
-      },
-      error: function() {
-        console.error("Error al cargar alertas");
-      }
-    });
-  }
+        </div>
+      `;
+      $panel.hide().html(html).fadeIn();
+    },
+    error: function() {
+      console.error("Error al cargar categorías");
+    }
+  });
+}
+
+function cargarAdminAlertas() {
+  $.ajax({
+    url: '../php/obtenerAlertasAdmin.php',
+    method: 'GET',
+    dataType: 'json',
+    success: function(alertas) {
+      let filas = alertas.map(alerta => `
+        <tr>
+          <td>${alerta.id}</td>
+          <td>${alerta.usuario_nombre || alerta.usuario_id}</td>
+          <td>${alerta.categoria_nombre || alerta.categoria_id}</td>
+          <td>${alerta.nombre_clave}</td>
+          <td>${alerta.fecha_creacion}</td>
+          <td>${alerta.activa ? 'Sí' : 'No'}</td>
+          <td>
+            <button class="btn btn-primary btn-sm editar-alerta-admin" data-id="${alerta.id}">Editar</button>
+            <button class="btn btn-danger btn-sm eliminar-alerta-admin" data-id="${alerta.id}">Eliminar</button>
+          </td>
+        </tr>
+      `).join('');
+
+      const html = `
+        <h2>Administración de alertas</h2>
+        <div class="container mt-4">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Categoría</th>
+                <th>Nombre clave</th>
+                <th>Fecha</th>
+                <th>Activa</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>${filas}</tbody>
+          </table>
+        </div>
+      `;
+      $panel.hide().html(html).fadeIn();
+    },
+    error: function() {
+      console.error("Error al cargar alertas");
+    }
+  });
+}
     
   
   function cargarProductos() {

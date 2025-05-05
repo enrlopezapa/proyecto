@@ -106,7 +106,6 @@ function renderResumenCarrito(subtotal, productoIds) {
 
 $(document).ready(function() {
     cargarCarrito();
-    renderResumenCarrito(10);
     $('#carrito-table').on('click', '.eliminar', function() {
         const id = $(this).data('id');
         eliminarProducto(id);
