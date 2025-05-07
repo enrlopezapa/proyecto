@@ -67,7 +67,11 @@ try {
     $message = "Hola $nombre,\n\nTu código de verificación es: $codigo_verificacion\n\nValida tu cuenta aquí:\nhttps://localhost/proyecto/html/validar.html";
     $headers = "From: no-reply@proyecto.com";
 
-    mail($to, $subject, $message, $headers);
+    if (!mail($to, $subject, $message, $headers)) {
+        http_response_code(500);
+        echo json_encode(['error' => 'Error al enviar correo de verificación']);
+        exit;
+    }
 
     echo json_encode(['message' => 'Registro exitoso. Revisa tu correo para validar tu cuenta.']);
 

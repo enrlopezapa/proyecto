@@ -20,6 +20,6 @@ $stmt = $conn->prepare($sql);
 $stmt->bindParam(':id', $usuario_id, PDO::PARAM_STR);
 $stmt->execute();
 
-$usuario = $stmt->fetchAll();
+$usuario = $stmt->fetch();
 
 echo json_encode($usuario);

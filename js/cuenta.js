@@ -358,176 +358,363 @@ function cargarAdminAlertas() {
 }
     
   
-  function cargarProductos() {
-    $.ajax({
-        url: '../php/obtenerProductosUsuario.php',
-        method: 'GET',
-        dataType: 'json',
-        success: function(productos) {
-          console.log(productos)
-        },
-          error: function(xhr) {
-            console.log("error al cargar los productos")
-          }
-        })
-          $('.modal').modal('hide');
-    $panel.hide().html(`
-        <h2>Mis productos</h2>
-        <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#modalProducto">+ Añadir producto</button>
-        <div class="row g-4" id="lista-productos">
-          <div class="col-md-4 producto">
-            <div class="card">
-              <img src="../img/manzana.svg" class="card-img-top" alt="Manzanas">
-              <div class="card-body">
-                <h5 class="card-title">Manzanas</h5>
-                <p class="card-text">Precio: $2.50/kg</p>
-                <div class="d-flex justify-content-between">
-                  <button class="btn btn-outline-primary btn-sm btn-editar editar-producto">Editar</button>
-                  <button class="btn btn-outline-danger btn-sm btn-eliminar">Eliminar</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>`).fadeIn();
-    }
+function cargarProductos() {
+  $.ajax({
+      url: '../php/obtenerProductosUsuario.php',
+      method: 'GET',
+      dataType: 'json',
+      success: function(productos) {
+          console.log(productos);
 
-  function cargarAlertas() {
-    $.ajax({
+          // Cerrar cualquier modal abierto
+          $('.modal').modal('hide');
+
+          // Construir contenido principal
+          let contenido = `
+              <h2>Mis productos</h2>
+              <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#modalProducto">+ Añadir producto</button>
+              <div class="row g-4" id="lista-productos">
+          `;
+
+          // Iterar sobre los productos y generar las tarjetas
+          productos.forEach(producto => {
+              contenido += `
+                  <div class="col-md-4 producto">
+                      <div class="card">
+                          <img src="${producto.imagen_url || '../img/default.svg'}" class="card-img-top" alt="${producto.nombre}">
+                          <div class="card-body">
+                              <h5 class="card-title">${producto.nombre}</h5>
+                              <p class="card-text">Cantidad: ${producto.cantidad_disponible} ${producto.unidad_medida}</p>
+                              <p class="card-text">Lote: ${producto.numero_lote}</p>
+                              <p class="card-text">Producción: ${producto.fecha_produccion}</p>
+                              <p class="card-text">Caducidad: ${producto.fecha_caducidad}</p>
+                              <div class="d-flex justify-content-between">
+                                  <button class="btn btn-outline-primary btn-sm btn-editar editar-producto" data-id="${producto.id}">Editar</button>
+                                  <button class="btn btn-outline-danger btn-sm btn-eliminar" data-id="${producto.id}">Eliminar</button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              `;
+          });
+
+          contenido += `</div>`; // cerrar #lista-productos
+
+          // Mostrar el contenido en el panel
+          $panel.hide().html(contenido).fadeIn();
+      },
+      error: function(xhr) {
+          console.log("Error al cargar los productos");
+      }
+  });
+}
+
+function cargarAlertas() {
+  $.ajax({
       url: '../php/obtenerAlertasUsuario.php',
       method: 'GET',
       dataType: 'json',
       success: function(alertas) {
-        console.log(alertas)
+          console.log(alertas);
+
+          // Construir encabezado y botón
+          let contenido = `
+              <h2>Mis alertas</h2>
+              <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#modalCrearAlerta">+ Añadir alerta</button>
+              <div class="row g-4" id="lista-alertas">
+          `;
+
+          // Generar tarjetas de alerta dinámicamente
+          alertas.forEach(alerta => {
+              const alertaId = alerta.id;
+              const nombreClave = alerta.nombre_clave || 'Alerta sin nombre';
+              const fechaCreacion = alerta.fecha_creacion || 'Sin fecha';
+
+              contenido += `
+                  <div class="col-md-4 alerta" data-id="${alertaId}">
+                      <div class="card">
+                          <div class="card-body">
+                              <h5 class="card-title">${nombreClave}</h5>
+                              <p class="card-text">Creada el: ${fechaCreacion}</p>
+                              <div class="form-check form-switch">
+                                  <input class="form-check-input" type="checkbox" id="alertaSwitch${alertaId}">
+                                  <label class="form-check-label" for="alertaSwitch${alertaId}">Activar Alerta</label>
+                              </div>
+                              <div class="d-flex justify-content-between mt-3">
+                                  <button class="btn btn-outline-primary btn-sm btn-editar editar-alerta" data-id="${alertaId}">Editar</button>
+                                  <button class="btn btn-outline-danger btn-sm btn-eliminar" data-id="${alertaId}">Eliminar</button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              `;
+          });
+
+          contenido += `</div>`; // Cerrar contenedor de alertas
+
+          // Mostrar en el panel
+          $panel.hide().html(contenido).fadeIn();
       },
-        error: function(xhr) {
-          console.log("error al cargar las alertas")
-        }
-      })
-    $panel.hide().html(`
-      <h2>Mis alertas</h2>
-      <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#modalCrearAlerta">+ Añadir alerta</button>
-      <div class="row g-4" id="lista-alertas">
-        <div class="col-md-4 alerta" data-id="1">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Alerta de Seguridad</h5>
-              <p class="card-text">Una alerta que te notificará sobre problemas de seguridad.</p>
-              <div class="form-check form-switch">
-                <input class="form-check-input" type="checkbox" id="alertaSwitch1">
-                <label class="form-check-label" for="alertaSwitch1">Activar Alerta</label>
-              </div>
-              <div class="d-flex justify-content-between mt-3">
-                <button class="btn btn-outline-primary btn-sm btn-editar editar-alerta">Editar</button>
-                <button class="btn btn-outline-danger btn-sm btn-eliminar">Eliminar</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>`).fadeIn();
+      error: function(xhr) {
+          console.log("Error al cargar las alertas");
+      }
+  });
 }
 
-  function cargarPerfil() {
-    $.ajax({
+function cargarPerfil() {
+  $.ajax({
       url: '../php/obtenerPerfilUsuario.php',
       method: 'GET',
       dataType: 'json',
       success: function(perfil) {
-        console.log(perfil)
-      },
-        error: function(xhr) {
-          console.log("error al cargar el perfil")
-        }
-      })
-    $panel.hide().html(`
-        <h2>Editar perfil</h2>
-        <form class="mt-3">
-          <div class="mb-3">
-            <label class="form-label">Nombre completo</label>
-            <input type="text" class="form-control" value="Juan Pérez">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input type="email" class="form-control" value="juan@example.com">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Teléfono</label>
-            <input type="tel" class="form-control" value="123456789">
-          </div>
-          <button class="btn btn-primary" type="button" onclick="showToast('Perfil actualizado')">Guardar cambios</button>
-        </form>`).fadeIn();
-  }
+          console.log(perfil);
 
-  function cargarFavoritos() {
-    $.ajax({
+          // Asegurarse de que el panel tenga el contenido dinámico
+          const contenido = `
+              <h2>Editar perfil</h2>
+              <form class="mt-3">
+                <div class="mb-3">
+                  <label class="form-label">Nombre completo</label>
+                  <input type="text" class="form-control" value="${perfil.nombre || ''}">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Email</label>
+                  <input type="email" class="form-control" value="${perfil.email || ''}">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Teléfono</label>
+                  <input type="tel" class="form-control" value="${perfil.telefono || ''}">
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Dirección</label>
+                  <input type="text" class="form-control" value="${perfil.direccion || ''}">
+                </div>
+                <button class="btn btn-primary" type="button" onclick="showToast('Perfil actualizado')">Guardar cambios</button>
+              </form>
+          `;
+
+          $panel.hide().html(contenido).fadeIn();
+      },
+      error: function(xhr) {
+          console.log("Error al cargar el perfil");
+      }
+  });
+}
+
+function cargarFavoritos() {
+  $.ajax({
       url: '../php/obtenerFavoritosUsuario.php',
       method: 'GET',
       dataType: 'json',
       success: function(favoritos) {
-        console.log(favoritos)
-      },
-        error: function(xhr) {
-          console.log("error al cargar los favoritos")
-        }
-      })
-    $panel.hide().html(`<h2>Mis favoritos</h2><p>Aquí aparecerán tus articulos favoritos.</p>`).fadeIn();
-  }
+          console.log(favoritos);
 
-  function cargarCompras() {
-    $.ajax({
+          let contenido = `
+              <h2>Mis favoritos</h2>
+              <p>Aquí aparecerán tus artículos favoritos.</p>
+              <div class="row g-4" id="lista-favoritos">
+          `;
+
+          favoritos.forEach(producto => {
+              contenido += `
+                  <div class="col-md-4 producto">
+                      <div class="card">
+                          <img src="${producto.imagen_url || '../img/default.svg'}" class="card-img-top" alt="${producto.nombre}">
+                          <div class="card-body">
+                              <h5 class="card-title">${producto.nombre}</h5>
+                              <p class="card-text">Cantidad: ${producto.cantidad_disponible} ${producto.unidad_medida}</p>
+                              <p class="card-text">Lote: ${producto.numero_lote}</p>
+                              <p class="card-text">Producción: ${producto.fecha_produccion}</p>
+                              <p class="card-text">Caducidad: ${producto.fecha_caducidad}</p>
+                              <div class="d-flex justify-content-between align-items-center mt-3">
+                                  ${
+                                      producto.vendido == true
+                                      ? `<span class="badge bg-danger w-100 text-center">Vendido</span>`
+                                      : `<button class="btn btn-outline-primary btn-sm btn-editar editar-producto" data-id="${producto.id}">Ver detalles</button>`
+                                  }
+                                      <button class="btn btn-outline-danger btn-sm btn-eliminar" data-id="${producto.id}">Eliminar</button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              `;
+          });
+
+          contenido += `</div>`; // cerrar row
+
+          $panel.hide().html(contenido).fadeIn();
+      },
+      error: function(xhr) {
+          console.log("Error al cargar los favoritos");
+      }
+  });
+}
+
+function cargarCompras() {
+  $.ajax({
       url: '../php/obtenerComprasUsuario.php',
       method: 'GET',
       dataType: 'json',
       success: function(compras) {
-        console.log(compras)
-      },
-        error: function(xhr) {
-          console.log("error al cargar las compras")
-        }
-      })
-    $panel.hide().html(`<h2>Mis compras</h2><p>Aquí aparecerán tus compras realizadas.</p>`).fadeIn();
-  }
+          console.log(compras);
 
-  function cargarPedidos() {
-    $.ajax({
+          let contenido = `<h2>Mis compras</h2><p>Aquí aparecerán tus compras realizadas.</p>`;
+
+          compras.forEach(compra => {
+              contenido += `
+                  <div class="card mb-4">
+                      <div class="card-header bg-primary text-white">
+                          <strong>Compra realizada el ${new Date(compra.fecha_compra).toLocaleDateString()}</strong>
+                      </div>
+                      <div class="card-body">
+                          <p><strong>Pagador:</strong> ${compra.nombre_pagador}</p>
+                          <p><strong>Destinatario:</strong> ${compra.destinatario}</p>
+                          <p><strong>Dirección de entrega:</strong> ${compra.direccion_entrega}</p>
+                          <div class="table-responsive">
+                              <table class="table table-bordered align-middle mt-3">
+                                  <thead class="table-light">
+                                      <tr>
+                                          <th>Producto</th>
+                                          <th>Imagen</th>
+                                          <th>Cantidad</th>
+                                          <th>Precio Unitario</th>
+                                          <th>Subtotal</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+              `;
+
+              compra.productos.forEach(prod => {
+                  contenido += `
+                      <tr>
+                          <td>${prod.nombre_producto || 'Producto eliminado'}</td>
+                          <td><img src="${prod.imagen_url || '../img/default.svg'}" alt="${prod.nombre_producto}" style="width: 50px; height: 50px; object-fit: cover;"></td>
+                          <td>${prod.cantidad}</td>
+                          <td>$${prod.precio_unitario.toFixed(2)}</td>
+                          <td>$${prod.subtotal.toFixed(2)}</td>
+                      </tr>
+                  `;
+              });
+
+              contenido += `
+                                  </tbody>
+                              </table>
+                          </div>
+                      </div>
+                  </div>
+              `;
+          });
+
+          $panel.hide().html(contenido).fadeIn();
+      },
+      error: function(xhr) {
+          console.log("Error al cargar las compras");
+      }
+  });
+}
+
+function cargarPedidos() {
+  $.ajax({
       url: '../php/obtenerPedidosUsuario.php',
       method: 'GET',
       dataType: 'json',
       success: function(pedidos) {
-        console.log(pedidos)
-      },
-        error: function(xhr) {
-          console.log("error al cargar los pedidos")
-        }
-      })
-    $panel.hide().html(`<h2>Mis pedidos</h2><p>Consulta el estado de tus pedidos como vendedor.</p>`).fadeIn();
-  }
+          console.log(pedidos);
 
-  function cargarSeguridad() {
-    $.ajax({
+          let contenido = `
+              <h2>Mis pedidos</h2>
+              <p>Consulta el estado de tus pedidos como vendedor.</p>
+              <div class="row g-4">
+          `;
+
+          if (pedidos.length === 0) {
+              contenido += `<div class="col-12"><div class="alert alert-info">No hay pedidos disponibles.</div></div>`;
+          }
+
+          pedidos.forEach(pedido => {
+              let fecha = new Date(pedido.fecha_estado).toLocaleString();
+              let badgeColor = 'secondary';
+
+              switch (pedido.estado.toLowerCase()) {
+                  case 'pendiente':
+                      badgeColor = 'warning';
+                      break;
+                  case 'en camino':
+                      badgeColor = 'primary';
+                      break;
+                  case 'entregado':
+                      badgeColor = 'success';
+                      break;
+                  case 'cancelado':
+                      badgeColor = 'danger';
+                      break;
+              }
+
+              contenido += `
+                  <div class="col-md-6 col-lg-4">
+                      <div class="card shadow-sm h-100">
+                          <div class="card-body">
+                              <h5 class="card-title">Pedido #${pedido.compra_id}</h5>
+                              <p><span class="badge bg-${badgeColor} text-uppercase">${pedido.estado}</span></p>
+                              <p><strong>Fecha del estado:</strong> ${fecha}</p>
+                              ${pedido.notas ? `<p><strong>Notas:</strong> ${pedido.notas}</p>` : ''}
+                          </div>
+                      </div>
+                  </div>
+              `;
+          });
+
+          contenido += `</div>`;
+          $panel.hide().html(contenido).fadeIn();
+      },
+      error: function(xhr) {
+          console.log("error al cargar los pedidos");
+      }
+  });
+}
+
+function cargarSeguridad() {
+  $.ajax({
       url: '../php/obtenerSeguridadUsuario.php',
       method: 'GET',
       dataType: 'json',
-      success: function(perfilSeguridad) {
-        console.log(perfilSeguridad)
+      success: function(datos) {
+          const perfilSeguridad = datos[0]; // Asumiendo que se retorna un único objeto
+
+          let verificadoBadge = perfilSeguridad.verificado
+              ? '<span class="badge bg-success">Verificado</span>'
+              : '<span class="badge bg-danger">No verificado</span>';
+
+          let contenido = `
+              <h2>Seguridad</h2>
+              <p>Estado de verificación: ${verificadoBadge}</p>
+              ${!perfilSeguridad.verificado ? `
+                  <div class="alert alert-warning">
+                      Código de verificación pendiente: <strong>${perfilSeguridad.codigo_verificacion}</strong><br>
+                      Enviado el: ${new Date(perfilSeguridad.fecha_envio_codigo).toLocaleString()}
+                  </div>
+              ` : ''}
+              <form class="mt-4">
+                  <div class="mb-3">
+                      <label class="form-label">Contraseña actual</label>
+                      <input type="password" class="form-control" id="current-password">
+                  </div>
+                  <div class="mb-3">
+                      <label class="form-label">Nueva contraseña</label>
+                      <input type="password" class="form-control" id="new-password">
+                  </div>
+                  <button class="btn btn-danger" type="button" onclick="actualizarContrasena()">Actualizar contraseña</button>
+              </form>
+              <p class="mt-3 text-muted small">Último cambio de contraseña: ${new Date(perfilSeguridad.fecha_ultimo_cambio_contrasena).toLocaleString()}</p>
+          `;
+
+          $panel.hide().html(contenido).fadeIn();
       },
-        error: function(xhr) {
-          console.log("error al cargar el perfil seguridad")
-        }
-      })
-    $panel.hide().html(`
-        <h2>Seguridad</h2>
-        <form class="mt-3">
-          <div class="mb-3">
-            <label class="form-label">Contraseña actual</label>
-            <input type="password" class="form-control">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Nueva contraseña</label>
-            <input type="password" class="form-control">
-          </div>
-          <button class="btn btn-danger" type="button" onclick="showToast('Contraseña actualizada')">Actualizar contraseña</button>
-        </form>`).fadeIn();
-  }
+      error: function(xhr) {
+          console.log("error al cargar el perfil seguridad");
+      }
+  });
+}
 
 
 

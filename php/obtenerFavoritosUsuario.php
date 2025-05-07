@@ -22,6 +22,7 @@ $sql = "SELECT
             p.fecha_caducidad,
             p.unidad_medida,
             p.cantidad_disponible,
+            p.vendido,
             f.fecha_agregado
         FROM favoritos_producto f
         JOIN productos p ON f.producto_id = p.id

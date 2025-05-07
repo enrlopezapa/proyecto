@@ -1,8 +1,8 @@
 <?php
 $host = 'localhost';         // Cambia si tu host es diferente
-$db   = 'nombre_base_datos'; // Nombre de tu base de datos
-$user = 'usuario_db';        // Tu usuario de base de datos
-$pass = 'contraseña_db';     // Contraseña de tu base de datos
+$db   = 'proyecto'; // Nombre de tu base de datos
+$user = 'root';        // Tu usuario de base de datos
+$pass = '';     // Contraseña de tu base de datos
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

@@ -70,6 +70,7 @@ CREATE TABLE alertas_usuario (
     categoria_id CHAR(36),
     nombre_clave VARCHAR(100),
     fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP,
+    activo BOOLEAN,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
     FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE CASCADE
 );

@@ -43,6 +43,7 @@
         <ul class="nav flex-column">
           <?php 
           session_start();
+          $_SESSION['admin']=false;
           $isAdmin = isset($_SESSION['admin']) && $_SESSION['admin'] === true;
           if (!$isAdmin){ ?>
             <li class="nav-item"><a class="nav-link active" href="#" data-section="productos">Mis productos</a></li>

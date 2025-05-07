@@ -1,11 +1,11 @@
 $(document).ready(function () {
   function cargarProductos(categoria, carruselID) {
     $.ajax({
-      url: '../php/traerProductos.php',
+      url: 'php/traerProductos.php',
       method: 'GET',
       data: { categoria: categoria }, // Enviamos la categoría por GET
       success: function (data) {
-        const productos = JSON.parse(data);
+        const productos = data;
         let contentHTML = '';
         let productosEnSlide = '';
 
