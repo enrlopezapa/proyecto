@@ -17,11 +17,8 @@ $sql = "SELECT
             p.nombre,
             p.descripcion,
             p.imagen_url,
-            p.numero_lote,
             p.fecha_produccion,
-            p.fecha_caducidad,
             p.unidad_medida,
-            p.cantidad_disponible,
             p.vendido,
             f.fecha_agregado
         FROM favoritos_producto f
