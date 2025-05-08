@@ -102,7 +102,7 @@
 </div>
 
   <!-- Modal Editar Producto -->
-<div class="modal fade" id="modalEditarProducto" tabindex="-1" aria-labelledby="modalEditarProductoLabel" aria-hidden="true">
+<!--<div class="modal fade" id="modalEditarProducto" tabindex="-1" aria-labelledby="modalEditarProductoLabel" aria-hidden="true">
     <div class="modal-dialog">
       <form class="modal-content" id="formEditarProducto" enctype="multipart/form-data">
         <div class="modal-header">
@@ -121,7 +121,6 @@
           <div class="mb-3">
             <label class="form-label">Imagen</label>
             <input type="file" class="form-control" id="editarImagen" name="imagen" accept="image/*">
-            <!-- Imagen de previsualización -->
           <img id="previewEditar" class="img-fluid mt-2 d-none" alt="Previsualización imagen" />
           </div>
         </div>
@@ -130,7 +129,7 @@
         </div>
       </form>
     </div>
-  </div>
+  </div>-->
 
   <!-- Modal Crear Alerta -->
 <div class="modal fade" id="modalCrearAlerta" tabindex="-1" aria-labelledby="modalCrearAlertaLabel" aria-hidden="true">
@@ -224,6 +223,211 @@
       </div>
       <div class="modal-footer">
         <button type="submit" class="btn btn-success">Guardar cambios</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Editar Producto -->
+<div class="modal fade" id="modalEditarProducto" tabindex="-1" role="dialog" aria-labelledby="modalEditarProductoLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form id="formEditarProducto">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalEditarProductoLabel">Editar Producto</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="editarProductoId" name="id">
+          <div class="form-group">
+            <label for="editarNombre">Nombre</label>
+            <input type="text" class="form-control" id="editarNombre" name="nombre" required>
+          </div>
+          <div class="form-group">
+            <label for="editarDescripcion">Descripción</label>
+            <textarea class="form-control" id="editarDescripcion" name="descripcion" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Imagen</label>
+            <input type="file" class="form-control" id="editarImagen" name="imagen" accept="image/*">
+            <!-- Imagen de previsualización -->
+          <img id="previewEditar" class="img-fluid mt-2 d-none" alt="Previsualización imagen" />
+          </div>
+          <div class="form-group">
+            <label for="editarFechaProduccion">Fecha de Producción</label>
+            <input type="date" class="form-control" id="editarFechaProduccion" name="fecha_produccion">
+          </div>
+          <div class="form-group">
+            <label for="editarUnidadMedida">Unidad de Medida</label>
+            <input type="text" class="form-control" id="editarUnidadMedida" name="unidad_medida">
+          </div>
+          <div class="form-group">
+            <label for="editarPrecio">Precio</label>
+            <input type="number" step="0.01" class="form-control" id="editarPrecio" name="precio_actual">
+          </div>
+          <div class="form-group">
+            <label for="editarVendido">Vendido</label>
+            <select class="form-control" id="editarVendido" name="vendido">
+              <option value="1">Sí</option>
+              <option value="0">No</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Guardar Cambios</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Editar Usuario -->
+<div class="modal fade" id="modalEditarUsuario" tabindex="-1" role="dialog" aria-labelledby="modalEditarUsuarioLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form id="formEditarUsuario">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalEditarUsuarioLabel">Editar Usuario</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="editarUsuarioId" name="id">
+          <div class="form-group">
+            <label for="editarNombreUsuario">Nombre</label>
+            <input type="text" class="form-control" id="editarNombreUsuario" name="nombre" required>
+          </div>
+          <div class="form-group">
+            <label for="editarEmailUsuario">Email</label>
+            <input type="email" class="form-control" id="editarEmailUsuario" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="editarTelefonoUsuario">Teléfono</label>
+            <input type="text" class="form-control" id="editarTelefonoUsuario" name="telefono">
+          </div>
+          <div class="form-group">
+            <label for="editarDireccionUsuario">Dirección</label>
+            <input type="text" class="form-control" id="editarDireccionUsuario" name="direccion">
+          </div>
+          <div class="form-group">
+            <label for="editarAdministradorUsuario">Administrador</label>
+            <select class="form-control" id="editarAdministradorUsuario" name="administrador">
+              <option value="1">Sí</option>
+              <option value="0">No</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Guardar Cambios</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Editar Compra -->
+<div class="modal fade" id="modalEditarCompra" tabindex="-1" role="dialog" aria-labelledby="modalEditarCompraLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form id="formEditarCompra">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalEditarCompraLabel">Editar Compra</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="editarCompraId" name="id">
+          <div class="form-group">
+            <label for="editarNombrePagador">Nombre del Pagador</label>
+            <input type="text" class="form-control" id="editarNombrePagador" name="nombre_pagador" required>
+          </div>
+          <div class="form-group">
+            <label for="editarDestinatario">Destinatario</label>
+            <input type="text" class="form-control" id="editarDestinatario" name="destinatario" required>
+          </div>
+          <div class="form-group">
+            <label for="editarDireccionEntrega">Dirección de Entrega</label>
+            <textarea class="form-control" id="editarDireccionEntrega" name="direccion_entrega" required></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Guardar Cambios</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Editar Pedido -->
+<div class="modal fade" id="modalEditarPedido" tabindex="-1" role="dialog" aria-labelledby="modalEditarPedidoLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form id="formEditarPedido">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalEditarPedidoLabel">Editar Pedido</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="editarPedidoId" name="id">
+          <div class="form-group">
+            <label for="editarEstadoPedido">Estado</label>
+            <select class="form-control" id="editarEstadoPedido" name="estado" required>
+              <option value="Pendiente">Pendiente</option>
+              <option value="Procesando">Procesando</option>
+              <option value="Enviado">Enviado</option>
+              <option value="Entregado">Entregado</option>
+              <option value="Cancelado">Cancelado</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="editarNotasPedido">Notas</label>
+            <textarea class="form-control" id="editarNotasPedido" name="notas"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Guardar Cambios</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Editar Categoría -->
+<div class="modal fade" id="modalEditarCategoria" tabindex="-1" role="dialog" aria-labelledby="modalEditarCategoriaLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <form id="formEditarCategoria">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalEditarCategoriaLabel">Editar Categoría</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="editarCategoriaId" name="id">
+          <div class="form-group">
+            <label for="editarNombreCategoria">Nombre</label>
+            <input type="text" class="form-control" id="editarNombreCategoria" name="nombre" required>
+          </div>
+          <div class="form-group">
+            <label for="editarDescripcionCategoria">Descripción</label>
+            <textarea class="form-control" id="editarDescripcionCategoria" name="descripcion"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-success">Guardar Cambios</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        </div>
       </div>
     </form>
   </div>

@@ -17,11 +17,11 @@ $(document).ready(function () {
         case 'alertas': return cargarAlertas;
         case 'seguridad': return cargarSeguridad;
         case 'admin-productos': return cargarAdminProductos;
-        case 'admin-usuarios': return cargarAdminUsuarios; //CORREGIR DATOOOOOOOOOOOOOOOOOOOOOOOOOOS
-        case 'admin-compras': return cargarAdminCompras; //CORREGIR DATOOOOOOOOOOOOOOOOOOOOOOOOOOS
-        case 'admin-alertas': return cargarAdminAlertas; //CORREGIR DATOOOOOOOOOOOOOOOOOOOOOOOOOOS
-        case 'admin-pedidos': return cargarAdminPedidos; //CORREGIR DATOOOOOOOOOOOOOOOOOOOOOOOOOOS
-        case 'admin-categorias': return cargarAdminCategorias; //CORREGIR DATOOOOOOOOOOOOOOOOOOOOOOOOOOS
+        case 'admin-usuarios': return cargarAdminUsuarios;
+        case 'admin-compras': return cargarAdminCompras;
+        case 'admin-alertas': return cargarAdminAlertas;
+        case 'admin-pedidos': return cargarAdminPedidos;
+        case 'admin-categorias': return cargarAdminCategorias;
         default: return () => $panel.html('<p>Sección no encontrada</p>');
       }
     }
@@ -64,7 +64,7 @@ $(document).ready(function () {
             productos.forEach(function(producto, index) {
                 filas += `
                     <tr>
-                        <td>${index + 1}</td>
+                        <td>${producto.id}</td>
                         <td>${producto.nombre}</td>
                         <td>${producto.descripcion}</td>
                         <td><img src="${producto.imagen_url}" alt="${producto.nombre}" style="width: 50px; height: auto;"></td>
@@ -76,8 +76,8 @@ $(document).ready(function () {
                         <td>${producto.valoracion_media}</td>
                         <td>${producto.vendido ? 'Sí' : 'No'}</td>
                         <td>
-                            <button class="btn btn-primary btn-sm editar-producto-admin" data-id="${index + 1}">Editar</button>
-                            <button class="btn btn-danger btn-sm eliminar-producto-admin" data-id="${index + 1}">Eliminar</button>
+                            <button class="btn btn-primary btn-sm editar-producto-admin" data-id="${producto.id}">Editar</button>
+                            <button class="btn btn-danger btn-sm eliminar-producto-admin" data-id="${producto.id}">Eliminar</button>
                         </td>
                     </tr>
                 `;
@@ -552,64 +552,75 @@ function cargarFavoritos() {
 
 function cargarCompras() {
   $.ajax({
-      url: '../php/obtenerComprasUsuario.php',
-      method: 'GET',
-      dataType: 'json',
-      success: function(compras) {
-          console.log(compras);
+    url: '../php/obtenerComprasUsuario.php',
+    method: 'GET',
+    dataType: 'json',
+    success: function(compras) {
+      console.log(compras);
 
-          let contenido = `<h2>Mis compras</h2><p>Aquí aparecerán tus compras realizadas.</p>`;
+      let contenido = `
+        <h2>Mis compras</h2>
+        <p>Aquí aparecerán tus compras realizadas.</p>
+        <div class="accordion" id="comprasAccordion">
+      `;
 
-          compras.forEach(compra => {
-              contenido += `
-                  <div class="card mb-4">
-                      <div class="card-header bg-primary text-white">
-                          <strong>Compra realizada el ${new Date(compra.fecha_compra).toLocaleDateString()}</strong>
-                      </div>
-                      <div class="card-body">
-                          <p><strong>Pagador:</strong> ${compra.nombre_pagador}</p>
-                          <p><strong>Destinatario:</strong> ${compra.destinatario}</p>
-                          <p><strong>Dirección de entrega:</strong> ${compra.direccion_entrega}</p>
-                          <div class="table-responsive">
-                              <table class="table table-bordered align-middle mt-3">
-                                  <thead class="table-light">
-                                      <tr>
-                                          <th>Producto</th>
-                                          <th>Imagen</th>
-                                          <th>Cantidad</th>
-                                          <th>Precio Unitario</th>
-                                          <th>Subtotal</th>
-                                      </tr>
-                                  </thead>
-                                  <tbody>
-              `;
-
-              compra.productos.forEach(prod => {
-                  contenido += `
+      compras.forEach((compra, index) => {
+        const compraId = `compra${index}`;
+        contenido += `
+          <div class="accordion-item mb-2">
+            <h2 class="accordion-header" id="heading${compraId}">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${compraId}" aria-expanded="false" aria-controls="collapse${compraId}">
+                Compra del ${new Date(compra.fecha_compra).toLocaleDateString()} - ${compra.nombre_pagador}
+              </button>
+            </h2>
+            <div id="collapse${compraId}" class="accordion-collapse collapse" aria-labelledby="heading${compraId}" data-bs-parent="#comprasAccordion">
+              <div class="accordion-body">
+                <p><strong>Pagador:</strong> ${compra.nombre_pagador}</p>
+                <p><strong>Destinatario:</strong> ${compra.destinatario}</p>
+                <p><strong>Dirección de entrega:</strong> ${compra.direccion_entrega}</p>
+                <div class="table-responsive mt-3">
+                  <table class="table table-bordered align-middle">
+                    <thead class="table-light">
                       <tr>
-                          <td>${prod.nombre_producto || 'Producto eliminado'}</td>
-                          <td><img src="${prod.imagen_url || '../img/default.svg'}" alt="${prod.nombre_producto}" style="width: 50px; height: 50px; object-fit: cover;"></td>
-                          <td>${prod.cantidad}</td>
-                          <td>$${prod.precio_unitario.toFixed(2)}</td>
-                          <td>$${prod.subtotal.toFixed(2)}</td>
+                        <th>Producto</th>
+                        <th>Imagen</th>
+                        <th>Cantidad</th>
+                        <th>Precio Unitario</th>
+                        <th>Subtotal</th>
                       </tr>
-                  `;
-              });
+                    </thead>
+                    <tbody>
+        `;
 
-              contenido += `
-                                  </tbody>
-                              </table>
-                          </div>
-                      </div>
-                  </div>
-              `;
-          });
+        compra.productos.forEach(prod => {
+          contenido += `
+            <tr>
+              <td>${prod.nombre_producto || 'Producto eliminado'}</td>
+              <td><img src="${prod.imagen_url || '../img/default.svg'}" alt="${prod.nombre_producto}" style="width: 50px; height: 50px; object-fit: cover;"></td>
+              <td>${prod.cantidad}</td>
+              <td>$${prod.precio_unitario.toFixed(2)}</td>
+              <td>$${prod.subtotal.toFixed(2)}</td>
+            </tr>
+          `;
+        });
 
-          $panel.hide().html(contenido).fadeIn();
-      },
-      error: function(xhr) {
-          console.log("Error al cargar las compras");
-      }
+        contenido += `
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      contenido += `</div>`; // Cierra el accordion general
+
+      $panel.hide().html(contenido).fadeIn();
+    },
+    error: function(xhr) {
+      console.log("Error al cargar las compras");
+    }
   });
 }
 
@@ -749,6 +760,509 @@ function cargarSeguridad() {
       throw new Error('Error al subir la imagen a Imgur');
     }
   }
+
+
+
+
+
+
+
+  // EDITAR PRODUCTO ADMIN
+$(document).on('click', '.editar-producto-admin', function() {
+  const idFila = $(this).data('id');
+  const fila = $(this).closest('tr');
+  
+  const producto = {
+      id: fila.data('id-real'),
+      nombre: fila.find('td:eq(1)').text(),
+      descripcion: fila.find('td:eq(2)').text(),
+      imagen_url: fila.find('img').attr('src'),
+      fecha_produccion: fila.find('td:eq(4)').text(),
+      unidad_medida: fila.find('td:eq(5)').text(),
+      precio_actual: fila.find('td:eq(6)').text().replace('$', ''),
+      vendido: fila.find('td:eq(10)').text() === 'Sí' ? 1 : 0
+  };
+
+  $('#editarProductoId').val(producto.id);
+  $('#editarNombre').val(producto.nombre);
+  $('#editarDescripcion').val(producto.descripcion);
+  $('#editarImagenUrl').val(producto.imagen_url);
+  $('#editarFechaProduccion').val(producto.fecha_produccion);
+  $('#editarUnidadMedida').val(producto.unidad_medida);
+  $('#editarPrecio').val(producto.precio_actual);
+  $('#editarVendido').val(producto.vendido);
+
+  $('#modalEditarProducto').modal('show');
+});
+
+// Envío del formulario
+$('#formEditarProducto').submit(function(e) {
+  e.preventDefault();
+  const datos = $(this).serialize();
+
+  $.ajax({
+      url: '../php/actualizarProductoAdmin.php',
+      method: 'POST',
+      data: datos,
+      success: function(respuesta) {
+          alert('Producto actualizado correctamente');
+          $('#modalEditarProducto').modal('hide');
+          cargarAdminProductos(); // Recargar la tabla
+      },
+      error: function() {
+          alert('Error al actualizar el producto');
+      }
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+// EDITAR USUARIOS ADMIN
+$(document).on('click', '.editar-usuario-admin', function () {
+  const btn = $(this);
+  const fila = btn.closest('tr');
+
+  const usuario = {
+      id: btn.data('id'),
+      nombre: fila.find('td:eq(1)').text(),
+      email: fila.find('td:eq(2)').text(),
+      telefono: fila.find('td:eq(3)').text() !== '—' ? fila.find('td:eq(3)').text() : '',
+      direccion: fila.find('td:eq(4)').text() !== '—' ? fila.find('td:eq(4)').text() : '',
+      administrador: fila.find('td:eq(5)').text() === 'Sí' ? 1 : 0
+  };
+
+  $('#editarUsuarioId').val(usuario.id);
+  $('#editarNombreUsuario').val(usuario.nombre);
+  $('#editarEmailUsuario').val(usuario.email);
+  $('#editarTelefonoUsuario').val(usuario.telefono);
+  $('#editarDireccionUsuario').val(usuario.direccion);
+  $('#editarAdministradorUsuario').val(usuario.administrador);
+
+  $('#modalEditarUsuario').modal('show');
+});
+
+// Enviar cambios al servidor
+$('#formEditarUsuario').submit(function (e) {
+  e.preventDefault();
+
+  const datos = $(this).serialize();
+
+  $.ajax({
+      url: '../php/actualizarUsuarioAdmin.php',
+      method: 'POST',
+      data: datos,
+      success: function (respuesta) {
+          alert('Usuario actualizado correctamente');
+          $('#modalEditarUsuario').modal('hide');
+          cargarAdminUsuarios();
+      },
+      error: function () {
+          alert('Error al actualizar el usuario');
+      }
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+// EDITAR COMPRA ADMIN
+$(document).on('click', '.editar-compra-admin', function () {
+  const btn = $(this);
+  const fila = btn.closest('tr');
+
+  const compra = {
+    id: btn.data('id'),
+    nombre_pagador: fila.find('td:eq(3)').text(),
+    destinatario: fila.find('td:eq(4)').text(),
+    direccion_entrega: fila.find('td:eq(5)').text()
+  };
+
+  $('#editarCompraId').val(compra.id);
+  $('#editarNombrePagador').val(compra.nombre_pagador);
+  $('#editarDestinatario').val(compra.destinatario);
+  $('#editarDireccionEntrega').val(compra.direccion_entrega);
+
+  $('#modalEditarCompra').modal('show');
+});
+
+// Enviar actualización
+$('#formEditarCompra').submit(function (e) {
+  e.preventDefault();
+
+  const datos = $(this).serialize();
+
+  $.ajax({
+    url: '../php/actualizarCompraAdmin.php',
+    method: 'POST',
+    data: datos,
+    success: function () {
+      alert('Compra actualizada correctamente');
+      $('#modalEditarCompra').modal('hide');
+      cargarAdminCompras();
+    },
+    error: function () {
+      alert('Error al actualizar la compra');
+    }
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// EDITAR PEDIDO ADMIN
+$(document).on('click', '.editar-pedido-admin', function () {
+  const btn = $(this);
+  const fila = btn.closest('tr');
+
+  const pedido = {
+    id: btn.data('id'),
+    estado: fila.find('td:eq(2)').text(),
+    notas: fila.find('td:eq(4)').text()
+  };
+
+  $('#editarPedidoId').val(pedido.id);
+  $('#editarEstadoPedido').val(pedido.estado);
+  $('#editarNotasPedido').val(pedido.notas);
+
+  $('#modalEditarPedido').modal('show');
+});
+
+// Enviar actualización
+$('#formEditarPedido').submit(function (e) {
+  e.preventDefault();
+
+  const datos = $(this).serialize();
+
+  $.ajax({
+    url: '../php/actualizarPedidoAdmin.php',
+    method: 'POST',
+    data: datos,
+    success: function () {
+      alert('Pedido actualizado correctamente');
+      $('#modalEditarPedido').modal('hide');
+      cargarAdminPedidos();
+    },
+    error: function () {
+      alert('Error al actualizar el pedido');
+    }
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// EDITAR CATEGORIA ADMIN
+$(document).on('click', '.editar-categoria-admin', function () {
+  const btn = $(this);
+  const fila = btn.closest('tr');
+
+  const categoria = {
+    id: btn.data('id'),
+    nombre: fila.find('td:eq(1)').text(),
+    descripcion: fila.find('td:eq(2)').text()
+  };
+
+  $('#editarCategoriaId').val(categoria.id);
+  $('#editarNombreCategoria').val(categoria.nombre);
+  $('#editarDescripcionCategoria').val(categoria.descripcion);
+
+  $('#modalEditarCategoria').modal('show');
+});
+
+// Enviar datos modificados
+$('#formEditarCategoria').submit(function (e) {
+  e.preventDefault();
+
+  const datos = $(this).serialize();
+
+  $.ajax({
+    url: '../php/actualizarCategoriaAdmin.php',
+    method: 'POST',
+    data: datos,
+    success: function () {
+      alert('Categoría actualizada correctamente');
+      $('#modalEditarCategoria').modal('hide');
+      cargarAdminCategorias(); // Recarga la tabla
+    },
+    error: function () {
+      alert('Error al actualizar la categoría');
+    }
+  });
+});
+
+
+
+
+
+
+
+// ELIMINAR PRODUCTO ADMIN
+$(document).on('click', '.eliminar-producto-admin', function () {
+  const id = $(this).data('id');
+
+  if (!confirm('¿Estás seguro de que deseas eliminar este producto?')) return;
+
+  $.ajax({
+    url: '../php/eliminarProductoAdmin.php',
+    method: 'POST',
+    data: { id },
+    success: function (respuesta) {
+      try {
+        const res = JSON.parse(respuesta);
+        if (res.status === 'ok') {
+          showToast('Producto eliminado correctamente');
+          cargarAdminProductos(); // Recarga la tabla
+        } else {
+          showToast('Error al eliminar el producto');
+        }
+      } catch (e) {
+        console.error('Respuesta no válida:', respuesta);
+        showToast('Error inesperado al eliminar el producto');
+      }
+    },
+    error: function () {
+      showToast('Error al conectar con el servidor');
+    }
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+$(document).on('click', '.eliminar-usuario-admin', function () {
+  const id = $(this).data('id');
+
+  if (!confirm('¿Seguro que deseas eliminar este usuario? Esta acción no se puede deshacer.')) return;
+
+  $.ajax({
+    url: '../php/eliminarUsuarioAdmin.php',
+    method: 'POST',
+    data: { id },
+    success: function (respuesta) {
+      try {
+        const res = JSON.parse(respuesta);
+        if (res.status === 'ok') {
+          showToast('Usuario eliminado correctamente');
+          cargarAdminUsuarios(); // Vuelve a cargar la tabla
+        } else {
+          showToast('Error al eliminar el usuario');
+        }
+      } catch (e) {
+        console.error('Respuesta no válida:', respuesta);
+        showToast('Error inesperado');
+      }
+    },
+    error: function () {
+      showToast('Error al conectar con el servidor');
+    }
+  });
+});
+
+
+
+
+
+
+
+
+$(document).on('click', '.eliminar-compra-admin', function () {
+  const id = $(this).data('id');
+
+  if (!confirm('¿Seguro que deseas eliminar esta compra?')) return;
+
+  $.ajax({
+    url: '../php/eliminarCompraAdmin.php',
+    method: 'POST',
+    data: { id },
+    success: function (respuesta) {
+      try {
+        const res = JSON.parse(respuesta);
+        if (res.status === 'ok') {
+          showToast('Compra eliminada correctamente');
+          cargarAdminCompras(); // Refresca la tabla
+        } else {
+          showToast('Error al eliminar la compra');
+        }
+      } catch (e) {
+        console.error('Respuesta inválida:', respuesta);
+        showToast('Error inesperado');
+      }
+    },
+    error: function () {
+      showToast('Error al conectar con el servidor');
+    }
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+$(document).on('click', '.eliminar-pedido-admin', function () {
+  const id = $(this).data('id');
+
+  if (!confirm('¿Estás seguro de que deseas eliminar este pedido?')) return;
+
+  $.ajax({
+    url: '../php/eliminarPedidoAdmin.php',
+    method: 'POST',
+    data: { id },
+    success: function (respuesta) {
+      try {
+        const res = JSON.parse(respuesta);
+        if (res.status === 'ok') {
+          showToast('Pedido eliminado exitosamente');
+          cargarAdminPedidos(); // Recargar la tabla
+        } else {
+          showToast('Error al eliminar el pedido');
+        }
+      } catch (e) {
+        console.error('Error en la respuesta:', respuesta);
+        showToast('Error inesperado');
+      }
+    },
+    error: function () {
+      showToast('No se pudo conectar con el servidor');
+    }
+  });
+});
+
+
+
+
+
+
+
+
+
+
+$(document).on('click', '.eliminar-categoria-admin', function () {
+  const id = $(this).data('id');
+
+  if (!confirm('¿Estás seguro de que deseas eliminar esta categoría?')) return;
+
+  $.ajax({
+    url: '../php/eliminarCategoriaAdmin.php',
+    method: 'POST',
+    data: { id },
+    success: function (respuesta) {
+      try {
+        const res = JSON.parse(respuesta);
+        if (res.status === 'ok') {
+          showToast('Categoría eliminada correctamente');
+          cargarAdminCategorias(); // Recargar la tabla
+        } else {
+          showToast('Error al eliminar la categoría');
+        }
+      } catch (e) {
+        console.error('Respuesta no válida:', respuesta);
+        showToast('Error inesperado');
+      }
+    },
+    error: function () {
+      showToast('No se pudo conectar con el servidor');
+    }
+  });
+});
+
+
+
+
+
+
+
+
+
+$(document).on('click', '.eliminar-alerta-admin', function () {
+  const id = $(this).data('id');
+
+  if (!confirm('¿Estás seguro de que deseas eliminar esta alerta?')) return;
+
+  $.ajax({
+    url: '../php/eliminarAlertaAdmin.php',
+    method: 'POST',
+    data: { id },
+    success: function (respuesta) {
+      try {
+        const res = JSON.parse(respuesta);
+        if (res.status === 'ok') {
+          showToast('Alerta eliminada correctamente');
+          cargarAdminAlertas(); // Recargar la tabla
+        } else {
+          showToast('Error al eliminar la alerta');
+        }
+      } catch (e) {
+        console.error('Respuesta no válida:', respuesta);
+        showToast('Error inesperado');
+      }
+    },
+    error: function () {
+      showToast('No se pudo conectar con el servidor');
+    }
+  });
+});
+
+
+
+
+
 
 
 

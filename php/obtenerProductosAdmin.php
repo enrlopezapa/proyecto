@@ -5,6 +5,7 @@ require_once 'conexion.php';
 
 
 $sql = "SELECT 
+            p.id,
             p.nombre,
             p.descripcion,
             p.imagen_url,

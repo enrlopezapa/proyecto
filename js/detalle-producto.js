@@ -1,3 +1,10 @@
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+}
+
 $(document).ready(function () {
     const toast = new bootstrap.Toast($('#toastConfirmacion'));
 
@@ -5,63 +12,93 @@ $(document).ready(function () {
         $('#toastConfirmacion .toast-body').text(mensaje);
         toast.show();
     }
-    $.ajax({
-        url: '../php/obtenerProductosUsuario.php',
-        method: 'GET',
-        success: function(datosProducto) {
-          console.log(datosProducto)
-        },
-          error: function(xhr) {
-            console.log("error al cargar los datosProducto")
-          }
-        })
 
-    // Configuración del gráfico de historial de precios
-    const ctx = document.getElementById('graficoPrecios').getContext('2d');
-    const priceHistoryChart = new Chart(ctx, {
-        type: 'line', // Gráfico de línea
-        data: {
-            labels: historialPrecios.fechas, // Etiquetas de los meses
-            datasets: [{
-                label: 'Precio (€)', // Etiqueta del gráfico
-                data: historialPrecios.precios, // Datos de precios
-                borderColor: '#198754', // Color de la línea
-                backgroundColor: 'rgba(25, 135, 84, 0.2)', // Color del área debajo de la línea
-                fill: true, // Rellenar el área bajo la línea
-                tension: 0.3, // Curvatura de la línea
-                pointRadius: 5, // Tamaño de los puntos
-                pointHoverRadius: 7 // Tamaño al pasar el ratón por los puntos
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: false // No empezar desde cero
-                }
-            },
-            plugins: {
-                legend: {
-                    display: true, // Mostrar leyenda
-                    labels: {
-                        color: '#212529', // Color de la leyenda
-                        font: {
-                            size: 14 // Tamaño de la fuente de la leyenda
+    const productoId = getCookie('producto_id');
+
+    if (!productoId) {
+        showToast('Producto no especificado.');
+        return;
+    }
+
+    let chart;
+
+    $.getJSON('../php/obtenerDetalleProducto.php', { id: productoId }, function (data) {
+        if (data && data.producto) {
+            const p = data.producto;
+
+            $('.col-md-5 img')
+                .attr('src', p.imagen_url || '../img/default.svg')
+                .attr('alt', p.nombre);
+
+            $('.col-md-7 h1').text(p.nombre);
+            $('.col-md-7 p.text-muted').text(p.descripcion);
+            $('.col-md-7 .fs-4.text-success').text(`${p.precio_actual} €`);
+
+            // Mostrar precio original solo si es distinto del actual
+            if (p.precio_original && p.precio_original !== p.precio_actual) {
+                $('.col-md-7 .text-decoration-line-through')
+                    .text(`${p.precio_original} €`)
+                    .show();
+            } else {
+                $('.col-md-7 .text-decoration-line-through').text('').hide();
+            }
+
+            $('.col-md-7').find('p:contains("Vendedor")')
+                .html(`<strong>Vendedor:</strong> ${p.vendedor || 'No disponible'}`);
+
+            $('.col-md-7').find('p:contains("Valoración")')
+                .html(`<strong>Valoración media del vendedor:</strong> ⭐⭐⭐⭐☆ (${p.valoracion_media})`);
+
+            // Crear gráfico de historial de precios
+            const ctx = document.getElementById('graficoPrecios').getContext('2d');
+
+            if (chart) chart.destroy();
+
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.historial.map(h => h.fecha_inicio),
+                    datasets: [{
+                        label: 'Precio (€)',
+                        data: data.historial.map(h => h.precio),
+                        borderColor: '#198754',
+                        backgroundColor: 'rgba(25, 135, 84, 0.2)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: { beginAtZero: false }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                color: '#212529',
+                                font: { size: 14 }
+                            }
                         }
                     }
                 }
-            }
+            });
+
+        } else {
+            showToast('Producto no encontrado');
         }
+    }).fail(() => {
+        showToast('Error al cargar datos del producto');
     });
 
-    // Función para añadir al carrito con jQuery
+    // Agregar al carrito
     $('.btn-buy').on('click', function () {
-        const form = $(this).closest('form');
-        const productoId = form.find('input[name="productoId"]').val();
-      
-        $.post('../php/agregar-carrito.php', { productoId }, function (res) {
+        $.post('../php/agregarACarrito.php', { productoId: productoId }, function (response) {
             showToast('Producto añadido');
-        }).fail(function () {
+            console.log(response); // Opcional: para verificar qué devuelve el servidor
+        }).fail(() => {
             showToast('Error al añadir el producto');
         });
-      });
-});
+    });
+})
