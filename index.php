@@ -22,7 +22,6 @@
 
 <body>
 
-    <!-- TODO: CUANDO SEA MEDIA QUERY QUITAR EL MENU DESPLEGABLE DENTRO DEL MENU DESPLEGABLE!!!!!!!!!!!!!!!!!!!!!!!!!!!!-->
   <!-- Header -->
   <custom-header 
   bootstrap-css="bootstrap/css/bootstrap.min.css" 
@@ -30,18 +29,22 @@
   ruta-html="components/header/header-template.html"
   bootstrap-js="bootstrap/js/bootstrap.bundle.min.js"
   jquery-js="js/jquery-3.7.1.min.js"
-  index-link="index.html"
+  index-link="index.php"
   logo-link="img/house-heart-fill.svg"
-  search-link="../proyecto/html/productos.html"
-  cart-link="html/carrito.html"
-  login-link="html/login.html"
-  productFruta-link="html/productos.html?category=fruta"
-  productVerdura-link="html/productos.html?category=verdura"
-  productOferta-link="html/productos.html?category=oferta"
-  productLocal-link="html/productos.html?category=local"
-  producto-link="html/productos.html"
-  nosotros-link="html/nosotros.html"
-  contacto-link="html/contacto.html"
+  search-link="../proyecto/html/productos.php"
+  cart-link="html/carrito.php"
+  login-link="html/login.php"
+  productFruta-link="html/productos.php?category=fruta"
+  productVerdura-link="html/productos.php?category=verdura"
+  productOferta-link="html/productos.php?category=oferta"
+  productLocal-link="html/productos.php?category=local"
+  producto-link="html/productos.php"
+  nosotros-link="html/nosotros.php"
+  contacto-link="html/contacto.php"
+  ruta-categoriasphp="php/obtenerCategorias.php"
+  perfil-link="html/cuenta.php"
+  logout-link="php/logout.php"
+  cart-link="html/carrito.php"
   ></custom-header>
 
 

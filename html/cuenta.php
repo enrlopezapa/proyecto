@@ -12,29 +12,37 @@
   <script src="../js/jquery-3.7.1.min.js"></script>
   <script src="../js/cuenta.js"></script>
   <script type="module" src="../components/index.js"></script>
+  <?php session_start(); ?>
+  <script>
+    window.usuarioLogueado = <?= isset($_SESSION['usuario_id']) ? 'true' : 'false' ?>;
+  </script>
 </head>
 <body>
 
  <!-- Header -->
- <custom-header 
- bootstrap-css="../bootstrap/css/bootstrap.min.css" 
- custom-css="../css/index.css" 
- ruta-html="../components/header/header-template.html"
- bootstrap-js="../bootstrap/js/bootstrap.bundle.min.js"
- jquery-js="../js/jquery-3.7.1.min.js"
- index-link="../index.html"
- logo-link="../img/house-heart-fill.svg"
- search-link="productos.html"
- cart-link="carrito.html"
- login-link="login.html"
- productFruta-link="productos.html?category=fruta"
- productVerdura-link="productos.html?category=verdura"
- productOferta-link="productos.html?category=oferta"
- productLocal-link="productos.html?category=local"
- producto-link="productos.html"
- nosotros-link="nosotros.html"
- contacto-link="contacto.html"
- ></custom-header>
+   <custom-header 
+  bootstrap-css="../bootstrap/css/bootstrap.min.css" 
+  custom-css="../css/index.css" 
+  ruta-html="../components/header/header-template.html"
+  bootstrap-js="../bootstrap/js/bootstrap.bundle.min.js"
+  jquery-js="../js/jquery-3.7.1.min.js"
+  index-link="../index.php"
+  logo-link="../img/house-heart-fill.svg"
+  search-link="productos.php"
+  cart-link="carrito.php"
+  login-link="login.php"
+  productFruta-link="productos.php?category=fruta"
+  productVerdura-link="productos.php?category=verdura"
+  productOferta-link="productos.php?category=oferta"
+  productLocal-link="productos.php?category=local"
+  producto-link="productos.php"
+  nosotros-link="nosotros.php"
+  contacto-link="contacto.php"
+  ruta-categoriasphp="../php/obtenerCategorias.php"
+  perfil-link="cuenta.php"
+  logout-link="../php/logout.php"
+  cart-link="carrito.php"
+  ></custom-header>
 
   <!-- Sidebar + Panel -->
   <div class="container-fluid">
@@ -42,11 +50,10 @@
       <div class="col-md-3 bg-light sidebar pt-4">
         <ul class="nav flex-column">
           <?php 
-          session_start();
-          $_SESSION['admin']=false;
-          $isAdmin = isset($_SESSION['admin']) && $_SESSION['admin'] === true;
+          $isAdmin = isset($_SESSION['usuario_admin']) && $_SESSION['usuario_admin'] == true;
           if (!$isAdmin){ ?>
-            <li class="nav-item"><a class="nav-link active" href="#" data-section="productos">Mis productos</a></li>
+          <?php }else{ ?>
+            <li class="nav-item"><a class="nav-link <?php if(!$isAdmin){echo "active"}?>" href="#" data-section="productos">Mis productos</a></li>
             <li class="nav-item"><a class="nav-link" href="#" data-section="perfil">Editar perfil</a></li>
             <li class="nav-item"><a class="nav-link" href="#" data-section="favoritos">Mis favoritos</a></li>
             <li class="nav-item"><a class="nav-link" href="#" data-section="compras">Mis compras</a></li>
@@ -54,7 +61,7 @@
             <li class="nav-item"><a class="nav-link" href="#" data-section="alertas">Mis alertas</a></li>
             <li class="nav-item"><a class="nav-link" href="#" data-section="seguridad">Seguridad</a></li>
           <?php }else{ ?>
-            <li class="nav-item"><a class="nav-link" href="#" data-section="admin-productos">Gestionar productos</a></li>
+            <li class="nav-item"><a class="nav-link <?php if($isAdmin){echo "active"}?>" href="#" data-section="admin-productos">Gestionar productos</a></li>
             <li class="nav-item"><a class="nav-link" href="#" data-section="admin-usuarios">Gestionar usuarios</a></li>
             <li class="nav-item"><a class="nav-link" href="#" data-section="admin-compras">Gestionar compras</a></li>
             <li class="nav-item"><a class="nav-link" href="#" data-section="admin-alertas">Gestionar alertas</a></li>
@@ -235,9 +242,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="modalEditarProductoLabel">Editar Producto</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-            <span aria-hidden="true">&times;</span>
-          </button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
         <div class="modal-body">
           <input type="hidden" id="editarProductoId" name="id">
@@ -291,9 +296,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="modalEditarUsuarioLabel">Editar Usuario</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-            <span aria-hidden="true">&times;</span>
-          </button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
         <div class="modal-body">
           <input type="hidden" id="editarUsuarioId" name="id">
@@ -337,9 +340,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="modalEditarCompraLabel">Editar Compra</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-            <span aria-hidden="true">&times;</span>
-          </button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
         <div class="modal-body">
           <input type="hidden" id="editarCompraId" name="id">
@@ -372,9 +373,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="modalEditarPedidoLabel">Editar Pedido</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-            <span aria-hidden="true">&times;</span>
-          </button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
         <div class="modal-body">
           <input type="hidden" id="editarPedidoId" name="id">
@@ -409,9 +408,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="modalEditarCategoriaLabel">Editar Categoría</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
-            <span aria-hidden="true">&times;</span>
-          </button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
         <div class="modal-body">
           <input type="hidden" id="editarCategoriaId" name="id">
@@ -446,7 +443,7 @@
   <!-- Footer -->
   <custom-footer bootstrap-css="../bootstrap/css/bootstrap.min.css" custom-css="../css/index.css" ruta-html="../components/footer/footer-template.html"></custom-footer>
   <!-- Offcanvas solo en móviles -->
-<div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="offcanvasContent" aria-labelledby="offcanvasContentLabel">
+<div class="offcanvas offcanvas-start custom-offcanvas d-md-none" tabindex="-1" id="offcanvasContent" aria-labelledby="offcanvasContentLabel">
     <div class="offcanvas-header">
       <h5 class="offcanvas-title" id="offcanvasContentLabel">Mi Cuenta</h5>
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>

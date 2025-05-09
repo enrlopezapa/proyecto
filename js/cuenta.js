@@ -768,19 +768,32 @@ function cargarSeguridad() {
 
 
   // EDITAR PRODUCTO ADMIN
-$(document).on('click', '.editar-producto-admin', function() {
-  const idFila = $(this).data('id');
-  const fila = $(this).closest('tr');
-  
+$(document).on('click', '.editar-producto-admin', function () {
+  const isMobile = window.innerWidth < 768;
+  const offcanvasInstance = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasContent'));
+  const $btn = $(this);
+
+  if (isMobile && offcanvasInstance) {
+    offcanvasInstance.hide();
+    $('.modal-backdrop').remove();
+      mostrarModalEditar($btn);
+  } else {
+    mostrarModalEditar($btn);
+  }
+});
+
+function mostrarModalEditar($triggerBtn) {
+  const fila = $triggerBtn.closest('tr');
+
   const producto = {
-      id: fila.data('id-real'),
-      nombre: fila.find('td:eq(1)').text(),
-      descripcion: fila.find('td:eq(2)').text(),
-      imagen_url: fila.find('img').attr('src'),
-      fecha_produccion: fila.find('td:eq(4)').text(),
-      unidad_medida: fila.find('td:eq(5)').text(),
-      precio_actual: fila.find('td:eq(6)').text().replace('$', ''),
-      vendido: fila.find('td:eq(10)').text() === 'Sí' ? 1 : 0
+    id: fila.data('id-real'),
+    nombre: fila.find('td:eq(1)').text(),
+    descripcion: fila.find('td:eq(2)').text(),
+    imagen_url: fila.find('img').attr('src'),
+    fecha_produccion: fila.find('td:eq(4)').text(),
+    unidad_medida: fila.find('td:eq(5)').text(),
+    precio_actual: fila.find('td:eq(6)').text().replace('$', ''),
+    vendido: fila.find('td:eq(10)').text() === 'Sí' ? 1 : 0
   };
 
   $('#editarProductoId').val(producto.id);
@@ -793,7 +806,7 @@ $(document).on('click', '.editar-producto-admin', function() {
   $('#editarVendido').val(producto.vendido);
 
   $('#modalEditarProducto').modal('show');
-});
+}
 
 // Envío del formulario
 $('#formEditarProducto').submit(function(e) {
@@ -805,12 +818,12 @@ $('#formEditarProducto').submit(function(e) {
       method: 'POST',
       data: datos,
       success: function(respuesta) {
-          alert('Producto actualizado correctamente');
+          showToast('Producto actualizado correctamente');
           $('#modalEditarProducto').modal('hide');
           cargarAdminProductos(); // Recargar la tabla
       },
       error: function() {
-          alert('Error al actualizar el producto');
+          showToast('Error al actualizar el producto');
       }
   });
 });
@@ -828,16 +841,30 @@ $('#formEditarProducto').submit(function(e) {
 
 // EDITAR USUARIOS ADMIN
 $(document).on('click', '.editar-usuario-admin', function () {
-  const btn = $(this);
-  const fila = btn.closest('tr');
+  const isMobile = window.innerWidth < 768;
+  const $offcanvasEl = $('#offcanvasContent');
+  const offcanvasInstance = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasContent'));
+  const $btn = $(this);
+
+  if (isMobile && offcanvasInstance) {
+    offcanvasInstance.hide();
+    $('.modal-backdrop').remove();
+      mostrarModalEditarUsuario($btn);
+  } else {
+    mostrarModalEditarUsuario($btn);
+  }
+});
+
+function mostrarModalEditarUsuario($btn) {
+  const fila = $btn.closest('tr');
 
   const usuario = {
-      id: btn.data('id'),
-      nombre: fila.find('td:eq(1)').text(),
-      email: fila.find('td:eq(2)').text(),
-      telefono: fila.find('td:eq(3)').text() !== '—' ? fila.find('td:eq(3)').text() : '',
-      direccion: fila.find('td:eq(4)').text() !== '—' ? fila.find('td:eq(4)').text() : '',
-      administrador: fila.find('td:eq(5)').text() === 'Sí' ? 1 : 0
+    id: $btn.data('id'),
+    nombre: fila.find('td:eq(1)').text(),
+    email: fila.find('td:eq(2)').text(),
+    telefono: fila.find('td:eq(3)').text() !== '—' ? fila.find('td:eq(3)').text() : '',
+    direccion: fila.find('td:eq(4)').text() !== '—' ? fila.find('td:eq(4)').text() : '',
+    administrador: fila.find('td:eq(5)').text() === 'Sí' ? 1 : 0
   };
 
   $('#editarUsuarioId').val(usuario.id);
@@ -848,7 +875,8 @@ $(document).on('click', '.editar-usuario-admin', function () {
   $('#editarAdministradorUsuario').val(usuario.administrador);
 
   $('#modalEditarUsuario').modal('show');
-});
+}
+
 
 // Enviar cambios al servidor
 $('#formEditarUsuario').submit(function (e) {
@@ -861,12 +889,12 @@ $('#formEditarUsuario').submit(function (e) {
       method: 'POST',
       data: datos,
       success: function (respuesta) {
-          alert('Usuario actualizado correctamente');
+          showToast('Usuario actualizado correctamente');
           $('#modalEditarUsuario').modal('hide');
           cargarAdminUsuarios();
       },
       error: function () {
-          alert('Error al actualizar el usuario');
+          showToast('Error al actualizar el usuario');
       }
   });
 });
@@ -885,11 +913,26 @@ $('#formEditarUsuario').submit(function (e) {
 
 // EDITAR COMPRA ADMIN
 $(document).on('click', '.editar-compra-admin', function () {
-  const btn = $(this);
-  const fila = btn.closest('tr');
+  const isMobile = window.innerWidth < 768;
+  const $offcanvasEl = $('#offcanvasContent');
+  const offcanvasInstance = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasContent'));
+  const $btn = $(this);
+
+  if (isMobile && offcanvasInstance) {
+    offcanvasInstance.hide();
+    $('.modal-backdrop').remove();
+
+      mostrarModalEditarCompra($btn);
+  } else {
+    mostrarModalEditarCompra($btn);
+  }
+});
+
+function mostrarModalEditarCompra($btn) {
+  const fila = $btn.closest('tr');
 
   const compra = {
-    id: btn.data('id'),
+    id: $btn.data('id'),
     nombre_pagador: fila.find('td:eq(3)').text(),
     destinatario: fila.find('td:eq(4)').text(),
     direccion_entrega: fila.find('td:eq(5)').text()
@@ -901,7 +944,7 @@ $(document).on('click', '.editar-compra-admin', function () {
   $('#editarDireccionEntrega').val(compra.direccion_entrega);
 
   $('#modalEditarCompra').modal('show');
-});
+}
 
 // Enviar actualización
 $('#formEditarCompra').submit(function (e) {
@@ -914,12 +957,12 @@ $('#formEditarCompra').submit(function (e) {
     method: 'POST',
     data: datos,
     success: function () {
-      alert('Compra actualizada correctamente');
+      showToast('Compra actualizada correctamente');
       $('#modalEditarCompra').modal('hide');
       cargarAdminCompras();
     },
     error: function () {
-      alert('Error al actualizar la compra');
+      showToast('Error al actualizar la compra');
     }
   });
 });
@@ -941,11 +984,25 @@ $('#formEditarCompra').submit(function (e) {
 
 // EDITAR PEDIDO ADMIN
 $(document).on('click', '.editar-pedido-admin', function () {
-  const btn = $(this);
-  const fila = btn.closest('tr');
+  const isMobile = window.innerWidth < 768;
+  const $offcanvasEl = $('#offcanvasContent');
+  const offcanvasInstance = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasContent'));
+  const $btn = $(this);
+
+  if (isMobile && offcanvasInstance) {
+    offcanvasInstance.hide();
+    $('.modal-backdrop').remove();
+      mostrarModalEditarPedido($btn);
+  } else {
+    mostrarModalEditarPedido($btn);
+  }
+});
+
+function mostrarModalEditarPedido($btn) {
+  const fila = $btn.closest('tr');
 
   const pedido = {
-    id: btn.data('id'),
+    id: $btn.data('id'),
     estado: fila.find('td:eq(2)').text(),
     notas: fila.find('td:eq(4)').text()
   };
@@ -955,7 +1012,7 @@ $(document).on('click', '.editar-pedido-admin', function () {
   $('#editarNotasPedido').val(pedido.notas);
 
   $('#modalEditarPedido').modal('show');
-});
+}
 
 // Enviar actualización
 $('#formEditarPedido').submit(function (e) {
@@ -968,12 +1025,12 @@ $('#formEditarPedido').submit(function (e) {
     method: 'POST',
     data: datos,
     success: function () {
-      alert('Pedido actualizado correctamente');
+      showToast('Pedido actualizado correctamente');
       $('#modalEditarPedido').modal('hide');
       cargarAdminPedidos();
     },
     error: function () {
-      alert('Error al actualizar el pedido');
+      showToast('Error al actualizar el pedido');
     }
   });
 });
@@ -996,11 +1053,25 @@ $('#formEditarPedido').submit(function (e) {
 
 // EDITAR CATEGORIA ADMIN
 $(document).on('click', '.editar-categoria-admin', function () {
-  const btn = $(this);
-  const fila = btn.closest('tr');
+  const isMobile = window.innerWidth < 768;
+  const $offcanvasEl = $('#offcanvasContent');
+  const offcanvasInstance = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasContent'));
+  const $btn = $(this);
+
+  if (isMobile && offcanvasInstance) {
+    offcanvasInstance.hide();
+    $('.modal-backdrop').remove();
+      mostrarModalEditarCategoria($btn);
+  } else {
+    mostrarModalEditarCategoria($btn);
+  }
+});
+
+function mostrarModalEditarCategoria($btn) {
+  const fila = $btn.closest('tr');
 
   const categoria = {
-    id: btn.data('id'),
+    id: $btn.data('id'),
     nombre: fila.find('td:eq(1)').text(),
     descripcion: fila.find('td:eq(2)').text()
   };
@@ -1010,7 +1081,7 @@ $(document).on('click', '.editar-categoria-admin', function () {
   $('#editarDescripcionCategoria').val(categoria.descripcion);
 
   $('#modalEditarCategoria').modal('show');
-});
+}
 
 // Enviar datos modificados
 $('#formEditarCategoria').submit(function (e) {
@@ -1023,12 +1094,12 @@ $('#formEditarCategoria').submit(function (e) {
     method: 'POST',
     data: datos,
     success: function () {
-      alert('Categoría actualizada correctamente');
+      showToast('Categoría actualizada correctamente');
       $('#modalEditarCategoria').modal('hide');
       cargarAdminCategorias(); // Recarga la tabla
     },
     error: function () {
-      alert('Error al actualizar la categoría');
+      showToast('Error al actualizar la categoría');
     }
   });
 });
@@ -1315,7 +1386,7 @@ $('#formNuevoProducto').on('submit', async function (e) {
 
   // Validaciones
   if (!file || !file.type.startsWith('image/') || file.size > 5 * 1024 * 1024) {
-    alert('Imagen inválida.');
+    showToast('Imagen inválida.');
     return;
   }
 
@@ -1354,7 +1425,7 @@ $('#formNuevoProducto').on('submit', async function (e) {
         }
       });
     } catch (err) {
-      alert('Error al subir imagen: ' + err.message);
+      showToast('Error al subir imagen: ' + err.message);
     }
   };
 
@@ -1383,28 +1454,31 @@ $('#formNuevoProducto').on('submit', async function (e) {
 let productoEditando = null;
 // Abrir modal de edición
 $(document).on('click', '.editar-producto', function () {
-  if (window.innerWidth < 768) {
-    const offcanvasInstance = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasContent'));
-    if (offcanvasInstance) {
-      offcanvasInstance.hide();
-    }
+  const isMobile = window.innerWidth < 768;
+  const $offcanvasEl = $('#offcanvasContent');
+  const offcanvasInstance = bootstrap.Offcanvas.getInstance($offcanvasEl[0]);
+  const $btn = $(this);
+
+  productoEditando = $btn.closest('.producto');
+
+  const mostrarModal = () => {
+    const nombre = productoEditando.find('.card-title').text();
+    const precio = productoEditando.find('.card-text').text().replace('Precio: ', '');
+    const imagen = productoEditando.find('img').attr('src');
+
+    $('#editarNombre').val(nombre);
+    $('#editarPrecio').val(precio);
+    $('#previewEditar').attr('src', imagen).removeClass('d-none');
+    $('#editarImagen').val('');
+    $('#modalEditarProducto').modal('show');
+  };
+
+  if (isMobile && offcanvasInstance) {
+    $offcanvasEl.one('hidden.bs.offcanvas', mostrarModal);
+    offcanvasInstance.hide();
+  } else {
+    mostrarModal();
   }
-  productoEditando = $(this).closest('.producto');
-
-  const nombre = productoEditando.find('.card-title').text();
-  const precio = productoEditando.find('.card-text').text().replace('Precio: ', '');
-  const imagen = productoEditando.find('img').attr('src');
-
-  $('#editarNombre').val(nombre);
-  $('#editarPrecio').val(precio);
-
-  // Mostramos la imagen actual en una etiqueta img aparte
-  $('#previewEditar').attr('src', imagen).removeClass('d-none');
-
-  // Limpiamos el input file
-  $('#editarImagen').val('');
-
-  $('#modalEditarProducto').modal('show');
 });
 
 // Previsualizar nueva imagen al editar
@@ -1432,14 +1506,14 @@ $('#formEditarProducto').on('submit', function (e) {
 
   if (file) {
     if (!file.type.startsWith('image/')) {
-      alert('El archivo seleccionado no es una imagen válida.');
+      showToast('El archivo seleccionado no es una imagen válida.');
       $('#editarImagen').val('');
       return;
     }
 
     const maxSize = 5 * 1024 * 1024;
     if (file.size > maxSize) {
-      alert('La imagen no debe superar los 5 MB.');
+      showToast('La imagen no debe superar los 5 MB.');
       return;
     }
 
@@ -1477,7 +1551,7 @@ reader.onload = async function (event) {
     });
 
   } catch (err) {
-    alert('Error al subir imagen a Imgur');
+    showToast('Error al subir imagen a Imgur');
   }
 };
 reader.readAsDataURL(file);
@@ -1574,68 +1648,75 @@ cargarAlertas();
 
 
 // Evento para editar alerta
-$(document).on('click', '.editar-alerta', function() {
-  if (window.innerWidth < 768) {
-    const offcanvasInstance = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasContent'));
-    if (offcanvasInstance) {
-      offcanvasInstance.hide();
-    }
-  }
-  var alertaCard = $(this).closest('.alerta');
-  
-  // Obtener los datos actuales de la alerta
-  var alertaId = alertaCard.data('id');
-  var alertaNombre = alertaCard.find('.card-title').text();
-  var alertaDescripcion = alertaCard.find('.card-text').text();
-  var alertaActivada = alertaCard.find('.form-check-input').prop('checked');
-  
-  // Mostrar el modal
-  $('#modalModificarAlerta').modal('show');
+$(document).on('click', '.editar-alerta', function () {
+  const isMobile = window.innerWidth < 768;
+  const $offcanvasEl = $('#offcanvasContent');
+  const offcanvasInstance = bootstrap.Offcanvas.getInstance($offcanvasEl[0]);
+  const $btn = $(this);
+  const alertaCard = $btn.closest('.alerta');
 
-  // Cambiar el título del modal a "Editar Alerta"
-  $('#modalModificarAlertaLabel').text('Editar alerta por correo');
+  const mostrarModal = () => {
+    // Obtener los datos actuales de la alerta
+    var alertaId = alertaCard.data('id');
+    var alertaNombre = alertaCard.find('.card-title').text();
+    var alertaDescripcion = alertaCard.find('.card-text').text();
+    var alertaActivada = alertaCard.find('.form-check-input').prop('checked');
 
-  // Llenar el formulario con los datos de la alerta
-  $('#alertaPalabraClave').val(alertaNombre);
-  $('#alertaCategoria').val(''); // O lo que corresponda a la categoría
-  $('#alertaFrecuencia').val('inmediata'); // Puedes adaptar esto también
-  $('#alertaEmail').val(''); // Aquí iría el email si fuera necesario
-  $('#alertaActiva').prop('checked', alertaActivada);
+    // Mostrar el modal
+    $('#modalModificarAlerta').modal('show');
 
-  // Cuando se haga clic en "Crear alerta", actualizar los datos
-  $('#formCrearAlerta').off('submit').on('submit', function(event) {
+    // Cambiar el título del modal
+    $('#modalModificarAlertaLabel').text('Editar alerta por correo');
+
+    // Llenar el formulario con los datos actuales
+    $('#alertaPalabraClave').val(alertaNombre);
+    $('#alertaCategoria').val(''); // Adaptar según lógica
+    $('#alertaFrecuencia').val('inmediata'); // Adaptar si es necesario
+    $('#alertaEmail').val(''); // Adaptar si manejas emails
+    $('#alertaActiva').prop('checked', alertaActivada);
+
+    // Preparar el envío del formulario
+    $('#formCrearAlerta').off('submit').on('submit', function (event) {
       event.preventDefault();
 
       var nombre = $('#alertaPalabraClave').val();
-      var descripcion = $('#alertaDescripcion').val(); // O ajusta si necesitas otro campo
+      var descripcion = $('#alertaDescripcion').val();
       var categoria = $('#alertaCategoria').val();
       var frecuencia = $('#alertaFrecuencia').val();
       var email = $('#alertaEmail').val();
       var activa = $('#alertaActiva').prop('checked');
 
-      // Aquí puedes hacer lo que necesites, como actualizar el DOM o enviar los datos al servidor
       const datosAlerta = {
-        categoria_id:categoria,
-        nombre_clave:nombre,
-    };
+        categoria_id: categoria,
+        nombre_clave: nombre,
+        // Agrega los demás campos si los usas en tu backend
+      };
+
       $.ajax({
         url: '../php/crearAlerta.php',
         type: 'POST',
         data: JSON.stringify(datosAlerta),
         contentType: 'application/json',
-        success: function(response) {
+        success: function (response) {
           showToast('Alerta añadida');
           console.log(response);
         },
-        error: function(xhr, status, error) {
+        error: function (xhr) {
           showToast('Error al crear la alerta');
           console.error(xhr.responseText);
         }
-    });
+      });
 
-      // Cerrar el modal
       $('#modalModificarAlerta').modal('hide');
-  });
+    });
+  };
+
+  if (isMobile && offcanvasInstance) {
+    $offcanvasEl.one('hidden.bs.offcanvas', mostrarModal);
+    offcanvasInstance.hide();
+  } else {
+    mostrarModal();
+  }
 });
 
 

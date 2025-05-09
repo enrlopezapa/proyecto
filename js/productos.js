@@ -6,6 +6,27 @@ $(document).ready(function () {
         $('#toastConfirmacion .toast-body').text(mensaje);
         toast.show();
     }
+
+  fetch("../php/obtenerCategorias.php")  // Cambia esto por la ruta real a tu PHP
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("Error al obtener las categorías");
+        }
+        return response.json();
+      })
+      .then(data => {
+        const select = document.getElementById("categoria");
+        data.forEach(nombre => {
+          const option = document.createElement("option");
+          option.value = nombre;
+          option.textContent = nombre;
+          select.appendChild(option);
+        });
+      })
+      .catch(error => {
+        console.error("Error:", error);
+      });
+
   // Obtener productos al cargar
   cargarProductos();
 
@@ -51,50 +72,51 @@ $('.btn.btn-success').on('click', function () {
   }
 
   function mostrarProductos(productos) {
-    const contenedor = $('#productos-container');
-    contenedor.empty();
+  const contenedor = $('#productos-container');
+  contenedor.empty();
 
-    if (productos.length === 0) {
-      contenedor.append('<p>No se encontraron productos.</p>');
-      return;
-    }
-
-    productos.forEach(p => {
-      const estrellas = generarEstrellas(p.calificacion);
-
-      const card = `
-        <article class="col-6 col-md-3">
-          <figure class="card h-100 product-card">
-            <img src="${p.imagen}" class="card-img-top" alt="${p.nombre}">
-            <figcaption class="card-body">
-              <div class="price">
-                <span class="old-price">${p.precio_original} €</span>
-                <span class="current-price">${p.precio_actual} €</span>
-              </div>
-              <p class="text-muted mb-0">${p.nombre}</p>
-              <div class="card-actions">
-                <button class="btn-favorite" type="button">
-                  <img src="../img/heart.svg" alt="favorito">
-                </button>
-                <div class="rating">${estrellas}</div>
-              </div>
-              <div class="mt-3 d-flex justify-content-between">
-                <form class="d-flex gap-2">
-                  <input type="hidden" name="productoId" value="${p.id}" />
-                  <button type="button" class="btn btn-outline-secondary btn-detalle">Ver detalles</button>
-                  <button type="button" class="btn btn-buy">Comprar</button>
-                </form>
-              </div>
-            </figcaption>
-          </figure>
-        </article>
-      `;
-      contenedor.append(card);
-    });
-
-    // Reasignar eventos dinámicos
-    asignarEventos();
+  if (productos.length === 0) {
+    contenedor.append('<p>No se encontraron productos.</p>');
+    return;
   }
+
+  console.log(productos)
+
+  productos.forEach(p => {
+    const estrellas = generarEstrellas(p.calificacion || 0); // por si calificacion es null o undefined
+
+    const card = `
+      <article class="col-6 col-md-3">
+        <figure class="card h-100 product-card">
+          <img src="${p.imgSrc}" class="card-img-top" alt="${p.alt}">
+          <figcaption class="card-body">
+            <div class="price">
+              <span class="old-price">${p.oldPrice ?? ''}</span>
+              <span class="current-price">${p.currentPrice}</span>
+            </div>
+            <p class="text-muted mb-0">${p.alt}</p>
+            <div class="card-actions">
+              <button class="btn-favorite" type="button">
+                <img src="../img/heart.svg" alt="favorito">
+              </button>
+              <div class="rating">${estrellas}</div>
+            </div>
+            <div class="mt-3 d-flex justify-content-between">
+              <form class="d-flex gap-2">
+                <input type="hidden" name="productoId" value="${p.id}" />
+                <button type="button" class="btn btn-outline-secondary btn-detalle">Ver detalles</button>
+                <button type="button" class="btn btn-buy">Comprar</button>
+              </form>
+            </div>
+          </figcaption>
+        </figure>
+      </article>
+    `;
+    contenedor.append(card);
+  });
+
+  asignarEventos();
+}
 
   function generarEstrellas(calificacion) {
     let estrellas = '';
@@ -113,7 +135,7 @@ $('.btn.btn-success').on('click', function () {
     $('.btn-detalle').off().on('click', function () {
       const productoId = $(this).closest('form').find('input[name="productoId"]').val();
       document.cookie = `producto_id=${productoId}; path=/; max-age=86400`;
-      window.location.href = 'detalle-producto.html';
+      window.location.href = 'detalle-producto.php';
     });
 
     $('.btn-buy').off().on('click', function () {

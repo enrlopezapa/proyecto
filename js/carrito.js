@@ -20,8 +20,9 @@ function cargarCarrito() {
             tbody.append(fila);
         });
 
-        // Pasar también los IDs al render del resumen
-        renderResumenCarrito(subtotal, productoIds);
+        if(productos && productos.length > 0){
+            renderResumenCarrito(subtotal, productoIds);
+        }
     });
 }
 

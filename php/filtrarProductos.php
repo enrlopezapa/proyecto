@@ -45,7 +45,7 @@ try {
 
     // Filtro por calificación mínima
     if ($calificacionMin > 0) {
-        $sql .= " AND p.valoracion_media >= :calificacion";
+        $sql .= " AND ROUND(p.valoracion_media) >= :calificacion";
         $params[':calificacion'] = $calificacionMin;
     }
 
@@ -64,9 +64,6 @@ try {
             $sql .= " ORDER BY p.fecha_produccion DESC";
             break;
     }
-
-    // Limitar resultados
-    $sql .= " LIMIT 16";
 
     $stmt = $conn->prepare($sql);
 

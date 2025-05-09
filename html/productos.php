@@ -16,43 +16,46 @@
   <script src="../js/productos.js"></script>
   <script type="module" src="../components/index.js"></script>
   <?php
-// Leer categoría desde cookie si existe
-if (isset($_COOKIE['categoria']) && !empty($_COOKIE['categoria'])) {
-    $categoria = $_COOKIE['categoria'];
-} else {
-    $categoria = '';
-}
+  session_start();
 
-// Leer búsqueda desde cookie si existe
-if (isset($_COOKIE['busqueda']) && !empty($_COOKIE['busqueda'])) {
-    $busqueda = $_COOKIE['busqueda'];
-} else {
-    $busqueda = '';
-}
+  if (isset($_GET['busqueda'])) {
+      setcookie('busqueda', $_GET['busqueda'], time() + 3600, '/'); // Expira en 1 hora
+  }
+
+  if (isset($_GET['categoria'])) {
+      setcookie('categoria', $_GET['categoria'], time() + 3600, '/'); // Expira en 1 hora
+  }
 ?>
+  <script>
+    window.usuarioLogueado = <?= isset($_SESSION['usuario_id']) ? 'true' : 'false' ?>;
+  </script>
 </head>
 
 <body>
 
   <!-- Header -->
-  <custom-header 
+    <custom-header 
   bootstrap-css="../bootstrap/css/bootstrap.min.css" 
   custom-css="../css/index.css" 
   ruta-html="../components/header/header-template.html"
   bootstrap-js="../bootstrap/js/bootstrap.bundle.min.js"
   jquery-js="../js/jquery-3.7.1.min.js"
-  index-link="../index.html"
+  index-link="../index.php"
   logo-link="../img/house-heart-fill.svg"
-  search-link="productos.html"
-  cart-link="carrito.html"
-  login-link="login.html"
-  productFruta-link="productos.html?category=fruta"
-  productVerdura-link="productos.html?category=verdura"
-  productOferta-link="productos.html?category=oferta"
-  productLocal-link="productos.html?category=local"
-  producto-link="productos.html"
-  nosotros-link="nosotros.html"
-  contacto-link="contacto.html"
+  search-link="productos.php"
+  cart-link="carrito.php"
+  login-link="login.php"
+  productFruta-link="productos.php?category=fruta"
+  productVerdura-link="productos.php?category=verdura"
+  productOferta-link="productos.php?category=oferta"
+  productLocal-link="productos.php?category=local"
+  producto-link="productos.php"
+  nosotros-link="nosotros.php"
+  contacto-link="contacto.php"
+  ruta-categoriasphp="../php/obtenerCategorias.php"
+  perfil-link="cuenta.php"
+  logout-link="../php/logout.php"
+  cart-link="carrito.php"
   ></custom-header>
 
 
@@ -80,10 +83,6 @@ if (isset($_COOKIE['busqueda']) && !empty($_COOKIE['busqueda'])) {
               <label for="categoria" class="form-label">Categoría</label>
               <select id="categoria" name="categoria" class="form-select">
                 <option value="">Todas</option>
-                <option>Frutas</option>
-                <option>Verduras</option>
-                <option>Locales</option>
-                <option>Ofertas</option>
               </select>
             </div>
             <!-- Precio -->

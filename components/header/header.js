@@ -19,6 +19,9 @@ export class CustomHeader extends HTMLElement {
     this.nosotrosLink = this.getAttribute('nosotros-link');
     this.contactoLink = this.getAttribute('contacto-link');
     this.rutaCategoriasphp = this.getAttribute('ruta-categoriasphp');
+    this.perfilLink = this.getAttribute('perfil-link');
+    this.logoutLink = this.getAttribute('logout-link');
+    this.cartLink = this.getAttribute('cart-link');
   }
 
   connectedCallback() {
@@ -89,6 +92,9 @@ export class CustomHeader extends HTMLElement {
     shadowRoot.querySelector('#producto-link')?.setAttribute('href', this.productoLink);
     shadowRoot.querySelector('#nosotros-link')?.setAttribute('href', this.nosotrosLink);
     shadowRoot.querySelector('#contacto-link')?.setAttribute('href', this.contactoLink);
+    shadowRoot.querySelector('#perfil-link')?.setAttribute('href', this.perfilLink);
+    shadowRoot.querySelector('#logout-link')?.setAttribute('href', this.logoutLink);
+    shadowRoot.querySelector('#cart-link')?.setAttribute('href', this.cartLink);
   }
 
   setupDropdown(shadowRoot) {
@@ -156,7 +162,7 @@ export class CustomHeader extends HTMLElement {
           const li = document.createElement('li');
           const a = document.createElement('a');
           a.classList.add('dropdown-item');
-          a.href = `html/productos.html?category=${encodeURIComponent(nombre.toLowerCase())}`;
+          a.href = `html/productos.php?categoria=${encodeURIComponent(nombre.toLowerCase())}`;
           a.textContent = nombre;
           li.appendChild(a);
           ul.appendChild(li);
@@ -164,11 +170,40 @@ export class CustomHeader extends HTMLElement {
   
         // Agregar el <ul> dentro del contenedor
         categoriasContainer.appendChild(ul);
+
+        this.setupCategoriasDropdown(shadowRoot);
       })
       .catch(error => {
         console.error('Error cargando categorías:', error);
       });
   }
+
+  setupCategoriasDropdown(shadowRoot) {
+  const categoriasToggle = shadowRoot.querySelector('#categorias-dropdown > a.dropdown-toggle');
+  const categoriasMenu = shadowRoot.querySelector('#categorias-dropdown > ul.dropdown-menu');
+
+  if (categoriasToggle && categoriasMenu) {
+    categoriasToggle.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      categoriasMenu.classList.toggle('show');
+    });
+
+    // Cierra el dropdown si se hace clic fuera
+    shadowRoot.addEventListener('click', (e) => {
+      if (!categoriasToggle.contains(e.target)) {
+        categoriasMenu.classList.remove('show');
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      const path = e.composedPath();
+      if (!path.includes(shadowRoot.host)) {
+        categoriasMenu.classList.remove('show');
+      }
+    });
+  }
+}
   
 
   setupNavbarToggler(shadowRoot) {

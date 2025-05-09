@@ -23,7 +23,7 @@ if (!$email || !$password) {
 }
 
 // Buscar al usuario y su contraseña
-$sql = "SELECT u.id, u.nombre, u.email, s.contrasena 
+$sql = "SELECT u.id, u.nombre, u.email, s.contrasena, u.administrador 
         FROM usuarios u
         JOIN seguridad_usuarios s ON u.id = s.usuario_id
         WHERE u.email = :email";
@@ -38,6 +38,7 @@ if ($usuario && password_verify($password, $usuario['contrasena'])) {
     $_SESSION['usuario_id'] = $usuario['id'];
     $_SESSION['usuario_nombre'] = $usuario['nombre'];
     $_SESSION['usuario_email'] = $usuario['email'];
+    $_SESSION['usuario_admin'] = $usuario['administrador'];
 
     echo json_encode(['success' => true, 'message' => 'Inicio de sesión exitoso']);
     exit;
