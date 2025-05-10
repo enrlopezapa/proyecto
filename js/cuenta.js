@@ -451,24 +451,26 @@ function cargarProductos() {
 
           // Iterar sobre los productos y generar las tarjetas
           productos.forEach(producto => {
-              contenido += `
-                  <div class="col-md-4 producto">
-                      <div class="card">
-                          <img src="${producto.imagen_url || '../img/default.svg'}" class="card-img-top" alt="${producto.nombre}">
-                          <div class="card-body">
-                              <h5 class="card-title">${producto.nombre}</h5>
-                              <p class="card-text">Cantidad: ${producto.cantidad_disponible} ${producto.unidad_medida}</p>
-                              <p class="card-text">Lote: ${producto.numero_lote}</p>
-                              <p class="card-text">Producción: ${producto.fecha_produccion}</p>
-                              <p class="card-text">Caducidad: ${producto.fecha_caducidad}</p>
-                              <div class="d-flex justify-content-between">
-                                  <button class="btn btn-outline-primary btn-sm btn-editar editar-producto" data-id="${producto.id}">Editar</button>
-                                  <button class="btn btn-outline-danger btn-sm btn-eliminar" data-id="${producto.id}">Eliminar</button>
-                              </div>
-                          </div>
-                      </div>
+            contenido += `
+              <div class="col-md-4 producto">
+                <div class="card">
+                  <img src="${producto.imagen_url || '../img/default.svg'}" class="card-img-top" alt="${producto.nombre}">
+                  <div class="card-body">
+                    <h5 class="card-title">${producto.nombre}</h5>
+                    <p class="card-text">${producto.descripcion || 'Sin descripción'}</p>
+                    <p class="card-text">Fecha de producción: ${producto.fecha_produccion || 'No especificada'}</p>
+                    <p class="card-text">Unidad: ${producto.unidad_medida || 'N/A'}</p>
+                    <p class="card-text">Precio: $${parseFloat(producto.precio_actual).toFixed(2)}</p>
+                    <p class="card-text">Valoración: ${producto.valoracion_media ?? '0.0'}</p>
+                    <p class="card-text">Estado: ${producto.vendido ? 'Vendido' : 'Disponible'}</p>
+                    <div class="d-flex justify-content-between">
+                      <button class="btn btn-outline-primary btn-sm btn-editar editar-producto" data-id="${producto.id}">Editar</button>
+                      <button class="btn btn-outline-danger btn-sm btn-eliminar eliminar-producto" data-id="${producto.id}">Eliminar</button>
+                    </div>
                   </div>
-              `;
+                </div>
+              </div>
+            `;
           });
 
           contenido += `</div>`; // cerrar #lista-productos
@@ -544,27 +546,27 @@ function cargarPerfil() {
 
           // Asegurarse de que el panel tenga el contenido dinámico
           const contenido = `
-              <h2>Editar perfil</h2>
-              <form class="mt-3">
-                <div class="mb-3">
-                  <label class="form-label">Nombre completo</label>
-                  <input type="text" class="form-control" value="${perfil.nombre || ''}">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Email</label>
-                  <input type="email" class="form-control" value="${perfil.email || ''}">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Teléfono</label>
-                  <input type="tel" class="form-control" value="${perfil.telefono || ''}">
-                </div>
-                <div class="mb-3">
-                  <label class="form-label">Dirección</label>
-                  <input type="text" class="form-control" value="${perfil.direccion || ''}">
-                </div>
-                <button class="btn btn-primary" type="button" onclick="showToast('Perfil actualizado')">Guardar cambios</button>
-              </form>
-          `;
+  <h2>Editar perfil</h2>
+  <form id="formPerfil" class="mt-3">
+    <div class="mb-3">
+      <label class="form-label">Nombre completo</label>
+      <input type="text" class="form-control" name="nombre" value="${perfil.nombre || ''}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input type="email" class="form-control" name="email" value="${perfil.email || ''}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Teléfono</label>
+      <input type="tel" class="form-control" name="telefono" value="${perfil.telefono || ''}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Dirección</label>
+      <input type="text" class="form-control" name="direccion" value="${perfil.direccion || ''}">
+    </div>
+    <button class="btn btn-primary" type="submit">Guardar cambios</button>
+  </form>
+`;
 
           $panel.hide().html(contenido).fadeIn();
       },
@@ -787,7 +789,7 @@ function cargarSeguridad() {
                       <label class="form-label">Nueva contraseña</label>
                       <input type="password" class="form-control" id="new-password">
                   </div>
-                  <button class="btn btn-danger" type="button" onclick="actualizarContrasena()">Actualizar contraseña</button>
+                  <button class="btn btn-danger" type="button" id="btn-actualizar-contrasena">Actualizar contraseña</button>
               </form>
               <p class="mt-3 text-muted small">Último cambio de contraseña: ${new Date(perfilSeguridad.fecha_ultimo_cambio_contrasena).toLocaleString()}</p>
           `;
@@ -808,39 +810,7 @@ function cargarSeguridad() {
 
 
 
-
-
-
-
-  async function subirImagenAImgur(base64Data) {
-    const clientId = 'ee44c21a97e88d1';
-    const response = await fetch('https://api.imgur.com/3/image', {
-      method: 'POST',
-      headers: {
-        Authorization: 'Client-ID ' + clientId,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        image: base64Data.split(',')[1], // quitamos el encabezado "data:image/jpeg;base64,"
-        type: 'base64'
-      })
-    });
-  
-    const data = await response.json();
-    if (data.success) {
-      return data.data.link;
-    } else {
-      throw new Error('Error al subir la imagen a Imgur');
-    }
-  }
-
-
-
-
-
-
-
-  // EDITAR PRODUCTO ADMIN
+ // Mostrar modal para editar producto
 $(document).on('click', '.editar-producto-admin', function () {
   const isMobile = window.innerWidth < 768;
   const offcanvasInstance = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasContent'));
@@ -849,7 +819,7 @@ $(document).on('click', '.editar-producto-admin', function () {
   if (isMobile && offcanvasInstance) {
     offcanvasInstance.hide();
     $('.modal-backdrop').remove();
-      mostrarModalEditar($btn);
+    mostrarModalEditar($btn);
   } else {
     mostrarModalEditar($btn);
   }
@@ -859,15 +829,17 @@ function mostrarModalEditar($triggerBtn) {
   const fila = $triggerBtn.closest('tr');
 
   const producto = {
-    id: fila.find('td:eq(0)').text().trim(), // ID está en la primera columna
+    id: fila.find('td:eq(0)').text().trim(),
     nombre: fila.find('td:eq(1)').text().trim(),
     descripcion: fila.find('td:eq(2)').text().trim(),
     fecha_produccion: fila.find('td:eq(4)').text().trim(),
     unidad_medida: fila.find('td:eq(5)').text().trim(),
     precio: parseFloat(fila.find('td:eq(6)').text().replace('$', '').trim()),
-    vendido: fila.find('td:eq(10)').text().trim() === 'Sí' ? 1 : 0
-};
-  console.log(producto)
+    vendido: fila.find('td:eq(10)').text().trim() === 'Sí' ? 1 : 0,
+    imagen_url: fila.find('td:eq(3)').find('img').attr('src') || '' // Asume que hay una <img> en la columna 3
+  };
+
+  console.log(producto);
 
   $('#editarProductoIdAdmin').val(producto.id);
   $('#editarNombreAdmin').val(producto.nombre);
@@ -876,48 +848,70 @@ function mostrarModalEditar($triggerBtn) {
   $('#editarUnidadMedidaAdmin').val(producto.unidad_medida);
   $('#editarPrecioAdmin').val(producto.precio);
   $('#editarVendidoAdmin').val(producto.vendido);
+  $('#editarImagenUrl').val(producto.imagen_url);
+
+  if (producto.imagen_url) {
+    $('#previewEditarAdmin').attr('src', producto.imagen_url).removeClass('d-none');
+  } else {
+    $('#previewEditarAdmin').addClass('d-none').attr('src', '');
+  }
 
   $('#modalEditarProductoAdmin').modal('show');
 }
 
-// Envío del formulario
-$('#formEditarProductoAdmin').submit(function(e) {
+// Previsualización de imagen
+$('#editarImagenAdmin').on('change', function () {
+  const file = this.files[0];
+  if (file && file.type.startsWith('image/')) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      $('#previewEditarAdmin').attr('src', e.target.result).removeClass('d-none');
+    };
+    reader.readAsDataURL(file);
+  } else {
+    $('#previewEditarAdmin').addClass('d-none').attr('src', '');
+  }
+});
+
+// Envío del formulario con imagen
+$('#formEditarProductoAdmin').submit(function (e) {
   e.preventDefault();
-   const editarProductoId = $('#editarProductoIdAdmin').val();
-  const editarNombre = $('#editarNombreAdmin').val();
-  const editarDescripcion = $('#editarDescripcionAdmin').val();
-  const editarImagenUrl = $('#editarImagenUrl').val();
-  const editarFechaProduccion = $('#editarFechaProduccionAdmin').val();
-  const editarUnidadMedida = $('#editarUnidadMedidaAdmin').val();
-  const editarPrecio = $('#editarPrecioAdmin').val();
-  const editarVendido = $('#editarVendidoAdmin').val();
 
-  const datos = {
-      productoId: editarProductoId,
-      nombre: editarNombre,
-      descripcion: editarDescripcion,
-      imagenUrl: editarImagenUrl,
-      fechaProduccion: editarFechaProduccion,
-      unidadMedida: editarUnidadMedida,
-      precio: editarPrecio,
-      vendido: editarVendido
-  };
+  const formData = new FormData();
+  const file = $('#editarImagenAdmin')[0].files[0];
 
-  console.log(datos)
+  if (file) {
+    if (!file.type.startsWith('image/') || file.size > 5 * 1024 * 1024) {
+      showToast('Imagen inválida. Debe ser una imagen y menor a 5MB.');
+      return;
+    }
+    formData.append('imagen', file);
+  }
+
+  formData.append('id', $('#editarProductoIdAdmin').val());
+  formData.append('nombre', $('#editarNombreAdmin').val());
+  formData.append('descripcion', $('#editarDescripcionAdmin').val());
+  formData.append('fecha_produccion', $('#editarFechaProduccionAdmin').val() || new Date().toISOString().slice(0, 10));
+  formData.append('unidad_medida', $('#editarUnidadMedidaAdmin').val());
+  formData.append('precio_actual', $('#editarPrecioAdmin').val());
+  formData.append('vendido', $('#editarVendidoAdmin').val());
+  formData.append('imagen_url', $('#editarImagenUrl').val());
 
   $.ajax({
-      url: '../php/actualizarProductoAdmin.php',
-      method: 'POST',
-      data: datos,
-      success: function(respuesta) {
-        console.log(respuesta)
-          showToast('Producto actualizado correctamente');
-          $('#modalEditarProductoAdmin').modal('hide');
-          cargarAdminProductos(); // Recargar la tabla
-      },
-      error: function() {
-          showToast('Error al actualizar el producto');
-      }
+    url: '../php/actualizarProductoAdmin.php',
+    type: 'POST',
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function (respuesta) {
+      console.log(respuesta);
+      showToast('Producto actualizado correctamente');
+      $('#modalEditarProductoAdmin').modal('hide');
+      cargarAdminProductos();
+    },
+    error: function () {
+      showToast('Error al actualizar el producto');
+    }
   });
 });
 
@@ -1551,7 +1545,7 @@ $(document).on('click', '.eliminar-categoria-admin', function () {
 
 
 
-//AÑADIR PRODUCTO
+// Oculta offcanvas en móviles al abrir el modal
 $(document).on('click', '[data-bs-target="#modalProducto"]', function () {
   if (window.innerWidth < 768) {
     const offcanvasInstance = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasContent'));
@@ -1560,7 +1554,8 @@ $(document).on('click', '[data-bs-target="#modalProducto"]', function () {
     }
   }
 });
-  // Previsualizar imagen al seleccionar archivo
+
+// Previsualizar imagen al seleccionar archivo
 $('#nuevoImagen').on('change', function () {
   const file = this.files[0];
   if (file && file.type.startsWith('image/')) {
@@ -1575,61 +1570,44 @@ $('#nuevoImagen').on('change', function () {
 });
 
 // Manejo del formulario para añadir nuevo producto
-$('#formNuevoProducto').on('submit', async function (e) {
+$('#formNuevoProducto').on('submit', function (e) {
   e.preventDefault();
 
-  const nombre = $('#nuevoNombre').val();
-  const precio = $('#nuevoPrecio').val();
   const fileInput = $('#nuevoImagen')[0];
   const file = fileInput.files[0];
-  const fecha_prod = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-  // Validaciones
   if (!file || !file.type.startsWith('image/') || file.size > 5 * 1024 * 1024) {
     showToast('Imagen inválida.');
     return;
   }
 
-  const reader = new FileReader();
-  reader.onload = async function (event) {
-    try {
-      const imageUrl = await subirImagenAImgur(event.target.result);
+  const formData = new FormData(this);
 
-      const datosProducto = {
-        nombre,
-        descripcion: "",
-        imagen_url: imageUrl,
-        fecha_produccion: fecha_prod,
-        unidad_medida: "kg",
-        cantidad_disponible: 1,
-        categoria_id: "",
-        precio_actual: precio
-      };
+  // Si no se proporciona fecha, establecer fecha actual
+  if (!formData.get('fecha_produccion')) {
+    const hoy = new Date().toISOString().slice(0, 10);
+    formData.set('fecha_produccion', hoy);
+  }
 
-      $.ajax({
-        url: '../php/crearProducto.php',
-        type: 'POST',
-        data: JSON.stringify(datosProducto),
-        contentType: 'application/json',
-        success: function(response) {
-          showToast('Producto añadido');
-          console.log(response);
-          cargarProductos();
-          $('#modalProducto').modal('hide');
-          $('#formNuevoProducto')[0].reset();
-          $('#previewNueva').attr('src', '').addClass('d-none');
-        },
-        error: function(xhr) {
-          showToast('Error al crear el producto');
-          console.error(xhr.responseText);
-        }
-      });
-    } catch (err) {
-      showToast('Error al subir imagen: ' + err.message);
+  $.ajax({
+    url: '../php/crearProducto.php',
+    type: 'POST',
+    data: formData,
+    processData: false,  // No procesar como query string
+    contentType: false,  // No establecer content-type, lo hace automáticamente FormData
+    success: function (response) {
+      showToast('Producto añadido');
+      console.log(response);
+      cargarProductos();
+      $('#modalProducto').modal('hide');
+      $('#formNuevoProducto')[0].reset();
+      $('#previewNueva').attr('src', '').addClass('d-none');
+    },
+    error: function (xhr) {
+      showToast('Error al crear el producto');
+      console.error(xhr.responseText);
     }
-  };
-
-  reader.readAsDataURL(file);
+  });
 });
 
 
@@ -1652,25 +1630,43 @@ $('#formNuevoProducto').on('submit', async function (e) {
 
 
 let productoEditando = null;
+
 // Abrir modal de edición
 $(document).on('click', '.editar-producto', function () {
+  console.log('Botón editar clickeado');
   const isMobile = window.innerWidth < 768;
   const $offcanvasEl = $('#offcanvasContent');
   const offcanvasInstance = bootstrap.Offcanvas.getInstance($offcanvasEl[0]);
   const $btn = $(this);
 
+  // Obtener el id del producto desde el data-id del botón
+  const id = $btn.data('id');
+  
+  // Buscar el producto en el DOM utilizando el id
   productoEditando = $btn.closest('.producto');
 
   const mostrarModal = () => {
-    const nombre = productoEditando.find('.card-title').text();
-    const precio = productoEditando.find('.card-text').text().replace('Precio: ', '');
+    const cardBody = productoEditando.find('.card-body');
+
+    const nombre = cardBody.find('.card-title').text();
+    const descripcion = cardBody.find('.card-text').eq(0).text().replace('Sin descripción', '').trim();
+    const fecha = cardBody.find('.card-text').eq(1).text().replace('Fecha de producción: ', '').trim();
+    const unidad = cardBody.find('.card-text').eq(2).text().replace('Unidad: ', '').trim();
+    const precio = cardBody.find('.card-text').eq(3).text().replace('Precio: $', '').trim();
     const imagen = productoEditando.find('img').attr('src');
 
+    // Llenar formulario
+    $('#editarProductoId').val(id);
     $('#editarNombre').val(nombre);
-    $('#editarPrecio').val(precio);
+    $('#editarDescripcion').val(descripcion);
+    $('#editarUnidadProducto').val(unidad);
+    $('#editarFechaProduccionProducto').val(fecha !== 'No especificada' ? fecha : '');
+    $('#editarPrecioProducto').val(precio);
     $('#previewEditar').attr('src', imagen).removeClass('d-none');
     $('#editarImagen').val('');
-    $('#modalEditarProducto').modal('show');
+
+    const modalEditarProducto = new bootstrap.Modal(document.getElementById('modalEditarProducto'));
+    modalEditarProducto.show();
   };
 
   if (isMobile && offcanvasInstance) {
@@ -1681,7 +1677,7 @@ $(document).on('click', '.editar-producto', function () {
   }
 });
 
-// Previsualizar nueva imagen al editar
+// Previsualizar nueva imagen
 $('#editarImagen').on('change', function () {
   const file = this.files[0];
   if (file && file.type.startsWith('image/')) {
@@ -1695,95 +1691,47 @@ $('#editarImagen').on('change', function () {
   }
 });
 
-// Guardar cambios de edición
+// Enviar formulario con imagen
 $('#formEditarProducto').on('submit', function (e) {
   e.preventDefault();
 
-  const nuevoNombre = $('#editarNombre').val();
-  const nuevoPrecio = $('#editarPrecio').val();
-  const fileInput = $('#editarImagen')[0];
-  const file = fileInput.files[0];
+  const formData = new FormData(this);
+  const file = $('#editarImagen')[0].files[0];
 
-  if (file) {
-    if (!file.type.startsWith('image/')) {
-      showToast('El archivo seleccionado no es una imagen válida.');
-      $('#editarImagen').val('');
-      return;
-    }
-
-    const maxSize = 5 * 1024 * 1024;
-    if (file.size > maxSize) {
-      showToast('La imagen no debe superar los 5 MB.');
-      return;
-    }
-
-    const reader = new FileReader();
-reader.onload = async function (event) {
-  try {
-    const nuevaImagenUrl = await subirImagenAImgur(event.target.result);
-
-    const datosProducto = {
-      id: productoEditando.data('id'),
-      nombre: nuevoNombre,
-      descripcion: "",
-      imagen_url: nuevaImagenUrl,
-      fecha_produccion: fecha_prod,
-      unidad_medida: "kg",
-      precio_actual: nuevoPrecio,
-      categoria_id: ""
-    };
-
-    $.ajax({
-      url: '../php/actualizarProducto.php',
-      type: 'POST',
-      data: JSON.stringify(datosProducto),
-      contentType: 'application/json',
-      success: function(response) {
-        showToast('Producto actualizado');
-        console.log(response);
-        cargarProductos();
-        $('#modalEditarProducto').modal('hide');
-      },
-      error: function(xhr) {
-        showToast('Error al actualizar producto');
-        console.error(xhr.responseText);
-      }
-    });
-
-  } catch (err) {
-    showToast('Error al subir imagen a Imgur');
+  // Verificar si la imagen fue modificada
+  if (file && (!file.type.startsWith('image/') || file.size > 5 * 1024 * 1024)) {
+    showToast('Imagen inválida. Asegúrate de que es una imagen y menor de 5MB.');
+    return;
   }
-};
-reader.readAsDataURL(file);
-  } else {
-    const datosProducto = {
-      nombre: nuevoNombre,
-      descripcion: "",
-      imagen_url: "",
-      fecha_produccion: fecha_prod,
-      unidad_medida: "kg",
-      categoria_id: ""
-  };
-    // Solo actualiza nombre y precio si no hay nueva imagen
-    $.ajax({
-      url: '../php/modificarProducto.php',
-      type: 'POST',
-      data: JSON.stringify(datosProducto),
-      contentType: 'application/json',
-      success: function(response) {
-        showToast('Producto añadido');
-        console.log(response);
-      },
-      error: function(xhr, status, error) {
-        showToast('Error al crear el producto');
-        console.error(xhr.responseText);
-      }
+
+  // Si no se modificó la imagen, no se necesita enviar el campo de la imagen
+  if (!file) {
+    formData.delete('imagen'); // Eliminar el campo 'imagen' si no se modificó
+  }
+
+  // Si no hay fecha, establecer fecha actual
+  if (!formData.get('fecha_produccion')) {
+    const hoy = new Date().toISOString().slice(0, 10);
+    formData.set('fecha_produccion', hoy);
+  }
+
+  $.ajax({
+    url: '../php/actualizarProducto.php',
+    type: 'POST',
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function (response) {
+      showToast('Producto actualizado');
+      console.log(response);
+      $('#modalEditarProducto').modal('hide');
+      cargarProductos();
+    },
+    error: function (xhr) {
+      showToast('Error al actualizar el producto');
+      console.error(xhr.responseText);
+    }
   });
-
-    cargarProductos()
-    $('#modalEditarProducto').modal('hide');
-    showToast('Producto actualizado');
-  }
 });
 
 
@@ -1933,6 +1881,83 @@ $(document).on('click', '.editar-alerta', function () {
 
 
 
+$(document).on('submit', '#formPerfil', function (e) {
+  e.preventDefault();
+
+  const datos = $(this).serialize(); // convierte inputs en string tipo "nombre=...&email=..."
+
+  $.ajax({
+    url: '../php/actualizarPerfil.php',
+    type: 'POST',
+    data: datos,
+    success: function (respuesta) {
+      if (respuesta.status === 'ok') {
+        showToast('Perfil actualizado correctamente');
+      } else {
+        showToast(respuesta.mensaje || 'Error al actualizar el perfil');
+      }
+    },
+    error: function (xhr) {
+      console.error(xhr.responseText);
+      showToast('Error en la solicitud');
+    }
+  });
+});
+
+
+
+
+
+
+
+
+
+
+$(document).on('click', '#btn-actualizar-contrasena', function () {
+  const actual = $('#current-password').val().trim();
+  const nueva = $('#new-password').val().trim();
+
+  if (!actual || !nueva) {
+    showToast('Completa ambos campos de contraseña');
+    return;
+  }
+
+  $.ajax({
+    url: '../php/actualizarContrasena.php',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      contrasena_actual: actual,
+      contrasena_nueva: nueva
+    },
+    success: function (respuesta) {
+      if (respuesta.status === 'ok') {
+        showToast('Contraseña actualizada correctamente');
+        $('#current-password').val('');
+        $('#new-password').val('');
+        cargarSeguridad(); // Vuelve a cargar los datos de seguridad
+      } else {
+        showToast(respuesta.mensaje || 'Error al actualizar la contraseña');
+      }
+    },
+    error: function (xhr) {
+      console.error(xhr.responseText);
+      showToast('Error del servidor al cambiar contraseña');
+    }
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1941,11 +1966,31 @@ $(document).on('click', '.editar-alerta', function () {
 
 
   // Eliminar producto
-  $(document).on('click', '.btn-eliminar', function () {
-    const card = $(this).closest('.producto');
-    card.fadeOut(() => card.remove());
-    showToast('Producto eliminado');
+$(document).on('click', '.eliminar-producto', function () {
+  const $btn = $(this);
+  const id = $btn.data('id');
+
+  if (!confirm('¿Estás seguro de que deseas eliminar este producto?')) return;
+
+  $.ajax({
+    url: '../php/eliminarProductoAdmin.php',
+    type: 'POST',
+    data: { id: id },
+    success: function (response) {
+      const res = JSON.parse(response);
+      if (res.status === 'ok') {
+        showToast('Producto eliminado correctamente');
+        cargarProductos();
+      } else {
+        showToast(response.mensaje || 'No se pudo eliminar el producto');
+      }
+    },
+    error: function (xhr) {
+      showToast('Error al eliminar el producto');
+      console.error(xhr.responseText);
+    }
   });
+});
 
 
 

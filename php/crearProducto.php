@@ -11,55 +11,74 @@ if (!isset($_SESSION['usuario_id'])) {
 require_once 'conexion.php';
 
 $usuario_id = $_SESSION['usuario_id'];
-$datos = json_decode(file_get_contents('php://input'), true);
 
 // Validar campos obligatorios
-$campos_obligatorios = ['nombre', 'descripcion', 'imagen_url', 'fecha_produccion', 'unidad_medida', 'precio_actual', 'categoria_id'];
+$campos_obligatorios = ['nombre', 'descripcion', 'fecha_produccion', 'unidad_medida', 'precio_actual', 'categoria_id'];
 foreach ($campos_obligatorios as $campo) {
-    if (!isset($datos[$campo])) {
+    if (empty($_POST[$campo])) {
         http_response_code(400);
         echo json_encode(['error' => "Falta el campo requerido: $campo"]);
         exit;
     }
 }
 
-$sql = "INSERT INTO productos (
-            id,
-            nombre,
-            descripcion,
-            imagen_url,
-            fecha_produccion,
-            unidad_medida,
-            precio_actual,
-            usuario_id,
-            categoria_id
-        ) VALUES (
-            UUID(),
-            :nombre,
-            :descripcion,
-            :imagen_url,
-            :fecha_produccion,
-            :unidad_medida,
-            :precio_actual,
-            :usuario_id,
-            :categoria_id
-        )";
+// Validar imagen
+if (!isset($_FILES['imagen']) || $_FILES['imagen']['error'] !== UPLOAD_ERR_OK) {
+    http_response_code(400);
+    echo json_encode(['error' => 'Error al subir la imagen']);
+    exit;
+}
+
+$nombreImagen = uniqid() . '_' . basename($_FILES['imagen']['name']);
+$rutaDestino = '../img/' . $nombreImagen;
+$rutaParaBD = '../img/' . $nombreImagen;
+
+if (!move_uploaded_file($_FILES['imagen']['tmp_name'], $rutaDestino)) {
+    http_response_code(500);
+    echo json_encode(['error' => 'No se pudo guardar la imagen']);
+    exit;
+}
 
 try {
+    $sql = "INSERT INTO productos (
+                id,
+                nombre,
+                descripcion,
+                imagen_url,
+                fecha_produccion,
+                unidad_medida,
+                precio_actual,
+                usuario_id,
+                categoria_id,
+                vendido
+            ) VALUES (
+                UUID(),
+                :nombre,
+                :descripcion,
+                :imagen_url,
+                :fecha_produccion,
+                :unidad_medida,
+                :precio_actual,
+                :usuario_id,
+                :categoria_id,
+                FALSE
+            )";
+
     $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':nombre', $datos['nombre']);
-    $stmt->bindParam(':descripcion', $datos['descripcion']);
-    $stmt->bindParam(':imagen_url', $datos['imagen_url']);
-    $stmt->bindParam(':fecha_produccion', $datos['fecha_produccion']);
-    $stmt->bindParam(':unidad_medida', $datos['unidad_medida']);
-    $stmt->bindParam(':precio_actual', $datos['precio_actual']);
+    $stmt->bindParam(':nombre', $_POST['nombre']);
+    $stmt->bindParam(':descripcion', $_POST['descripcion']);
+    $stmt->bindParam(':imagen_url', $rutaParaBD);
+    $stmt->bindParam(':fecha_produccion', $_POST['fecha_produccion']);
+    $stmt->bindParam(':unidad_medida', $_POST['unidad_medida']);
+    $stmt->bindParam(':precio_actual', $_POST['precio_actual']);
     $stmt->bindParam(':usuario_id', $usuario_id);
-    $stmt->bindParam(':categoria_id', $datos['categoria_id']);
-    
+    $stmt->bindParam(':categoria_id', $_POST['categoria_id']);
+
     $stmt->execute();
 
-    echo json_encode(['mensaje' => 'Producto creado correctamente.']);
+    echo json_encode(['status' => 'ok', 'mensaje' => 'Producto creado correctamente.']);
 
+    // Enviar alertas
     $sql_alertas = "SELECT u.email, u.nombre, c.nombre AS categoria
                     FROM alertas_usuario a
                     JOIN usuarios u ON a.usuario_id = u.id
@@ -67,16 +86,18 @@ try {
                     WHERE a.categoria_id = :categoria_id AND a.activo = 1";
 
     $stmt_alertas = $conn->prepare($sql_alertas);
-    $stmt_alertas->bindParam(':categoria_id', $datos['categoria_id']);
+    $stmt_alertas->bindParam(':categoria_id', $_POST['categoria_id']);
     $stmt_alertas->execute();
     $alertas = $stmt_alertas->fetchAll(PDO::FETCH_ASSOC);
+
     require "Envios.php";
     $nuevoMail = new Envios();
+
     foreach ($alertas as $alerta) {
         $destinatario = $alerta['email'];
         $subject = "Nuevo producto disponible en la categoría: " . $alerta['categoria'];
-        $message = "Hola " . $alerta['nombre'] . ",\n\nSe ha publicado un nuevo producto en la categoría \"" . $alerta['categoria'] . "\".\n\nNombre del producto: " . $datos['nombre'] . "\nDescripción: " . $datos['descripcion'] . "\n\nSaludos,\nEl grupo de Wallafood";
-        $nuevoMail->enviarMail($subject,$message,$destinatario);
+        $message = "Hola " . $alerta['nombre'] . ",\n\nSe ha publicado un nuevo producto en la categoría \"" . $alerta['categoria'] . "\".\n\nNombre del producto: " . $_POST['nombre'] . "\nDescripción: " . $_POST['descripcion'] . "\n\nSaludos,\nEl grupo de Wallafood";
+        $nuevoMail->enviarMail($subject, $message, $destinatario);
     }
 
 } catch (PDOException $e) {

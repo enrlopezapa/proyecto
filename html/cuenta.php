@@ -72,7 +72,7 @@
     </div>
   </div>
 
-  <!-- Modal Añadir Producto -->
+ <!-- Modal Añadir Producto -->
 <div class="modal fade" id="modalProducto" tabindex="-1" aria-labelledby="modalProductoLabel" aria-hidden="true">
   <div class="modal-dialog">
     <form class="modal-content" id="formNuevoProducto" enctype="multipart/form-data">
@@ -81,57 +81,106 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
+        <!-- Nombre -->
         <div class="mb-3">
-          <label class="form-label">Nombre</label>
+          <label class="form-label" for="nuevoNombre">Nombre</label>
           <input type="text" class="form-control" id="nuevoNombre" name="nombre" required>
         </div>
+
+        <!-- Descripción -->
         <div class="mb-3">
-          <label class="form-label">Precio</label>
-          <input type="text" class="form-control" id="nuevoPrecio" name="precio" required>
+          <label class="form-label" for="nuevoDescripcion">Descripción</label>
+          <textarea class="form-control" id="nuevoDescripcion" name="descripcion" rows="3"></textarea>
         </div>
+
+        <!-- Imagen -->
         <div class="mb-3">
           <label class="form-label">Imagen</label>
           <input type="file" class="form-control" id="nuevoImagen" name="imagen" accept="image/*" required>
           <!-- Imagen de previsualización -->
           <img id="previewNueva" class="img-fluid mt-2 d-none" alt="Previsualización imagen" />
         </div>
-      </div>
+
+        <!-- Fecha de Producción -->
+        <div class="mb-3">
+          <label class="form-label" for="nuevoFechaProduccion">Fecha de Producción</label>
+          <input type="date" class="form-control" id="nuevoFechaProduccion" name="fecha_produccion">
+        </div>
+
+        <!-- Unidad de Medida -->
+        <div class="mb-3">
+          <label class="form-label" for="nuevoUnidadMedida">Unidad de Medida</label>
+          <input type="text" class="form-control" id="nuevoUnidadMedida" name="unidad_medida" placeholder="Ej: kg, litro, unidad">
+        </div>
+
+        <!-- Precio Actual -->
+        <div class="mb-3">
+          <label class="form-label" for="nuevoPrecio">Precio</label>
+          <input type="number" class="form-control" id="nuevoPrecio" name="precio_actual" step="0.01" required>
+        </div>
+
+        <!-- Categoría -->
+        <div class="mb-3">
+          <label class="form-label" for="nuevoCategoria">Categoría</label>
+          <select class="form-select" id="nuevoCategoria" name="categoria_id">
+            <option value="">-- Selecciona una categoría --</option>
+            <option value="cat-bbb-002">fruta</option>
+          </select>
+        </div>
+
       <div class="modal-footer">
         <button type="submit" class="btn btn-success">Guardar</button>
       </div>
     </form>
   </div>
 </div>
+</div>
 
   <!-- Modal Editar Producto -->
 <div class="modal fade" id="modalEditarProducto" tabindex="-1" aria-labelledby="modalEditarProductoLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <form class="modal-content" id="formEditarProducto" enctype="multipart/form-data">
+  <div class="modal-dialog">
+    <form class="modal-content" id="formEditarProducto" enctype="multipart/form-data">
+      
         <div class="modal-header">
-          <h5 class="modal-title" id="modalEditarProductoLabel">Editar producto</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          <h5 class="modal-title" id="modalEditarProductoLabel">Editar Producto</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
         <div class="modal-body">
-          <div class="mb-3">
-            <label class="form-label">Nombre</label>
-            <input type="text" class="form-control" id="editarNombre" required>
+          <input type="hidden" id="editarProductoId" name="id">
+          <div class="form-group">
+            <label for="editarNombre">Nombre</label>
+            <input type="text" class="form-control" id="editarNombre" name="nombre" required>
           </div>
-          <div class="mb-3">
-            <label class="form-label">Precio</label>
-            <input type="text" class="form-control" id="editarPrecio" required>
+          <div class="form-group">
+            <label for="editarDescripcion">Descripción</label>
+            <textarea class="form-control" id="editarDescripcion" name="descripcion" required></textarea>
           </div>
           <div class="mb-3">
             <label class="form-label">Imagen</label>
             <input type="file" class="form-control" id="editarImagen" name="imagen" accept="image/*">
+            <!-- Imagen de previsualización -->
           <img id="previewEditar" class="img-fluid mt-2 d-none" alt="Previsualización imagen" />
+          </div>
+          <div class="form-group">
+            <label for="editarFechaProduccionProducto">Fecha de Producción</label>
+            <input type="date" class="form-control" id="editarFechaProduccionProducto" name="fecha_produccion">
+          </div>
+          <div class="form-group">
+            <label for="editarUnidadProducto">Unidad de Medida</label>
+            <input type="text" class="form-control" id="editarUnidadProducto" name="unidad_medida">
+          </div>
+          <div class="form-group">
+            <label for="editarPrecioProducto">Precio</label>
+            <input type="number" step="0.01" class="form-control" id="editarPrecioProducto" name="precio_actual">
           </div>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Guardar cambios</button>
+          <button type="submit" class="btn btn-success">Guardar Cambios</button>
         </div>
-      </form>
-    </div>
+      
+    </form>
   </div>
+</div>
 
   <!-- Modal Crear Alerta -->
 <div class="modal fade" id="modalCrearAlerta" tabindex="-1" aria-labelledby="modalCrearAlertaLabel" aria-hidden="true">
@@ -181,6 +230,7 @@
     </form>
   </div>
 </div>
+
 <!-- Modal Modificar Alerta -->
 <div class="modal fade" id="modalModificarAlerta" tabindex="-1" aria-labelledby="modalModificarAlertaLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -255,6 +305,7 @@
             <!-- Imagen de previsualización -->
           <img id="previewEditarAdmin" class="img-fluid mt-2 d-none" alt="Previsualización imagen" />
           </div>
+          <input type="hidden" id="editarImagenUrl" name="imagen_url">
           <div class="form-group">
             <label for="editarFechaProduccionAdmin">Fecha de Producción</label>
             <input type="date" class="form-control" id="editarFechaProduccionAdmin" name="fecha_produccion">

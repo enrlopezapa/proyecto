@@ -2,14 +2,45 @@
 require 'conexion.php'; // Asegúrate de que este devuelve un objeto PDO en $conn
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Recibir datos desde el JS
-    $productoId = $_POST['productoId'];
+    // Recibir datos del formulario
+    $productoId = $_POST['id'];
     $nombre = $_POST['nombre'];
     $descripcion = $_POST['descripcion'];
-    $fecha_produccion = $_POST['fechaProduccion'];
-    $unidad_medida = $_POST['unidadMedida'];
-    $precio = $_POST['precio'];
+    $fecha_produccion = $_POST['fecha_produccion'];
+    $unidad_medida = $_POST['unidad_medida'];
+    $precio = $_POST['precio_actual'];
     $vendido = $_POST['vendido'];
+    $imagenActual = $_POST['imagen_url'] ?? '';
+
+    $rutaImagen = $imagenActual;
+
+    // Si hay un archivo de imagen subido
+    if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
+        $archivoTmp = $_FILES['imagen']['tmp_name'];
+        $nombreArchivo = uniqid('img_') . '_' . basename($_FILES['imagen']['name']);
+        $rutaDestino = '../img/' . $nombreArchivo;
+
+        $tipoArchivo = mime_content_type($archivoTmp);
+        if (strpos($tipoArchivo, 'image/') !== 0) {
+            http_response_code(400);
+            echo json_encode(["status" => "error", "mensaje" => "El archivo no es una imagen válida."]);
+            exit;
+        }
+
+        if (!move_uploaded_file($archivoTmp, $rutaDestino)) {
+            http_response_code(500);
+            echo json_encode(["status" => "error", "mensaje" => "Error al guardar la imagen."]);
+            exit;
+        }
+
+        // Eliminar la imagen anterior si existe
+        if (!empty($imagenActual) && file_exists('../' . $imagenActual)) {
+            unlink('../img/' . $imagenActual);
+        }
+
+        // Guardamos solo la ruta relativa
+        $rutaImagen = '../img/' . $nombreArchivo;
+    }
 
     try {
         $sql = "UPDATE productos 
@@ -18,7 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     fecha_produccion = :fecha_produccion, 
                     unidad_medida = :unidad_medida, 
                     precio_actual = :precio, 
-                    vendido = :vendido 
+                    vendido = :vendido,
+                    imagen_url = :imagen_url
                 WHERE id = :id";
 
         $stmt = $conn->prepare($sql);
@@ -28,13 +60,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bindParam(':unidad_medida', $unidad_medida);
         $stmt->bindParam(':precio', $precio);
         $stmt->bindParam(':vendido', $vendido);
+        $stmt->bindParam(':imagen_url', $rutaImagen);
         $stmt->bindParam(':id', $productoId);
 
         if ($stmt->execute()) {
-            echo json_encode(["status" => "ok"]);
+            echo json_encode(["status" => "ok", "imagen_url" => $rutaImagen]);
         } else {
             http_response_code(500);
-            echo json_encode(["status" => "error", "mensaje" => "Error al ejecutar la consulta"]);
+            echo json_encode(["status" => "error", "mensaje" => "Error al ejecutar la consulta."]);
         }
     } catch (PDOException $e) {
         http_response_code(500);

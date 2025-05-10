@@ -38,7 +38,7 @@ CREATE TABLE productos (
     usuario_id CHAR(36),
     categoria_id CHAR(36),
     valoracion_media DECIMAL(3,2) DEFAULT 0.00,
-    vendido BOOLEAN,
+    vendido BOOLEAN DEFAULT FALSE,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
     FOREIGN KEY (categoria_id) REFERENCES categorias(id) ON DELETE SET NULL
 );
