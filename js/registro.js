@@ -25,7 +25,18 @@ $(document).ready(function(){
             $('#register-success').removeClass('d-none').text(response.message);
           },
           error: function(xhr) {
-            const err = JSON.parse(xhr.responseText);
+            // Intentar analizar la respuesta como JSON
+            let err = { error: 'Error inesperado del servidor. Intenta más tarde.' };
+
+            // Si la respuesta es válida JSON, asignar el error del servidor
+            try {
+              err = JSON.parse(xhr.responseText);
+            } catch (e) {
+              // Si ocurre un error al parsear, se mantendrá el mensaje por defecto
+              console.error('No se pudo analizar la respuesta del servidor');
+            }
+
+            // Mostrar el error en el frontend
             $('#register-error').removeClass('d-none').text(err.error || 'Error en el registro');
           }
         });

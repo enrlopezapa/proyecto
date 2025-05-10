@@ -34,10 +34,6 @@
   search-link="productos.php"
   cart-link="carrito.php"
   login-link="login.php"
-  productFruta-link="productos.php?category=fruta"
-  productVerdura-link="productos.php?category=verdura"
-  productOferta-link="productos.php?category=oferta"
-  productLocal-link="productos.php?category=local"
   producto-link="productos.php"
   nosotros-link="nosotros.php"
   contacto-link="contacto.php"
@@ -62,7 +58,6 @@
                   <th scope="col">Producto</th>
                   <th scope="col">Precio Unitario</th>
                   <th scope="col">Cantidad</th>
-                  <th scope="col">Total</th>
                   <th scope="col">Acciones</th>
                 </tr>
               </thead>

@@ -58,7 +58,7 @@
       <div class="text-white col-md-6">
         <h1>Compra y vende sano</h1>
         <p>Compra a productores locales o vende tus productos.</p>
-        <a href="#" class="btn btn-light">Saber más</a>
+        <a href="html/nosotros.php" class="btn btn-light">Saber más</a>
       </div>
       <div class="col-md-5 d-none d-md-block">
         <img src="https://via.placeholder.com/400x300.png?text=Promo" alt="Banner promo" class="img-fluid">
@@ -72,25 +72,25 @@
         <div class="col-6 col-md-3 mb-3">
           <button class="btn-category d-flex flex-column align-items-center justify-content-center">
             <img src="img/house-heart-fill.svg">
-            <span>Frutas</span>
+            <span>Fruta</span>
           </button>
         </div>
         <div class="col-6 col-md-3 mb-3">
           <button class="btn-category d-flex flex-column align-items-center justify-content-center">
             <img src="img/house-heart-fill.svg">
-            <span>Verduras</span>
+            <span>Verdura</span>
           </button>
         </div>
         <div class="col-6 col-md-3 mb-3">
           <button class="btn-category d-flex flex-column align-items-center justify-content-center">
             <img src="img/house-heart-fill.svg">
-            <span>Ofertas</span>
+            <span>Hortaliza</span>
           </button>
         </div>
         <div class="col-6 col-md-3 mb-3">
           <button class="btn-category d-flex flex-column align-items-center justify-content-center">
             <img src="img/house-heart-fill.svg">
-            <span>Locales</span>
+            <span>Otros</span>
           </button>
         </div>
       </div>

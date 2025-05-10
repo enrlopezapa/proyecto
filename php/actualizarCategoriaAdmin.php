@@ -1,25 +1,34 @@
 <?php
-require 'conexion.php'; // Tu archivo de conexión
+require 'conexion.php'; // Este archivo debe crear un objeto PDO llamado $conn
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id = $_POST['id'];
+    $id = $_POST['categoriaId'];
     $nombre = trim($_POST['nombre']);
     $descripcion = trim($_POST['descripcion']);
 
-    $sql = "UPDATE categorias
-            SET nombre = ?, descripcion = ?
-            WHERE id = ?";
+    try {
+        $sql = "UPDATE categorias
+                SET nombre = :nombre, descripcion = :descripcion
+                WHERE id = :id";
 
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sss", $nombre, $descripcion, $id);
+        $stmt = $conn->prepare($sql);
 
-    if ($stmt->execute()) {
-        echo json_encode(["status" => "ok"]);
-    } else {
+        $stmt->bindParam(':nombre', $nombre);
+        $stmt->bindParam(':descripcion', $descripcion);
+        $stmt->bindParam(':id', $id);
+
+        if ($stmt->execute()) {
+            echo json_encode(["status" => "ok"]);
+        } else {
+            http_response_code(500);
+            echo json_encode(["status" => "error", "mensaje" => "No se pudo actualizar la categoría"]);
+        }
+
+        $stmt = null;
+        $conn = null;
+
+    } catch (PDOException $e) {
         http_response_code(500);
-        echo json_encode(["status" => "error", "mensaje" => "No se pudo actualizar la categoría"]);
+        echo json_encode(["status" => "error", "mensaje" => $e->getMessage()]);
     }
-
-    $stmt->close();
-    $conn->close();
 }

@@ -22,7 +22,7 @@ $(document).ready(function () {
 
     let chart;
 
-    $.getJSON('../php/obtenerDetalleProducto.php', { id: productoId }, function (data) {
+    $.getJSON(`../php/obtenerDetalleProducto.php?id=${productoId}`, function (data) {
         if (data && data.producto) {
             const p = data.producto;
 
@@ -92,13 +92,12 @@ $(document).ready(function () {
         showToast('Error al cargar datos del producto');
     });
 
-    // Agregar al carrito
-    $('.btn-buy').on('click', function () {
+$(document).on('click', ".btn-buy", function () {
         $.post('../php/agregarACarrito.php', { productoId: productoId }, function (response) {
             showToast('Producto añadido');
             console.log(response); // Opcional: para verificar qué devuelve el servidor
         }).fail(() => {
             showToast('Error al añadir el producto');
         });
-    });
+    }); // Agregar al carrito
 })

@@ -1,25 +1,34 @@
 <?php
-require 'conexion.php'; // Asegúrate de incluir tu archivo de conexión
+require 'conexion.php'; // Este archivo debe crear un objeto PDO llamado $conn
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id = $_POST['id'];
+    $id = $_POST['pedidoId'];
     $estado = $_POST['estado'];
     $notas = $_POST['notas'];
 
-    $sql = "UPDATE estado_pedido
-            SET estado = ?, notas = ?, fecha_estado = NOW()
-            WHERE id = ?";
+    try {
+        $sql = "UPDATE estado_pedido
+                SET estado = :estado, notas = :notas, fecha_estado = NOW()
+                WHERE id = :id";
 
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sss", $estado, $notas, $id);
+        $stmt = $conn->prepare($sql);
 
-    if ($stmt->execute()) {
-        echo json_encode(["status" => "ok"]);
-    } else {
+        $stmt->bindParam(':estado', $estado);
+        $stmt->bindParam(':notas', $notas);
+        $stmt->bindParam(':id', $id);
+
+        if ($stmt->execute()) {
+            echo json_encode(["status" => "ok"]);
+        } else {
+            http_response_code(500);
+            echo json_encode(["status" => "error", "mensaje" => "No se pudo actualizar el pedido"]);
+        }
+
+        $stmt = null;
+        $conn = null;
+
+    } catch (PDOException $e) {
         http_response_code(500);
-        echo json_encode(["status" => "error", "mensaje" => "No se pudo actualizar el pedido"]);
+        echo json_encode(["status" => "error", "mensaje" => $e->getMessage()]);
     }
-
-    $stmt->close();
-    $conn->close();
 }

@@ -30,6 +30,17 @@ $(document).ready(function () {
   // Obtener productos al cargar
   cargarProductos();
 
+  $('#toggleFiltrosBtn').on('click', function () {
+  const filtros = $('#filtrosContainer');
+  filtros.toggleClass('d-none');
+  
+  if (filtros.hasClass('d-none')) {
+    $(this).text('Abrir filtros');
+  } else {
+    $(this).text('Cerrar filtros');
+  }
+});
+
     // Al hacer clic en "Aplicar filtros"
 $('.btn.btn-success').on('click', function () {
   const form = $('#filtrosContainer form');
@@ -140,7 +151,7 @@ $('.btn.btn-success').on('click', function () {
 
     $('.btn-buy').off().on('click', function () {
       const productoId = $(this).closest('form').find('input[name="productoId"]').val();
-      $.post('agregar_a_carrito.php', { productoId }, function () {
+      $.post('../php/agregarACarrito.php', { productoId }, function () {
         const toast = new bootstrap.Toast($('#toastConfirmacion'));
         $('#toastConfirmacion .toast-body').text('Producto agregado al carrito');
         toast.show();

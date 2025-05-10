@@ -1,21 +1,27 @@
 <?php
-require 'conexion.php'; // Este archivo debe configurar $conn
+require 'conexion.php'; // Este archivo debe devolver un objeto PDO en $conn
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
     $id = $_POST['id'];
 
-    $stmt = $conn->prepare("DELETE FROM compras WHERE id = ?");
-    $stmt->bind_param("s", $id);
+    try {
+        $stmt = $conn->prepare("DELETE FROM compras WHERE id = ?");
+        $stmt->execute([$id]);
 
-    if ($stmt->execute()) {
         echo json_encode(["status" => "ok"]);
-    } else {
+    } catch (PDOException $e) {
         http_response_code(500);
-        echo json_encode(["status" => "error", "mensaje" => "No se pudo eliminar la compra"]);
+        echo json_encode([
+            "status" => "error",
+            "mensaje" => "No se pudo eliminar la compra",
+            "error" => $e->getMessage()
+        ]);
     }
 
-    $stmt->close();
-    $conn->close();
+    // Liberar recursos (opcional en PDO)
+    $stmt = null;
+    $conn = null;
+
 } else {
     http_response_code(400);
     echo json_encode(["status" => "error", "mensaje" => "ID no proporcionado"]);

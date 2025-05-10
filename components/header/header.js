@@ -86,9 +86,6 @@ export class CustomHeader extends HTMLElement {
     shadowRoot.querySelector('#cart-link')?.setAttribute('href', this.cartLink);
     shadowRoot.querySelector('#login-link')?.setAttribute('href', this.loginLink);
     shadowRoot.querySelector('#productFruta-link')?.setAttribute('href', this.productFrutaLink);
-    shadowRoot.querySelector('#productVerdura-link')?.setAttribute('href', this.productVerduraLink);
-    shadowRoot.querySelector('#productOferta-link')?.setAttribute('href', this.productOfertaLink);
-    shadowRoot.querySelector('#productLocal-link')?.setAttribute('href', this.productLocalLink);
     shadowRoot.querySelector('#producto-link')?.setAttribute('href', this.productoLink);
     shadowRoot.querySelector('#nosotros-link')?.setAttribute('href', this.nosotrosLink);
     shadowRoot.querySelector('#contacto-link')?.setAttribute('href', this.contactoLink);
@@ -162,7 +159,7 @@ export class CustomHeader extends HTMLElement {
           const li = document.createElement('li');
           const a = document.createElement('a');
           a.classList.add('dropdown-item');
-          a.href = `html/productos.php?categoria=${encodeURIComponent(nombre.toLowerCase())}`;
+          a.href = `${this.productoLink}?categoria=${encodeURIComponent(nombre.toLowerCase())}`;
           a.textContent = nombre;
           li.appendChild(a);
           ul.appendChild(li);

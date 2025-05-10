@@ -34,10 +34,6 @@
   search-link="productos.php"
   cart-link="carrito.php"
   login-link="login.php"
-  productFruta-link="productos.php?category=fruta"
-  productVerdura-link="productos.php?category=verdura"
-  productOferta-link="productos.php?category=oferta"
-  productLocal-link="productos.php?category=local"
   producto-link="productos.php"
   nosotros-link="nosotros.php"
   contacto-link="contacto.php"
@@ -74,12 +70,6 @@
                     <label for="password" class="form-label">Contraseña</label>
                     <input type="password" class="form-control" id="password" placeholder="Introduce tu contraseña" required>
                   </div>
-      
-                  <!-- Recordarme -->
-                  <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="rememberMe">
-                    <label class="form-check-label" for="rememberMe">Recordarme</label>
-                  </div>
                   
                   <div id="error-message" class="alert alert-danger d-none text-center"></div>
                   <!-- Botón de inicio de sesión -->
@@ -88,12 +78,7 @@
       
                 <!-- Opción para registrar una cuenta -->
                 <p class="text-center mt-3">
-                  ¿No tienes cuenta? <a href="registro.html" class="text-success">Regístrate aquí</a>
-                </p>
-
-                <!-- ES PRUEBAAAAAAA -->
-                <p class="text-center mt-3">
-                  PRUEBA (BORRAR) <a href="cuenta.html" class="text-success">PRUEBA</a>
+                  ¿No tienes cuenta? <a href="registro.php" class="text-success">Regístrate aquí</a>
                 </p>
               </div>
             </div>

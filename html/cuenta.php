@@ -31,10 +31,6 @@
   search-link="productos.php"
   cart-link="carrito.php"
   login-link="login.php"
-  productFruta-link="productos.php?category=fruta"
-  productVerdura-link="productos.php?category=verdura"
-  productOferta-link="productos.php?category=oferta"
-  productLocal-link="productos.php?category=local"
   producto-link="productos.php"
   nosotros-link="nosotros.php"
   contacto-link="contacto.php"
@@ -52,8 +48,7 @@
           <?php 
           $isAdmin = isset($_SESSION['usuario_admin']) && $_SESSION['usuario_admin'] == true;
           if (!$isAdmin){ ?>
-          <?php }else{ ?>
-            <li class="nav-item"><a class="nav-link <?php if(!$isAdmin){echo "active"}?>" href="#" data-section="productos">Mis productos</a></li>
+            <li class="nav-item"><a class="nav-link <?php if(!$isAdmin){echo "active";}?>" href="#" data-section="productos">Mis productos</a></li>
             <li class="nav-item"><a class="nav-link" href="#" data-section="perfil">Editar perfil</a></li>
             <li class="nav-item"><a class="nav-link" href="#" data-section="favoritos">Mis favoritos</a></li>
             <li class="nav-item"><a class="nav-link" href="#" data-section="compras">Mis compras</a></li>
@@ -61,7 +56,7 @@
             <li class="nav-item"><a class="nav-link" href="#" data-section="alertas">Mis alertas</a></li>
             <li class="nav-item"><a class="nav-link" href="#" data-section="seguridad">Seguridad</a></li>
           <?php }else{ ?>
-            <li class="nav-item"><a class="nav-link <?php if($isAdmin){echo "active"}?>" href="#" data-section="admin-productos">Gestionar productos</a></li>
+            <li class="nav-item"><a class="nav-link <?php if($isAdmin){echo "active";}?>" href="#" data-section="admin-productos">Gestionar productos</a></li>
             <li class="nav-item"><a class="nav-link" href="#" data-section="admin-usuarios">Gestionar usuarios</a></li>
             <li class="nav-item"><a class="nav-link" href="#" data-section="admin-compras">Gestionar compras</a></li>
             <li class="nav-item"><a class="nav-link" href="#" data-section="admin-alertas">Gestionar alertas</a></li>
@@ -109,7 +104,7 @@
 </div>
 
   <!-- Modal Editar Producto -->
-<!--<div class="modal fade" id="modalEditarProducto" tabindex="-1" aria-labelledby="modalEditarProductoLabel" aria-hidden="true">
+<div class="modal fade" id="modalEditarProducto" tabindex="-1" aria-labelledby="modalEditarProductoLabel" aria-hidden="true">
     <div class="modal-dialog">
       <form class="modal-content" id="formEditarProducto" enctype="multipart/form-data">
         <div class="modal-header">
@@ -136,7 +131,7 @@
         </div>
       </form>
     </div>
-  </div>-->
+  </div>
 
   <!-- Modal Crear Alerta -->
 <div class="modal fade" id="modalCrearAlerta" tabindex="-1" aria-labelledby="modalCrearAlertaLabel" aria-hidden="true">
@@ -236,45 +231,45 @@
 </div>
 
 <!-- Modal Editar Producto -->
-<div class="modal fade" id="modalEditarProducto" tabindex="-1" role="dialog" aria-labelledby="modalEditarProductoLabel" aria-hidden="true">
+<div class="modal fade" id="modalEditarProductoAdmin" tabindex="-1" role="dialog" aria-labelledby="modalEditarProductoAdminLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
-    <form id="formEditarProducto">
+    <form id="formEditarProductoAdmin">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalEditarProductoLabel">Editar Producto</h5>
+          <h5 class="modal-title" id="modalEditarProductoAdminLabel">Editar Producto</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
         <div class="modal-body">
-          <input type="hidden" id="editarProductoId" name="id">
+          <input type="hidden" id="editarProductoIdAdmin" name="id">
           <div class="form-group">
-            <label for="editarNombre">Nombre</label>
-            <input type="text" class="form-control" id="editarNombre" name="nombre" required>
+            <label for="editarNombreAdmin">Nombre</label>
+            <input type="text" class="form-control" id="editarNombreAdmin" name="nombre" required>
           </div>
           <div class="form-group">
-            <label for="editarDescripcion">Descripción</label>
-            <textarea class="form-control" id="editarDescripcion" name="descripcion" required></textarea>
+            <label for="editarDescripcionAdmin">Descripción</label>
+            <textarea class="form-control" id="editarDescripcionAdmin" name="descripcion" required></textarea>
           </div>
           <div class="mb-3">
             <label class="form-label">Imagen</label>
-            <input type="file" class="form-control" id="editarImagen" name="imagen" accept="image/*">
+            <input type="file" class="form-control" id="editarImagenAdmin" name="imagen" accept="image/*">
             <!-- Imagen de previsualización -->
-          <img id="previewEditar" class="img-fluid mt-2 d-none" alt="Previsualización imagen" />
+          <img id="previewEditarAdmin" class="img-fluid mt-2 d-none" alt="Previsualización imagen" />
           </div>
           <div class="form-group">
-            <label for="editarFechaProduccion">Fecha de Producción</label>
-            <input type="date" class="form-control" id="editarFechaProduccion" name="fecha_produccion">
+            <label for="editarFechaProduccionAdmin">Fecha de Producción</label>
+            <input type="date" class="form-control" id="editarFechaProduccionAdmin" name="fecha_produccion">
           </div>
           <div class="form-group">
-            <label for="editarUnidadMedida">Unidad de Medida</label>
-            <input type="text" class="form-control" id="editarUnidadMedida" name="unidad_medida">
+            <label for="editarUnidadMedidaAdmin">Unidad de Medida</label>
+            <input type="text" class="form-control" id="editarUnidadMedidaAdmin" name="unidad_medida">
           </div>
           <div class="form-group">
-            <label for="editarPrecio">Precio</label>
-            <input type="number" step="0.01" class="form-control" id="editarPrecio" name="precio_actual">
+            <label for="editarPrecioAdmin">Precio</label>
+            <input type="number" step="0.01" class="form-control" id="editarPrecioAdmin" name="precio_actual">
           </div>
           <div class="form-group">
-            <label for="editarVendido">Vendido</label>
-            <select class="form-control" id="editarVendido" name="vendido">
+            <label for="editarVendidoAdmin">Vendido</label>
+            <select class="form-control" id="editarVendidoAdmin" name="vendido">
               <option value="1">Sí</option>
               <option value="0">No</option>
             </select>
@@ -361,6 +356,34 @@
           <button type="submit" class="btn btn-success">Guardar Cambios</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
         </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal Modificar Alerta -->
+<div class="modal fade" id="modalModificarAlertaAdmin" tabindex="-1" aria-labelledby="modalModificarAlertaAdminLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" id="formCrearAlertaAdmin">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalModificarAlertaAdminLabel">Modificar alerta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="editarAlertaIdAdmin" name="id">
+        <div class="mb-3">
+          <label for="alertaPalabraClaveAdmin" class="form-label">Palabra clave</label>
+          <input type="text" class="form-control" id="alertaPalabraClaveAdmin" name="palabra_clave" placeholder="Ej: Python, Marketing, Zapatos" required>
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="alertaActivaAdmin" name="activa" checked>
+          <label class="form-check-label" for="alertaActivaAdmin">
+            Activar alerta inmediatamente
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success">Guardar cambios</button>
       </div>
     </form>
   </div>

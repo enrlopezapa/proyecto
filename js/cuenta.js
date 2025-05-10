@@ -1,47 +1,44 @@
 $(document).ready(function () {
   $('[data-section]').on('click', function (e) {
-    e.preventDefault();
-    $('[data-section]').removeClass('active');
-    $(this).addClass('active');
+  e.preventDefault();
+  $('[data-section]').removeClass('active');
+  $(this).addClass('active');
 
-    const section = $(this).data('section');
+  const section = $(this).data('section');
 
-    // Función para renderizar contenido en ambos modos
-    function renderizarSeccion() {
-      switch (section) {
-        case 'productos': return cargarProductos;
-        case 'perfil': return cargarPerfil;
-        case 'favoritos': return cargarFavoritos;
-        case 'compras': return cargarCompras;
-        case 'pedidos': return cargarPedidos;
-        case 'alertas': return cargarAlertas;
-        case 'seguridad': return cargarSeguridad;
-        case 'admin-productos': return cargarAdminProductos;
-        case 'admin-usuarios': return cargarAdminUsuarios;
-        case 'admin-compras': return cargarAdminCompras;
-        case 'admin-alertas': return cargarAdminAlertas;
-        case 'admin-pedidos': return cargarAdminPedidos;
-        case 'admin-categorias': return cargarAdminCategorias;
-        default: return () => $panel.html('<p>Sección no encontrada</p>');
-      }
+  function getRenderFunction() {
+    switch (section) {
+      case 'productos': return cargarProductos;
+      case 'perfil': return cargarPerfil;
+      case 'favoritos': return cargarFavoritos;
+      case 'compras': return cargarCompras;
+      case 'pedidos': return cargarPedidos;
+      case 'alertas': return cargarAlertas;
+      case 'seguridad': return cargarSeguridad;
+      case 'admin-productos': return cargarAdminProductos;
+      case 'admin-usuarios': return cargarAdminUsuarios;
+      case 'admin-compras': return cargarAdminCompras;
+      case 'admin-alertas': return cargarAdminAlertas;
+      case 'admin-pedidos': return cargarAdminPedidos;
+      case 'admin-categorias': return cargarAdminCategorias;
+      default: return () => $('#panel-content').html('<p>Sección no encontrada</p>');
     }
+  }
 
-      
-    if (window.innerWidth < 768) {
-      renderizarSeccion = renderizarSeccion();
-      renderizarSeccion();
+  const renderFunc = getRenderFunction();
 
-      // Copiar el HTML generado al #offcanvas-body
+  renderFunc(); // Ejecuta la función
+
+  if (window.innerWidth < 768) {
+    // Espera un poco antes de copiar el contenido al offcanvas
+    setTimeout(() => {
       $('#offcanvas-body').html($('#panel-content').html());
 
       const offcanvas = new bootstrap.Offcanvas('#offcanvasContent');
       offcanvas.show();
-    } else{
-      renderizarSeccion = renderizarSeccion();
-      renderizarSeccion();
-
-    }
-  });
+    }, 50); // pequeño retardo para asegurar que el contenido ya se haya cargado
+  }
+});
 
 
   const $panel =  $('#panel-content');
@@ -86,7 +83,7 @@ $(document).ready(function () {
             $panel.hide().html(`
                 <h2>Administración de productos</h2>
                 <div class="container mt-4">
-                    <input type="text" class="form-control mb-3" placeholder="Buscar producto...">
+                    <input type="text" class="form-control mb-3 prducto-search" placeholder="Buscar producto...">
 
                     <table class="table table-striped">
                         <thead class="thead-dark">
@@ -111,6 +108,18 @@ $(document).ready(function () {
                     </table>
                 </div>
             `).fadeIn();
+            $('.prducto-search').on('input', function () {
+              const searchTerm = $(this).val().toLowerCase();
+
+              $('table tbody tr').each(function () {
+                  const nombreProducto = $(this).find('td:nth-child(2)').text().toLowerCase();
+                  if (nombreProducto.includes(searchTerm)) {
+                      $(this).show();
+                  } else {
+                      $(this).hide();
+                  }
+              });
+          });
         },
         error: function(xhr) {
             console.log("Error al cargar productos como admin");
@@ -146,7 +155,7 @@ function cargarAdminUsuarios() {
           const html = `
               <h2>Administración de usuarios</h2>
               <div class="container mt-4">
-                  <input type="text" class="form-control mb-3" placeholder="Buscar usuario...">
+                  <input type="text" class="form-control mb-3 usuario-search" placeholder="Buscar usuario...">
                   <table class="table table-striped">
                       <thead class="thead-dark">
                           <tr>
@@ -165,6 +174,18 @@ function cargarAdminUsuarios() {
               </div>
           `;
           $panel.hide().html(html).fadeIn();
+          $('.usuario-search').on('input', function () {
+              const searchTerm = $(this).val().toLowerCase();
+
+              $('table tbody tr').each(function () {
+                  const nombreProducto = $(this).find('td:nth-child(2)').text().toLowerCase();
+                  if (nombreProducto.includes(searchTerm)) {
+                      $(this).show();
+                  } else {
+                      $(this).hide();
+                  }
+              });
+          });
       },
       error: function() {
           console.error("Error al cargar usuarios");
@@ -197,6 +218,7 @@ function cargarAdminCompras() {
       const html = `
         <h2>Administración de compras</h2>
         <div class="container mt-4">
+        <input type="text" class="form-control mb-3 compra-search" placeholder="Buscar compra...">
           <table class="table table-striped">
             <thead>
               <tr>
@@ -214,6 +236,18 @@ function cargarAdminCompras() {
         </div>
       `;
       $panel.hide().html(html).fadeIn();
+      $('.compra-search').on('input', function () {
+              const searchTerm = $(this).val().toLowerCase();
+
+              $('table tbody tr').each(function () {
+                  const nombreProducto = $(this).find('td:nth-child(2)').text().toLowerCase();
+                  if (nombreProducto.includes(searchTerm)) {
+                      $(this).show();
+                  } else {
+                      $(this).hide();
+                  }
+              });
+          });
     },
     error: function() {
       console.error("Error al cargar compras");
@@ -244,6 +278,7 @@ function cargarAdminPedidos() {
       const html = `
         <h2>Administración de pedidos</h2>
         <div class="container mt-4">
+        <input type="text" class="form-control mb-3 pedido-search" placeholder="Buscar pedido...">
           <table class="table table-striped">
             <thead>
               <tr>
@@ -260,6 +295,18 @@ function cargarAdminPedidos() {
         </div>
       `;
       $panel.hide().html(html).fadeIn();
+      $('.pedido-search').on('input', function () {
+              const searchTerm = $(this).val().toLowerCase();
+
+              $('table tbody tr').each(function () {
+                  const nombreProducto = $(this).find('td:nth-child(2)').text().toLowerCase();
+                  if (nombreProducto.includes(searchTerm)) {
+                      $(this).show();
+                  } else {
+                      $(this).hide();
+                  }
+              });
+          });
     },
     error: function() {
       console.error("Error al cargar pedidos");
@@ -288,6 +335,7 @@ function cargarAdminCategorias() {
       const html = `
         <h2>Administración de categorías</h2>
         <div class="container mt-4">
+        <input type="text" class="form-control mb-3 categoria-search" placeholder="Buscar categoria...">
           <table class="table table-striped">
             <thead>
               <tr>
@@ -302,6 +350,18 @@ function cargarAdminCategorias() {
         </div>
       `;
       $panel.hide().html(html).fadeIn();
+      $('.categoria-search').on('input', function () {
+              const searchTerm = $(this).val().toLowerCase();
+
+              $('table tbody tr').each(function () {
+                  const nombreProducto = $(this).find('td:nth-child(2)').text().toLowerCase();
+                  if (nombreProducto.includes(searchTerm)) {
+                      $(this).show();
+                  } else {
+                      $(this).hide();
+                  }
+              });
+          });
     },
     error: function() {
       console.error("Error al cargar categorías");
@@ -333,6 +393,7 @@ function cargarAdminAlertas() {
       const html = `
         <h2>Administración de alertas</h2>
         <div class="container mt-4">
+        <input type="text" class="form-control mb-3 alerta-search" placeholder="Buscar alerta...">
           <table class="table table-striped">
             <thead>
               <tr>
@@ -350,6 +411,18 @@ function cargarAdminAlertas() {
         </div>
       `;
       $panel.hide().html(html).fadeIn();
+      $('.alerta-search').on('input', function () {
+              const searchTerm = $(this).val().toLowerCase();
+
+              $('table tbody tr').each(function () {
+                  const nombreProducto = $(this).find('td:nth-child(2)').text().toLowerCase();
+                  if (nombreProducto.includes(searchTerm)) {
+                      $(this).show();
+                  } else {
+                      $(this).hide();
+                  }
+              });
+          });
     },
     error: function() {
       console.error("Error al cargar alertas");
@@ -786,40 +859,60 @@ function mostrarModalEditar($triggerBtn) {
   const fila = $triggerBtn.closest('tr');
 
   const producto = {
-    id: fila.data('id-real'),
-    nombre: fila.find('td:eq(1)').text(),
-    descripcion: fila.find('td:eq(2)').text(),
-    imagen_url: fila.find('img').attr('src'),
-    fecha_produccion: fila.find('td:eq(4)').text(),
-    unidad_medida: fila.find('td:eq(5)').text(),
-    precio_actual: fila.find('td:eq(6)').text().replace('$', ''),
-    vendido: fila.find('td:eq(10)').text() === 'Sí' ? 1 : 0
-  };
+    id: fila.find('td:eq(0)').text().trim(), // ID está en la primera columna
+    nombre: fila.find('td:eq(1)').text().trim(),
+    descripcion: fila.find('td:eq(2)').text().trim(),
+    fecha_produccion: fila.find('td:eq(4)').text().trim(),
+    unidad_medida: fila.find('td:eq(5)').text().trim(),
+    precio: parseFloat(fila.find('td:eq(6)').text().replace('$', '').trim()),
+    vendido: fila.find('td:eq(10)').text().trim() === 'Sí' ? 1 : 0
+};
+  console.log(producto)
 
-  $('#editarProductoId').val(producto.id);
-  $('#editarNombre').val(producto.nombre);
-  $('#editarDescripcion').val(producto.descripcion);
-  $('#editarImagenUrl').val(producto.imagen_url);
-  $('#editarFechaProduccion').val(producto.fecha_produccion);
-  $('#editarUnidadMedida').val(producto.unidad_medida);
-  $('#editarPrecio').val(producto.precio_actual);
-  $('#editarVendido').val(producto.vendido);
+  $('#editarProductoIdAdmin').val(producto.id);
+  $('#editarNombreAdmin').val(producto.nombre);
+  $('#editarDescripcionAdmin').val(producto.descripcion);
+  $('#editarFechaProduccionAdmin').val(producto.fecha_produccion);
+  $('#editarUnidadMedidaAdmin').val(producto.unidad_medida);
+  $('#editarPrecioAdmin').val(producto.precio);
+  $('#editarVendidoAdmin').val(producto.vendido);
 
-  $('#modalEditarProducto').modal('show');
+  $('#modalEditarProductoAdmin').modal('show');
 }
 
 // Envío del formulario
-$('#formEditarProducto').submit(function(e) {
+$('#formEditarProductoAdmin').submit(function(e) {
   e.preventDefault();
-  const datos = $(this).serialize();
+   const editarProductoId = $('#editarProductoIdAdmin').val();
+  const editarNombre = $('#editarNombreAdmin').val();
+  const editarDescripcion = $('#editarDescripcionAdmin').val();
+  const editarImagenUrl = $('#editarImagenUrl').val();
+  const editarFechaProduccion = $('#editarFechaProduccionAdmin').val();
+  const editarUnidadMedida = $('#editarUnidadMedidaAdmin').val();
+  const editarPrecio = $('#editarPrecioAdmin').val();
+  const editarVendido = $('#editarVendidoAdmin').val();
+
+  const datos = {
+      productoId: editarProductoId,
+      nombre: editarNombre,
+      descripcion: editarDescripcion,
+      imagenUrl: editarImagenUrl,
+      fechaProduccion: editarFechaProduccion,
+      unidadMedida: editarUnidadMedida,
+      precio: editarPrecio,
+      vendido: editarVendido
+  };
+
+  console.log(datos)
 
   $.ajax({
       url: '../php/actualizarProductoAdmin.php',
       method: 'POST',
       data: datos,
       success: function(respuesta) {
+        console.log(respuesta)
           showToast('Producto actualizado correctamente');
-          $('#modalEditarProducto').modal('hide');
+          $('#modalEditarProductoAdmin').modal('hide');
           cargarAdminProductos(); // Recargar la tabla
       },
       error: function() {
@@ -882,13 +975,28 @@ function mostrarModalEditarUsuario($btn) {
 $('#formEditarUsuario').submit(function (e) {
   e.preventDefault();
 
-  const datos = $(this).serialize();
+  const editarUsuarioId = $('#editarUsuarioId').val();
+  const editarNombreUsuario = $('#editarNombreUsuario').val();
+  const editarEmailUsuario = $('#editarEmailUsuario').val();
+  const editarTelefonoUsuario = $('#editarTelefonoUsuario').val();
+  const editarDireccionUsuario = $('#editarDireccionUsuario').val();
+  const editarAdministradorUsuario = $('#editarAdministradorUsuario').val();
+
+  const datos = {
+    usuarioId: editarUsuarioId,
+    nombre: editarNombreUsuario,
+    email: editarEmailUsuario,
+    telefono: editarTelefonoUsuario,
+    direccion: editarDireccionUsuario,
+    administrador: editarAdministradorUsuario
+  };
 
   $.ajax({
       url: '../php/actualizarUsuarioAdmin.php',
       method: 'POST',
       data: datos,
       success: function (respuesta) {
+        console.log(respuesta)
           showToast('Usuario actualizado correctamente');
           $('#modalEditarUsuario').modal('hide');
           cargarAdminUsuarios();
@@ -950,13 +1058,24 @@ function mostrarModalEditarCompra($btn) {
 $('#formEditarCompra').submit(function (e) {
   e.preventDefault();
 
-  const datos = $(this).serialize();
+  const editarCompraId = $('#editarCompraId').val();
+  const editarNombrePagador = $('#editarNombrePagador').val();
+  const editarDestinatario = $('#editarDestinatario').val();
+  const editarDireccionEntrega = $('#editarDireccionEntrega').val();
+
+  const datos = {
+    compraId: editarCompraId,
+    nombrePagador: editarNombrePagador,
+    destinatario: editarDestinatario,
+    direccionEntrega: editarDireccionEntrega
+  };
 
   $.ajax({
     url: '../php/actualizarCompraAdmin.php',
     method: 'POST',
     data: datos,
-    success: function () {
+    success: function (data) {
+      console.log(data)
       showToast('Compra actualizada correctamente');
       $('#modalEditarCompra').modal('hide');
       cargarAdminCompras();
@@ -969,6 +1088,74 @@ $('#formEditarCompra').submit(function (e) {
 
 
 
+
+
+
+
+
+
+
+
+// EDITAR ALERTA ADMIN
+$(document).on('click', '.editar-alerta-admin', function () {
+  const isMobile = window.innerWidth < 768;
+  const $offcanvasEl = $('#offcanvasContent');
+  const offcanvasInstance = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasContent'));
+  const $btn = $(this);
+
+  if (isMobile && offcanvasInstance) {
+    offcanvasInstance.hide();
+    $('.modal-backdrop').remove();
+    mostrarModalEditarAlerta($btn);
+  } else {
+    mostrarModalEditarAlerta($btn);
+  }
+});
+
+function mostrarModalEditarAlerta($btn) {
+  const fila = $btn.closest('tr');
+
+  const alerta = {
+    id: fila.find('td:eq(0)').text().trim(),
+    palabra_clave: fila.find('td:eq(3)').text().trim(),
+    email: fila.find('td:eq(4)').text().trim(),
+    activa: fila.find('td:eq(5)').data('activa') === '1'
+  };
+  console.log(alerta)
+
+  $('#editarAlertaIdAdmin').val(alerta.id);
+  $('#alertaPalabraClaveAdmin').val(alerta.palabra_clave);
+  $('#alertaActivaAdmin').prop('checked', alerta.activa);
+
+  $('#modalModificarAlertaAdmin').modal('show');
+}
+
+// Enviar actualización
+$('#formCrearAlertaAdmin').submit(function (e) {
+  e.preventDefault();
+
+  const datos = {
+    id: $('#editarAlertaIdAdmin').val(),
+    palabra_clave: $('#alertaPalabraClaveAdmin').val(),
+    activa: $('#alertaActivaAdmin').is(':checked') ? 1 : 0
+  };
+  console.log(datos)
+
+  $.ajax({
+    url: '../php/actualizarAlertaAdmin.php',
+    method: 'POST',
+    data: datos,
+    success: function (response) {
+      console.log(response);
+      showToast('Alerta actualizada correctamente');
+      $('#modalModificarAlertaAdmin').modal('hide');
+      cargarAdminAlertas();
+    },
+    error: function () {
+      showToast('Error al actualizar la alerta');
+    }
+  });
+});
 
 
 
@@ -1018,7 +1205,15 @@ function mostrarModalEditarPedido($btn) {
 $('#formEditarPedido').submit(function (e) {
   e.preventDefault();
 
-  const datos = $(this).serialize();
+  const editarPedidoId = $('#editarPedidoId').val();
+  const editarEstadoPedido = $('#editarEstadoPedido').val();
+  const editarNotasPedido = $('#editarNotasPedido').val();
+
+  const datos = {
+    pedidoId: editarPedidoId,
+    estado: editarEstadoPedido,
+    notas: editarNotasPedido
+  };
 
   $.ajax({
     url: '../php/actualizarPedidoAdmin.php',
@@ -1087,7 +1282,15 @@ function mostrarModalEditarCategoria($btn) {
 $('#formEditarCategoria').submit(function (e) {
   e.preventDefault();
 
-  const datos = $(this).serialize();
+  const editarCategoriaId = $('#editarCategoriaId').val();
+  const editarNombreCategoria = $('#editarNombreCategoria').val();
+  const editarDescripcionCategoria = $('#editarDescripcionCategoria').val();
+
+  const datos = {
+    categoriaId: editarCategoriaId,
+    nombre: editarNombreCategoria,
+    descripcion: editarDescripcionCategoria
+  };
 
   $.ajax({
     url: '../php/actualizarCategoriaAdmin.php',
@@ -1113,6 +1316,7 @@ $('#formEditarCategoria').submit(function (e) {
 // ELIMINAR PRODUCTO ADMIN
 $(document).on('click', '.eliminar-producto-admin', function () {
   const id = $(this).data('id');
+  console.log(id)
 
   if (!confirm('¿Estás seguro de que deseas eliminar este producto?')) return;
 
@@ -1189,6 +1393,7 @@ $(document).on('click', '.eliminar-usuario-admin', function () {
 
 $(document).on('click', '.eliminar-compra-admin', function () {
   const id = $(this).data('id');
+  console.log(id)
 
   if (!confirm('¿Seguro que deseas eliminar esta compra?')) return;
 
@@ -1219,6 +1424,38 @@ $(document).on('click', '.eliminar-compra-admin', function () {
 
 
 
+
+
+
+$(document).on('click', '.eliminar-alerta-admin', function () {
+  const id = $(this).data('id');
+  console.log(id)
+
+  if (!confirm('¿Seguro que deseas eliminar esta alerta?')) return;
+
+  $.ajax({
+    url: '../php/eliminarAlertaAdmin.php',
+    method: 'POST',
+    data: { id },
+    success: function (respuesta) {
+      try {
+        const res = JSON.parse(respuesta);
+        if (res.status === 'ok') {
+          showToast('Alerta eliminada correctamente');
+          cargarAdminAlertas(); // Refresca la tabla
+        } else {
+          showToast('Error al eliminar la alerta');
+        }
+      } catch (e) {
+        console.error('Respuesta inválida:', respuesta);
+        showToast('Error inesperado');
+      }
+    },
+    error: function () {
+      showToast('Error al conectar con el servidor');
+    }
+  });
+});
 
 
 
@@ -1281,43 +1518,6 @@ $(document).on('click', '.eliminar-categoria-admin', function () {
           cargarAdminCategorias(); // Recargar la tabla
         } else {
           showToast('Error al eliminar la categoría');
-        }
-      } catch (e) {
-        console.error('Respuesta no válida:', respuesta);
-        showToast('Error inesperado');
-      }
-    },
-    error: function () {
-      showToast('No se pudo conectar con el servidor');
-    }
-  });
-});
-
-
-
-
-
-
-
-
-
-$(document).on('click', '.eliminar-alerta-admin', function () {
-  const id = $(this).data('id');
-
-  if (!confirm('¿Estás seguro de que deseas eliminar esta alerta?')) return;
-
-  $.ajax({
-    url: '../php/eliminarAlertaAdmin.php',
-    method: 'POST',
-    data: { id },
-    success: function (respuesta) {
-      try {
-        const res = JSON.parse(respuesta);
-        if (res.status === 'ok') {
-          showToast('Alerta eliminada correctamente');
-          cargarAdminAlertas(); // Recargar la tabla
-        } else {
-          showToast('Error al eliminar la alerta');
         }
       } catch (e) {
         console.error('Respuesta no válida:', respuesta);
@@ -1755,9 +1955,14 @@ $(document).on('click', '.editar-alerta', function () {
 
 
 
-  
+  if($(".active").attr("data-section")=="productos"){
+      cargarProductos();
+  }
+  else{
+    cargarAdminProductos();
+  }
   // Cargar sección inicial
-  cargarProductos();
+
   $('#modalProducto').on('hidden.bs.modal', function () {
     // Siempre eliminar cualquier backdrop colgado
     $('.modal-backdrop').remove();
@@ -1792,6 +1997,72 @@ $(document).on('click', '.editar-alerta', function () {
     }
   });
   $('#modalModificarAlerta').on('hidden.bs.modal', function () {
+    // Siempre eliminar cualquier backdrop colgado
+    $('.modal-backdrop').remove();
+    $('body').removeClass('modal-open').css('padding-right', '');
+  
+    // Si estamos en móvil, volver a mostrar el offcanvas
+    if (window.innerWidth < 768) {
+      const offcanvas = new bootstrap.Offcanvas('#offcanvasContent');
+      offcanvas.show();
+    }
+  });
+  $('#modalEditarUsuario').on('hidden.bs.modal', function () {
+    // Siempre eliminar cualquier backdrop colgado
+    $('.modal-backdrop').remove();
+    $('body').removeClass('modal-open').css('padding-right', '');
+  
+    // Si estamos en móvil, volver a mostrar el offcanvas
+    if (window.innerWidth < 768) {
+      const offcanvas = new bootstrap.Offcanvas('#offcanvasContent');
+      offcanvas.show();
+    }
+  });
+  $('#modalEditarCompra').on('hidden.bs.modal', function () {
+    // Siempre eliminar cualquier backdrop colgado
+    $('.modal-backdrop').remove();
+    $('body').removeClass('modal-open').css('padding-right', '');
+  
+    // Si estamos en móvil, volver a mostrar el offcanvas
+    if (window.innerWidth < 768) {
+      const offcanvas = new bootstrap.Offcanvas('#offcanvasContent');
+      offcanvas.show();
+    }
+  });
+  $('#modalEditarPedido').on('hidden.bs.modal', function () {
+    // Siempre eliminar cualquier backdrop colgado
+    $('.modal-backdrop').remove();
+    $('body').removeClass('modal-open').css('padding-right', '');
+  
+    // Si estamos en móvil, volver a mostrar el offcanvas
+    if (window.innerWidth < 768) {
+      const offcanvas = new bootstrap.Offcanvas('#offcanvasContent');
+      offcanvas.show();
+    }
+  });
+  $('#modalEditarCategoria').on('hidden.bs.modal', function () {
+    // Siempre eliminar cualquier backdrop colgado
+    $('.modal-backdrop').remove();
+    $('body').removeClass('modal-open').css('padding-right', '');
+  
+    // Si estamos en móvil, volver a mostrar el offcanvas
+    if (window.innerWidth < 768) {
+      const offcanvas = new bootstrap.Offcanvas('#offcanvasContent');
+      offcanvas.show();
+    }
+  });
+  $('#modalEditarProductoAdmin').on('hidden.bs.modal', function () {
+    // Siempre eliminar cualquier backdrop colgado
+    $('.modal-backdrop').remove();
+    $('body').removeClass('modal-open').css('padding-right', '');
+  
+    // Si estamos en móvil, volver a mostrar el offcanvas
+    if (window.innerWidth < 768) {
+      const offcanvas = new bootstrap.Offcanvas('#offcanvasContent');
+      offcanvas.show();
+    }
+  });
+  $('#modalModificarAlertaAdmin').on('hidden.bs.modal', function () {
     // Siempre eliminar cualquier backdrop colgado
     $('.modal-backdrop').remove();
     $('body').removeClass('modal-open').css('padding-right', '');

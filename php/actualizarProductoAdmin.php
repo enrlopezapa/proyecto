@@ -1,30 +1,43 @@
 <?php
-require 'conexion.php'; // tu archivo de conexión a base de datos
+require 'conexion.php'; // Asegúrate de que este devuelve un objeto PDO en $conn
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $id = $_POST['id'];
+    // Recibir datos desde el JS
+    $productoId = $_POST['productoId'];
     $nombre = $_POST['nombre'];
     $descripcion = $_POST['descripcion'];
-    $imagen_url = $_POST['imagen_url'];
-    $fecha_produccion = $_POST['fecha_produccion'];
-    $unidad_medida = $_POST['unidad_medida'];
-    $precio_actual = $_POST['precio_actual'];
+    $fecha_produccion = $_POST['fechaProduccion'];
+    $unidad_medida = $_POST['unidadMedida'];
+    $precio = $_POST['precio'];
     $vendido = $_POST['vendido'];
 
-    $sql = "UPDATE productos 
-            SET nombre = ?, descripcion = ?, imagen_url = ?, fecha_produccion = ?, unidad_medida = ?, precio_actual = ?, vendido = ?
-            WHERE id = ?";
+    try {
+        $sql = "UPDATE productos 
+                SET nombre = :nombre, 
+                    descripcion = :descripcion, 
+                    fecha_produccion = :fecha_produccion, 
+                    unidad_medida = :unidad_medida, 
+                    precio_actual = :precio, 
+                    vendido = :vendido 
+                WHERE id = :id";
 
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssssdss", $nombre, $descripcion, $imagen_url, $fecha_produccion, $unidad_medida, $precio_actual, $vendido, $id);
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':nombre', $nombre);
+        $stmt->bindParam(':descripcion', $descripcion);
+        $stmt->bindParam(':fecha_produccion', $fecha_produccion);
+        $stmt->bindParam(':unidad_medida', $unidad_medida);
+        $stmt->bindParam(':precio', $precio);
+        $stmt->bindParam(':vendido', $vendido);
+        $stmt->bindParam(':id', $productoId);
 
-    if ($stmt->execute()) {
-        echo json_encode(["status" => "ok"]);
-    } else {
+        if ($stmt->execute()) {
+            echo json_encode(["status" => "ok"]);
+        } else {
+            http_response_code(500);
+            echo json_encode(["status" => "error", "mensaje" => "Error al ejecutar la consulta"]);
+        }
+    } catch (PDOException $e) {
         http_response_code(500);
-        echo json_encode(["status" => "error", "mensaje" => "Error al actualizar"]);
+        echo json_encode(["status" => "error", "mensaje" => $e->getMessage()]);
     }
-
-    $stmt->close();
-    $conn->close();
 }

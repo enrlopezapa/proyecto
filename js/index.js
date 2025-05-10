@@ -66,6 +66,6 @@ $(document).ready(function () {
 
   $('.btn-category').on('click', function () {
     const categoria = $(this).find('span').text().toLowerCase();
-    window.location.href = `html/productos.html?category=${categoria}`;
+    window.location.href = `html/productos.php?categoria=${categoria}`;
   });
 });

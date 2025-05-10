@@ -44,7 +44,7 @@ $codigo_verificacion = strval(rand(100000, 999999)); // Código de 6 dígitos
 try {
     $conn->beginTransaction();
 
-    $stmt1 = $conn->prepare("INSERT INTO usuarios (id, nombre, email) VALUES (:id, :nombre, :email)");
+    $stmt1 = $conn->prepare("INSERT INTO usuarios (id, nombre, email, telefono, direccion, administrador) VALUES (:id, :nombre, :email, '', '', FALSE)");
     $stmt1->execute([
         ':id' => $usuario_id,
         ':nombre' => $nombre,
@@ -58,25 +58,21 @@ try {
         ':contrasena' => $hashed_password,
         ':codigo' => $codigo_verificacion
     ]);
+    
+    require "Envios.php";
+    $nuevoMail = new Envios();
+    $mensaje = "Hola $nombre,\n\nTu código de verificación es: $codigo_verificacion\n\nValida tu cuenta aquí:\nhttps://localhost/proyecto/html/validar.php";
+    $asunto = "Verificación de cuenta";
+    $destinatario = $email;
+
+    $nuevoMail->enviarMail($asunto,$mensaje,$destinatario);
 
     $conn->commit();
-
-    // Enviar correo
-    $to = $email;
-    $subject = "Verificación de cuenta";
-    $message = "Hola $nombre,\n\nTu código de verificación es: $codigo_verificacion\n\nValida tu cuenta aquí:\nhttps://localhost/proyecto/html/validar.html";
-    $headers = "From: no-reply@proyecto.com";
-
-    if (!mail($to, $subject, $message, $headers)) {
-        http_response_code(500);
-        echo json_encode(['error' => 'Error al enviar correo de verificación']);
-        exit;
-    }
-
     echo json_encode(['message' => 'Registro exitoso. Revisa tu correo para validar tu cuenta.']);
 
 } catch (Exception $e) {
     $conn->rollBack();
     http_response_code(500);
     echo json_encode(['error' => 'Error al registrar usuario']);
+    exit;
 }
