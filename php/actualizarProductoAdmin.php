@@ -1,5 +1,5 @@
 <?php
-require 'conexion.php'; // Asegúrate de que este devuelve un objeto PDO en $conn
+require 'conexion.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Recibir datos del formulario

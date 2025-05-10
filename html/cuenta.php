@@ -182,43 +182,31 @@
   </div>
 </div>
 
-  <!-- Modal Crear Alerta -->
+<!-- Modal Crear Alerta -->
 <div class="modal fade" id="modalCrearAlerta" tabindex="-1" aria-labelledby="modalCrearAlertaLabel" aria-hidden="true">
   <div class="modal-dialog">
     <form class="modal-content" id="formCrearAlerta">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalCrearAlertaLabel">Crear alerta por correo</h5>
+        <h5 class="modal-title" id="modalCrearAlertaLabel">Crear alerta</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
         <div class="mb-3">
           <label for="alertaPalabraClave" class="form-label">Palabra clave</label>
-          <input type="text" class="form-control" id="alertaPalabraClave" name="palabra_clave" placeholder="Ej: Python, Marketing, Zapatos" required>
+          <input type="text" class="form-control" id="alertaPalabraClave" name="palabra_clave" placeholder="Ej: Hortalizas, Fruta" required>
         </div>
         <div class="mb-3">
-          <label for="alertaCategoria" class="form-label">Categoría (opcional)</label>
+          <label for="alertaCategoria" class="form-label">Categoría</label>
           <select class="form-select" id="alertaCategoria" name="categoria">
             <option value="">-- Selecciona una categoría --</option>
-            <option value="tecnologia">Tecnología</option>
-            <option value="moda">Moda</option>
-            <option value="negocios">Negocios</option>
-            <option value="hogar">Hogar</option>
+            <option value="cat-aaa-001">Hortaliza</option>
+            <option value="cat-bbb-002">Fruta</option>
+            <option value="cat-ccc-003">Verdura</option>
+            <option value="cat-ddd-004">Otros</option>
           </select>
-        </div>
-        <div class="mb-3">
-          <label for="alertaFrecuencia" class="form-label">Frecuencia</label>
-          <select class="form-select" id="alertaFrecuencia" name="frecuencia" required>
-            <option value="inmediata">Inmediatamente</option>
-            <option value="diaria">Una vez al día</option>
-            <option value="semanal">Una vez a la semana</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label for="alertaEmail" class="form-label">Correo electrónico</label>
-          <input type="email" class="form-control" id="alertaEmail" name="email" required>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="alertaActiva" name="activa" checked>
+          <input type="checkbox" id="alertaActiva" name="activa" checked>
           <label class="form-check-label" for="alertaActiva">
             Activar alerta inmediatamente
           </label>
@@ -234,41 +222,29 @@
 <!-- Modal Modificar Alerta -->
 <div class="modal fade" id="modalModificarAlerta" tabindex="-1" aria-labelledby="modalModificarAlertaLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <form class="modal-content" id="formCrearAlerta">
+    <form class="modal-content" id="formModificarAlerta">
       <div class="modal-header">
         <h5 class="modal-title" id="modalModificarAlertaLabel">Modificar alerta</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
       </div>
       <div class="modal-body">
         <div class="mb-3">
-          <label for="alertaPalabraClave" class="form-label">Palabra clave</label>
-          <input type="text" class="form-control" id="alertaPalabraClave" name="palabra_clave" placeholder="Ej: Python, Marketing, Zapatos" required>
+          <label for="alertaPalabraClaveModificar" class="form-label">Palabra clave</label>
+          <input type="text" class="form-control" id="alertaPalabraClaveModificar" name="palabra_clave" placeholder="Ej: Python, Marketing, Zapatos" required>
         </div>
         <div class="mb-3">
-          <label for="alertaCategoria" class="form-label">Categoría (opcional)</label>
-          <select class="form-select" id="alertaCategoria" name="categoria">
+          <label for="alertaCategoriaModificar" class="form-label">Categoría</label>
+          <select class="form-select" id="alertaCategoriaModificar" name="categoria">
             <option value="">-- Selecciona una categoría --</option>
-            <option value="tecnologia">Tecnología</option>
-            <option value="moda">Moda</option>
-            <option value="negocios">Negocios</option>
-            <option value="hogar">Hogar</option>
+            <option value="cat-aaa-001">Hortaliza</option>
+            <option value="cat-bbb-002">Fruta</option>
+            <option value="cat-ccc-003">Verdura</option>
+            <option value="cat-ddd-004">Otros</option>
           </select>
-        </div>
-        <div class="mb-3">
-          <label for="alertaFrecuencia" class="form-label">Frecuencia</label>
-          <select class="form-select" id="alertaFrecuencia" name="frecuencia" required>
-            <option value="inmediata">Inmediatamente</option>
-            <option value="diaria">Una vez al día</option>
-            <option value="semanal">Una vez a la semana</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label for="alertaEmail" class="form-label">Correo electrónico</label>
-          <input type="email" class="form-control" id="alertaEmail" name="email" required>
         </div>
         <div class="form-check">
-          <input class="form-check-input" type="checkbox" id="alertaActiva" name="activa" checked>
-          <label class="form-check-label" for="alertaActiva">
+          <input type="checkbox" id="alertaActivaModificar" name="activa" checked>
+          <label class="form-check-label" for="alertaActivaModificar">
             Activar alerta inmediatamente
           </label>
         </div>

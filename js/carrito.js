@@ -29,9 +29,7 @@ function cargarCarrito() {
 
 function eliminarProducto(id) {
     $.post('../php/eliminarProductoCarrito.php', { id }, function(response) {
-        if (response.success) {
             cargarCarrito();
-        }
     }, 'json');
 }
 
@@ -80,15 +78,14 @@ function renderResumenCarrito(subtotal, productoIds) {
     </div>
   </div>
 </div>`;
-
+$('#resumen-carrito-container').html(resumenHTML);
     $.ajax({
   url: '../php/obtenerDatosUsuario.php',
   method: 'GET',
   success: function(data) {
     const usuario = JSON.parse(data);
-    $('#resumen-carrito-container').html(resumenHTML);
     $('#nombre').val(usuario.nombre);
-    $('#calle').val(usuario.calle);
+    $('#calle').val(usuario.direccion);
   },
   error: function() {
     alert("No se pudieron cargar los datos del usuario.");
@@ -108,8 +105,8 @@ function renderResumenCarrito(subtotal, productoIds) {
         onApprove: function(data, actions) {
             return actions.order.capture().then(function(details) {
                 alert('Pago completado por ' + details.payer.name.given_name);
-                            const nombre = $('#nombre').val();
-    const calle = $('#calle').val();
+                const nombre = $('#nombre').val();
+                const calle = $('#calle').val();
 
                 // Datos que necesitas
                 const datosCompra = {

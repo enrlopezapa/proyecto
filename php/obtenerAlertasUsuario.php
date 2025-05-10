@@ -12,7 +12,7 @@ require_once 'conexion.php';
 
 $usuario_id = $_SESSION['usuario_id'];
 
-$sql = "SELECT id, categoria_id, nombre_clave, fecha_creacion
+$sql = "SELECT id, categoria_id, nombre_clave, fecha_creacion, activo
         FROM alertas_usuario
         WHERE usuario_id = :id";
 

@@ -71,6 +71,23 @@ if (isset($_FILES['imagen']) && $_FILES['imagen']['error'] === UPLOAD_ERR_OK) {
     $imagen_url = $producto['imagen_url'];
 }
 
+// Verificar si el precio ha cambiado
+$stmt = $conn->prepare("SELECT precio_actual FROM productos WHERE id = :id");
+$stmt->bindParam(':id', $id);
+$stmt->execute();
+$productoActual = $stmt->fetch(PDO::FETCH_ASSOC);
+
+if ($productoActual && $productoActual['precio_actual'] != $precio_actual) {
+    // Insertar nuevo precio en la tabla precios_producto
+    $stmtPrecio = $conn->prepare("
+        INSERT INTO precios_producto (producto_id, precio, fecha_inicio)
+        VALUES (:producto_id, :precio, NOW())
+    ");
+    $stmtPrecio->bindParam(':producto_id', $id);
+    $stmtPrecio->bindParam(':precio', $precio_actual);
+    $stmtPrecio->execute();
+}
+
 // Actualizar en la base de datos
 $sql = "UPDATE productos SET
             nombre = :nombre,

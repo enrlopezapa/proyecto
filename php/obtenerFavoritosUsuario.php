@@ -2,33 +2,36 @@
 session_start();
 header('Content-Type: application/json');
 
-if (!isset($_SESSION['usuario_id'])) {
-    http_response_code(401);
-    echo json_encode(['error' => 'Usuario no autenticado']);
+// Verifica si hay favoritos
+if (!isset($_SESSION['favoritos']) || empty($_SESSION['favoritos'])) {
+    echo json_encode([]);
     exit;
 }
 
-require_once 'conexion.php';
+// Conexión a la base de datos
+require_once 'conexion.php'; // Asegúrate de que este define $pdo
 
-$usuario_id = $_SESSION['usuario_id'];
+$favoritos = $_SESSION['favoritos'];
+$placeholders = implode(',', array_fill(0, count($favoritos), '?'));
 
-$sql = "SELECT 
-            p.id,
-            p.nombre,
-            p.descripcion,
-            p.imagen_url,
-            p.fecha_produccion,
-            p.unidad_medida,
-            p.vendido,
-            f.fecha_agregado
-        FROM favoritos_producto f
-        JOIN productos p ON f.producto_id = p.id
-        WHERE f.usuario_id = :id";
+// SQL para obtener el precio actual y el último precio del historial
+$sql = "
+    SELECT 
+        p.id, 
+        p.nombre AS alt, 
+        p.imagen_url AS imgSrc, 
+        p.precio_actual AS currentPrice,
+        (SELECT pp.precio FROM precios_producto pp WHERE pp.producto_id = p.id ORDER BY pp.fecha_inicio DESC LIMIT 1) AS oldPrice,
+        p.valoracion_media AS estrellas
+    FROM productos p
+    WHERE p.id IN ($placeholders)
+";
 
-$stmt = $conn->prepare($sql);
-$stmt->bindParam(':id', $usuario_id, PDO::PARAM_STR);
-$stmt->execute();
-
-$favoritos = $stmt->fetchAll();
-
-echo json_encode($favoritos);
+try {
+    $stmt = $conn->prepare($sql);
+    $stmt->execute($favoritos);
+    $productos = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($productos);
+} catch (PDOException $e) {
+    echo json_encode(['error' => $e->getMessage()]);
+}

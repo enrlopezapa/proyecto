@@ -501,34 +501,60 @@ function cargarAlertas() {
 
           // Generar tarjetas de alerta dinámicamente
           alertas.forEach(alerta => {
-              const alertaId = alerta.id;
-              const nombreClave = alerta.nombre_clave || 'Alerta sin nombre';
-              const fechaCreacion = alerta.fecha_creacion || 'Sin fecha';
+            const alertaId = alerta.id;
+            const nombreClave = alerta.nombre_clave || 'Alerta sin nombre';
+            const fechaCreacion = alerta.fecha_creacion || 'Sin fecha';
+            
+            // Asegura que el valor sea numérico o booleano verdadero
+            const estaActiva = alerta.activo == 1 ? 'checked' : '';
 
-              contenido += `
-                  <div class="col-md-4 alerta" data-id="${alertaId}">
-                      <div class="card">
-                          <div class="card-body">
-                              <h5 class="card-title">${nombreClave}</h5>
-                              <p class="card-text">Creada el: ${fechaCreacion}</p>
-                              <div class="form-check form-switch">
-                                  <input class="form-check-input" type="checkbox" id="alertaSwitch${alertaId}">
-                                  <label class="form-check-label" for="alertaSwitch${alertaId}">Activar Alerta</label>
-                              </div>
-                              <div class="d-flex justify-content-between mt-3">
-                                  <button class="btn btn-outline-primary btn-sm btn-editar editar-alerta" data-id="${alertaId}">Editar</button>
-                                  <button class="btn btn-outline-danger btn-sm btn-eliminar" data-id="${alertaId}">Eliminar</button>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              `;
-          });
+            contenido += `
+                <div class="col-md-4 alerta" data-id="${alertaId}">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">${nombreClave}</h5>
+                            <p class="card-text">Creada el: ${fechaCreacion}</p>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="alertaSwitch${alertaId}" ${estaActiva}>
+                                <label class="form-check-label" for="alertaSwitch${alertaId}">Activar Alerta</label>
+                            </div>
+                            <div class="d-flex justify-content-between mt-3">
+                                <button class="btn btn-outline-primary btn-sm btn-editar editar-alerta" data-id="${alertaId}">Editar</button>
+                                <button class="btn btn-outline-danger btn-sm btn-eliminar eliminar-alerta" data-id="${alertaId}">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
 
           contenido += `</div>`; // Cerrar contenedor de alertas
 
           // Mostrar en el panel
           $panel.hide().html(contenido).fadeIn();
+          $('.form-check-input').on('change', function () {
+            const checkbox = $(this);
+            const alertaId = checkbox.closest('.alerta').data('id');
+            const nuevaActivo = checkbox.is(':checked') ? 1 : 0;
+
+            // Enviar actualización por AJAX
+            $.ajax({
+                url: '../php/actualizarEstadoAlerta.php',
+                method: 'POST',
+                data: {
+                    id: alertaId,
+                    activo: nuevaActivo
+                },
+                success: function (respuesta) {
+                    console.log("Estado actualizado:", respuesta);
+                },
+                error: function () {
+                    alert("Error al actualizar el estado de la alerta.");
+                    // Revertimos el cambio si hay error
+                    checkbox.prop('checked', !checkbox.is(':checked'));
+                }
+            });
+        });
       },
       error: function(xhr) {
           console.log("Error al cargar las alertas");
@@ -578,52 +604,78 @@ function cargarPerfil() {
 
 function cargarFavoritos() {
   $.ajax({
-      url: '../php/obtenerFavoritosUsuario.php',
-      method: 'GET',
-      dataType: 'json',
-      success: function(favoritos) {
-          console.log(favoritos);
+    url: '../php/obtenerFavoritosUsuario.php',
+    method: 'GET',
+    dataType: 'json',
+    success: function(favoritos) {
+      let contenido = `
+        <h2>Mis favoritos</h2>
+        <p>Aquí aparecerán tus artículos favoritos.</p>
+        <div class="row g-4" id="lista-favoritos">
+      `;
 
-          let contenido = `
-              <h2>Mis favoritos</h2>
-              <p>Aquí aparecerán tus artículos favoritos.</p>
-              <div class="row g-4" id="lista-favoritos">
-          `;
+      favoritos.forEach(p => {
+        const estrellas = generarEstrellas(p.estrellas); // Asume que tienes esta función
+        const card = `
+          <article class="col-6 col-md-3">
+            <figure class="card h-100 product-card">
+              <img src="${p.imgSrc || '../img/default.svg'}" class="card-img-top" alt="${p.alt}">
+              <figcaption class="card-body">
+                <div class="price">
+                  <span class="old-price">${p.oldPrice ?? ''}</span>
+                  <span class="current-price">${p.currentPrice}</span>
+                </div>
+                <p class="text-muted mb-0">${p.alt}</p>
+                <div class="card-actions">
+                  <div class="rating">${estrellas}</div>
+                </div>
+                <div class="mt-3 d-flex justify-content-between">
+                  <form class="d-flex gap-2">
+                    <input type="hidden" name="productoId" value="${p.id}" />
+                    <button type="button" class="btn btn-outline-secondary btn-detalle">Ver detalles</button>
+                    <button type="button" class="btn btn-buy">Comprar</button>
+                  </form>
+                </div>
+              </figcaption>
+            </figure>
+          </article>
+        `;
+        contenido += card;
+      });
 
-          favoritos.forEach(producto => {
-              contenido += `
-                  <div class="col-md-4 producto">
-                      <div class="card">
-                          <img src="${producto.imagen_url || '../img/default.svg'}" class="card-img-top" alt="${producto.nombre}">
-                          <div class="card-body">
-                              <h5 class="card-title">${producto.nombre}</h5>
-                              <p class="card-text">Cantidad: ${producto.cantidad_disponible} ${producto.unidad_medida}</p>
-                              <p class="card-text">Lote: ${producto.numero_lote}</p>
-                              <p class="card-text">Producción: ${producto.fecha_produccion}</p>
-                              <p class="card-text">Caducidad: ${producto.fecha_caducidad}</p>
-                              <div class="d-flex justify-content-between align-items-center mt-3">
-                                  ${
-                                      producto.vendido == true
-                                      ? `<span class="badge bg-danger w-100 text-center">Vendido</span>`
-                                      : `<button class="btn btn-outline-primary btn-sm btn-editar editar-producto" data-id="${producto.id}">Ver detalles</button>`
-                                  }
-                                      <button class="btn btn-outline-danger btn-sm btn-eliminar" data-id="${producto.id}">Eliminar</button>
-                              </div>
-                          </div>
-                      </div>
-                  </div>
-              `;
-          });
-
-          contenido += `</div>`; // cerrar row
-
-          $panel.hide().html(contenido).fadeIn();
-      },
-      error: function(xhr) {
-          console.log("Error al cargar los favoritos");
-      }
+      contenido += `</div>`;
+      $panel.hide().html(contenido).fadeIn();
+      asignarEventos();
+    },
+    error: function() {
+      console.log("Error al cargar los favoritos");
+    }
   });
 }
+function generarEstrellas(cantidad) {
+  let html = '';
+  for (let i = 1; i <= 5; i++) {
+    html += `<img src="../img/${i <= cantidad ? 'star-fill' : 'star'}.svg" class="star" alt="${i <= cantidad ? '★' : '☆'}">`;
+  }
+  return html;
+}
+function asignarEventos() {
+
+    $('.btn-detalle').off().on('click', function () {
+      const productoId = $(this).closest('form').find('input[name="productoId"]').val();
+      document.cookie = `producto_id=${productoId}; path=/; max-age=86400`;
+      window.location.href = 'detalle-producto.php';
+    });
+
+    $('.btn-buy').off().on('click', function () {
+      const productoId = $(this).closest('form').find('input[name="productoId"]').val();
+      $.post('../php/agregarACarrito.php', { productoId }, function () {
+        const toast = new bootstrap.Toast($('#toastConfirmacion'));
+        $('#toastConfirmacion .toast-body').text('Producto agregado al carrito');
+        toast.show();
+      });
+    });
+  }
 
 function cargarCompras() {
   $.ajax({
@@ -1090,15 +1142,14 @@ $('#formEditarCompra').submit(function (e) {
 
 
 
-// EDITAR ALERTA ADMIN
-$(document).on('click', '.editar-alerta-admin', function () {
-  const isMobile = window.innerWidth < 768;
-  const $offcanvasEl = $('#offcanvasContent');
-  const offcanvasInstance = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasContent'));
+$(document).on('click', '.editar-alerta', function () {
+  const isMobile = window.innerWidth < 768;  // Verificar si es móvil
+  const $modalEl = $('#modalModificarAlerta');
   const $btn = $(this);
 
-  if (isMobile && offcanvasInstance) {
-    offcanvasInstance.hide();
+  // Si estamos en móvil y el modal está activo, cerrar el modal antes de mostrar
+  if (isMobile && $modalEl.hasClass('show')) {
+    $modalEl.modal('hide');
     $('.modal-backdrop').remove();
     mostrarModalEditarAlerta($btn);
   } else {
@@ -1107,43 +1158,58 @@ $(document).on('click', '.editar-alerta-admin', function () {
 });
 
 function mostrarModalEditarAlerta($btn) {
-  const fila = $btn.closest('tr');
+  // Obtener el ID de la alerta desde el botón que fue presionado
+  const alertaId = $btn.data('id');
 
-  const alerta = {
-    id: fila.find('td:eq(0)').text().trim(),
-    palabra_clave: fila.find('td:eq(3)').text().trim(),
-    email: fila.find('td:eq(4)').text().trim(),
-    activa: fila.find('td:eq(5)').data('activa') === '1'
-  };
-  console.log(alerta)
+  // Obtener los datos de la alerta a través de AJAX
+  $.ajax({
+    url: '../php/obtenerAlertaPorId.php',
+    method: 'GET',
+    data: { id: alertaId },
+    dataType: 'json',
+    success: function (alerta) {
+      if (alerta) {
+        // Asignar los datos de la alerta al formulario del modal
+        $('#alertaPalabraClaveModificar').val(alerta.nombre_clave);
+        $('#alertaCategoriaModificar').val(alerta.categoria_id);
+        $('#alertaActivaModificar').prop('checked', alerta.activo == 1);
 
-  $('#editarAlertaIdAdmin').val(alerta.id);
-  $('#alertaPalabraClaveAdmin').val(alerta.palabra_clave);
-  $('#alertaActivaAdmin').prop('checked', alerta.activa);
-
-  $('#modalModificarAlertaAdmin').modal('show');
+        // Mostrar el modal
+        $('#modalModificarAlerta').modal('show');
+      } else {
+        showToast('No se pudo cargar la alerta.');
+      }
+    },
+    error: function () {
+      showToast('Error al obtener la alerta.');
+    }
+  });
 }
 
 // Enviar actualización
-$('#formCrearAlertaAdmin').submit(function (e) {
+$('#formModificarAlerta').submit(function (e) {
   e.preventDefault();
 
   const datos = {
-    id: $('#editarAlertaIdAdmin').val(),
-    palabra_clave: $('#alertaPalabraClaveAdmin').val(),
-    activa: $('#alertaActivaAdmin').is(':checked') ? 1 : 0
+    id: $('#formModificarAlerta').data('id'),
+    nombre_clave: $('#alertaPalabraClaveModificar').val(),
+    categoria_id: $('#alertaCategoriaModificar').val(),
+    activo: $('#alertaActivaModificar').is(':checked') ? 1 : 0
   };
-  console.log(datos)
 
+  // Hacer el envío de los datos con AJAX
   $.ajax({
-    url: '../php/actualizarAlertaAdmin.php',
+    url: '../php/actualizarAlerta.php',
     method: 'POST',
     data: datos,
     success: function (response) {
-      console.log(response);
-      showToast('Alerta actualizada correctamente');
-      $('#modalModificarAlertaAdmin').modal('hide');
-      cargarAdminAlertas();
+      if (response.success) {
+        showToast('Alerta actualizada correctamente');
+        $('#modalModificarAlerta').modal('hide');
+        cargarAlertas();  // Recargar las alertas después de la actualización
+      } else {
+        showToast('Error al actualizar la alerta');
+      }
     },
     error: function () {
       showToast('Error al actualizar la alerta');
@@ -1747,36 +1813,35 @@ $('#formEditarProducto').on('submit', function (e) {
 
 
 
-// crear alerta
+$(document).ready(function () {
+  $('#formCrearAlerta').on('submit', function (e) {
+    e.preventDefault();
 
-$(document).on('click', '[data-bs-target="#modalCrearAlerta"]', function () {
-  if (window.innerWidth < 768) {
-    const offcanvasInstance = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasContent'));
-    if (offcanvasInstance) {
-      offcanvasInstance.hide();
-    }
-  }
+    const datosAlerta = {
+      palabra_clave: $('#alertaPalabraClave').val(),
+      categoria: $('#alertaCategoria').val(),
+      activa: $('#alertaActiva').is(':checked') ? 1 : 0
+    };
 
-  const datosAlerta = {
-    categoria_id:1,
-    nombre_clave: "",
-};
-  $.ajax({
-    url: '../php/crearAlerta.php',
-    type: 'POST',
-    data: JSON.stringify(datosAlerta),
-    contentType: 'application/json',
-    success: function(response) {
-      showToast('Alerta añadida');
-      console.log(response);
-    },
-    error: function(xhr, status, error) {
-      showToast('Error al crear la alerta');
-      console.error(xhr.responseText);
-    }
+    $.ajax({
+      url: '../php/crearAlerta.php',
+      type: 'POST',
+      data: JSON.stringify(datosAlerta),
+      contentType: 'application/json',
+      success: function (response) {
+        showToast('Alerta añadida correctamente');
+        $('#modalCrearAlerta').modal('hide');
+        $('#formCrearAlerta')[0].reset();
+        cargarAlertas(); // función que debes tener para refrescar la lista
+        console.log(response);
+      },
+      error: function (xhr, status, error) {
+        showToast('Error al crear la alerta');
+        console.error(xhr.responseText);
+      }
+    });
+  });
 });
-cargarAlertas();
-});
 
 
 
@@ -1792,78 +1857,118 @@ cargarAlertas();
 
 
 
-
-
-
-// Evento para editar alerta
-$(document).on('click', '.editar-alerta', function () {
+$(document).on('click', '.editar-categoria-admin', function () {
   const isMobile = window.innerWidth < 768;
   const $offcanvasEl = $('#offcanvasContent');
-  const offcanvasInstance = bootstrap.Offcanvas.getInstance($offcanvasEl[0]);
+  const offcanvasInstance = bootstrap.Offcanvas.getInstance(document.getElementById('offcanvasContent'));
   const $btn = $(this);
-  const alertaCard = $btn.closest('.alerta');
-
-  const mostrarModal = () => {
-    // Obtener los datos actuales de la alerta
-    var alertaId = alertaCard.data('id');
-    var alertaNombre = alertaCard.find('.card-title').text();
-    var alertaDescripcion = alertaCard.find('.card-text').text();
-    var alertaActivada = alertaCard.find('.form-check-input').prop('checked');
-
-    // Mostrar el modal
-    $('#modalModificarAlerta').modal('show');
-
-    // Cambiar el título del modal
-    $('#modalModificarAlertaLabel').text('Editar alerta por correo');
-
-    // Llenar el formulario con los datos actuales
-    $('#alertaPalabraClave').val(alertaNombre);
-    $('#alertaCategoria').val(''); // Adaptar según lógica
-    $('#alertaFrecuencia').val('inmediata'); // Adaptar si es necesario
-    $('#alertaEmail').val(''); // Adaptar si manejas emails
-    $('#alertaActiva').prop('checked', alertaActivada);
-
-    // Preparar el envío del formulario
-    $('#formCrearAlerta').off('submit').on('submit', function (event) {
-      event.preventDefault();
-
-      var nombre = $('#alertaPalabraClave').val();
-      var descripcion = $('#alertaDescripcion').val();
-      var categoria = $('#alertaCategoria').val();
-      var frecuencia = $('#alertaFrecuencia').val();
-      var email = $('#alertaEmail').val();
-      var activa = $('#alertaActiva').prop('checked');
-
-      const datosAlerta = {
-        categoria_id: categoria,
-        nombre_clave: nombre,
-        // Agrega los demás campos si los usas en tu backend
-      };
-
-      $.ajax({
-        url: '../php/crearAlerta.php',
-        type: 'POST',
-        data: JSON.stringify(datosAlerta),
-        contentType: 'application/json',
-        success: function (response) {
-          showToast('Alerta añadida');
-          console.log(response);
-        },
-        error: function (xhr) {
-          showToast('Error al crear la alerta');
-          console.error(xhr.responseText);
-        }
-      });
-
-      $('#modalModificarAlerta').modal('hide');
-    });
-  };
 
   if (isMobile && offcanvasInstance) {
-    $offcanvasEl.one('hidden.bs.offcanvas', mostrarModal);
     offcanvasInstance.hide();
+    $('.modal-backdrop').remove();
+      mostrarModalEditarCategoria($btn);
   } else {
-    mostrarModal();
+    mostrarModalEditarCategoria($btn);
+  }
+});
+
+function mostrarModalEditarCategoria($btn) {
+  const fila = $btn.closest('tr');
+
+  const categoria = {
+    id: $btn.data('id'),
+    nombre: fila.find('td:eq(1)').text(),
+    descripcion: fila.find('td:eq(2)').text()
+  };
+
+  $('#editarCategoriaId').val(categoria.id);
+  $('#editarNombreCategoria').val(categoria.nombre);
+  $('#editarDescripcionCategoria').val(categoria.descripcion);
+
+  $('#modalEditarCategoria').modal('show');
+}
+
+
+// Abrir el modal de edición y cargar los datos de la alerta
+$(document).on('click', '.editar-alerta', function () {
+    const alertaId = $(this).data('id');
+
+    $.ajax({
+        url: '../php/obtenerAlertaPorId.php',
+        method: 'GET',
+        data: { id: alertaId },
+        dataType: 'json',
+        success: function (alerta) {
+            if (alerta) {
+                $('#alertaPalabraClaveModificar').val(alerta.nombre_clave);
+                $('#alertaCategoriaModificar').val(alerta.categoria_id);
+                $('#alertaActivaModificar').prop('checked', alerta.activo == 1);
+                $('#formModificarAlerta').data('id', alertaId);
+                $('#modalModificarAlerta').modal('show');
+            } else {
+                alert("No se pudo cargar la alerta.");
+            }
+        },
+        error: function () {
+            alert("Error al obtener la alerta.");
+        }
+    });
+});
+
+// Guardar cambios de la alerta modificada
+$(document).on('submit', '#formModificarAlerta', function (e) {
+    e.preventDefault();
+
+    const alertaId = $(this).data('id');
+    const palabraClave = $('#alertaPalabraClaveModificar').val();
+    const categoria = $('#alertaCategoriaModificar').val();
+    const activa = $('#alertaActivaModificar').is(':checked') ? 1 : 0;
+
+    $.ajax({
+        url: '../php/actualizarAlerta.php',
+        method: 'POST',
+        data: {
+            id: alertaId,
+            nombre_clave: palabraClave,
+            categoria_id: categoria,
+            activo: activa
+        },
+        success: function () {
+            $('#modalModificarAlerta').modal('hide');
+            cargarAlertas();
+        },
+        error: function () {
+            alert("Error al actualizar la alerta.");
+        }
+    });
+});
+
+
+
+
+
+
+// ELIMINAR ALERTA
+$(document).on('click', '.eliminar-alerta', function () {
+  const alertaId = $(this).data('id'); // Obtener el ID de la alerta
+
+  // Confirmar la eliminación
+  const confirmDelete = confirm('¿Estás seguro de que quieres eliminar esta alerta?');
+
+  if (confirmDelete) {
+    // Realizar la solicitud AJAX para eliminar la alerta
+    $.ajax({
+      url: '../php/eliminarAlerta.php',
+      method: 'POST',
+      data: { id: alertaId },
+      success: function (response) {
+          showToast('Alerta eliminada correctamente');
+          cargarAlertas();  // Recargar las alertas después de la eliminación
+      },
+      error: function () {
+        showToast('Error al eliminar la alerta');
+      }
+    });
   }
 });
 

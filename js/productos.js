@@ -140,7 +140,22 @@ $('.btn.btn-success').on('click', function () {
   function asignarEventos() {
     $('.btn-favorite img').off().on('click', function () {
       const img = $(this);
-      img.attr('src', img.attr('src') === '../img/heart.svg' ? '../img/heart-fill.svg' : '../img/heart.svg');
+      const form = img.closest('figure').find('form');
+      const productoId = form.find('input[name="productoId"]').val();
+
+      // Cambiar imagen
+      const isFavorito = img.attr('src') === '../img/heart.svg';
+      img.attr('src', isFavorito ? '../img/heart-fill.svg' : '../img/heart.svg');
+
+      // Enviar AJAX al backend
+      $.ajax({
+        url: '../php/favoritos.php',
+        method: 'POST',
+        data: {
+          productoId: productoId,
+          accion: isFavorito ? 'agregar' : 'quitar'
+        }
+      });
     });
 
     $('.btn-detalle').off().on('click', function () {
