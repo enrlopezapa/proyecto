@@ -1,0 +1,51 @@
+<template id="header-template">
+  <header class="border-bottom py-2 sticky-top">
+    <div class="container d-flex flex-wrap align-items-center justify-content-between">
+      <a id="index-link" href="index.html" class="navbar-brand d-flex align-items-center">
+        <img id="logo-desktop" src="img/logoGrande.png" alt="Logo" class="d-none d-sm-block">
+        <img id="logo-mobile" src="img/logoPequeno.png" alt="Logo móvil" class="d-block d-sm-none">
+      </a>
+      <div class="navbar-search">
+        <form id="search-link" class="flex-grow-1 mx-3" method="get" action="../proyecto/html/productos.html">
+          <input type="search" class="form-control" placeholder="Busca productos..." aria-label="Buscar" name="busqueda">
+        </form>
+      </div>
+      <div>
+        <a id="login-link" href="html/login.html" class="btn btn-outline-primary d-none me-5">Inicia sesión</a>
+      
+        <!-- Dropdown de perfil -->
+        <div class="btn-group d-none" id="perfil-dropdown">
+          <button type="button" class="btn btn-outline-primary dropdown-toggle me-5" data-bs-toggle="dropdown" aria-expanded="false">
+            Perfil
+          </button>
+          <ul class="dropdown-menu" style="background-color: #ff9800;">
+            <li><a class="dropdown-item text-white fw-bold" id="perfil-link" href="html/perfil.html">Ver perfil</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger fw-bold" id="logout-link" href="php/logout.php">Cerrar sesión</a></li>
+          </ul>
+        </div>
+      
+        <a id="cart-link" href="html/carrito.html" class="btn btn-outline-primary d-none me-5">Carrito</a>
+      </div>
+    </div>
+    <!-- Navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark mt-2" style="background-color: var(--verde-oscuro); border-bottom: 2px solid var(--verde-pasto);">
+      <div class="container">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <ul class="navbar-nav flex-wrap">
+            <li class="nav-item dropdown"  id="categorias-dropdown">
+              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Todas las categorías</a>
+            </li>
+            <li class="nav-item"><a id="producto-link" class="nav-link" href="html/productos.html">Productos</a></li>
+            <li class="nav-item"><a id="nosotros-link" class="nav-link" href="html/nosotros.html">¿Quiénes somos?</a></li>
+            <li class="nav-item"><a id="contacto-link" class="nav-link" href="html/contacto.html">Contáctanos</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+</template>
