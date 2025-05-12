@@ -1,5 +1,9 @@
 <?php
 session_start();
+$usuario_id_session = $_SESSION['usuario_id'];
+session_write_close();
+session_name($usuario_id_session);
+session_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['productoId'])) {
     $productoId = $_POST['productoId'];

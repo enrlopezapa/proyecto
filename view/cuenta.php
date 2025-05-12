@@ -16,6 +16,9 @@
   <script>
     window.usuarioLogueado = <?= isset($_SESSION['usuario_id']) ? 'true' : 'false' ?>;
   </script>
+  <?php 
+  if(isset($_SESSION['usuario_id'])){$usuario_id_session = $_SESSION['usuario_id'];}
+  session_write_close(); ?>
 </head>
 <body>
 
@@ -46,6 +49,8 @@
       <div class="col-md-3 bg-light sidebar pt-4">
         <ul class="nav flex-column">
           <?php 
+          if(isset($usuario_id_session)){session_name($usuario_id_session);}
+          session_start();
           $isAdmin = isset($_SESSION['usuario_admin']) && $_SESSION['usuario_admin'] == true;
           if (!$isAdmin){ ?>
             <li class="nav-item"><a class="nav-link <?php if(!$isAdmin){echo "active";}?>" href="#" data-section="productos">Mis productos</a></li>

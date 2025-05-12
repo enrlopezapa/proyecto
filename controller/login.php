@@ -34,6 +34,9 @@ $stmt->execute();
 $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if ($usuario && password_verify($password, $usuario['contrasena'])) {
+    session_start();
+    $_SESSION['usuario_id'] = $usuario['id'];
+    session_write_close();
     session_name($usuario['id']);
     session_start();
     $_SESSION['usuario_id'] = $usuario['id'];
