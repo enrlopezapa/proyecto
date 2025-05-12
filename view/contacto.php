@@ -72,17 +72,17 @@
         <div class="container">
           <h2 class="mb-4">Síguenos en nuestras redes sociales</h2>
           <div class="d-flex justify-content-center gap-4">
-            <a href="#" class="btn btn-outline-light rounded-circle" style="font-size: 1.5rem;">
-              <i class="fab fa-facebook-f"></i>
+            <a href="https://es-es.facebook.com/" class="btn btn-outline-light" style="border:1px transparent;">
+              <img src="img/fb.png" alt="facebook" style="width:50px;">
             </a>
-            <a href="#" class="btn btn-outline-light rounded-circle" style="font-size: 1.5rem;">
-              <i class="fab fa-twitter"></i>
+            <a href="https://x.com/" class="btn btn-outline-light" style="border:1px transparent;">
+              <img src="img/x.png" alt="X" style="width:50px;">
             </a>
-            <a href="#" class="btn btn-outline-light rounded-circle" style="font-size: 1.5rem;">
-              <i class="fab fa-instagram"></i>
+            <a href="https://www.instagram.com/" class="btn btn-outline-light" style="border:1px transparent;">
+              <img src="img/instagram.png" alt="instagram" style="width:50px;">
             </a>
-            <a href="#" class="btn btn-outline-light rounded-circle" style="font-size: 1.5rem;">
-              <i class="fab fa-youtube"></i>
+            <a href="https://www.youtube.com/" class="btn btn-outline-light" style="border:1px transparent;">
+              <img src="img/youtube.png" alt="youtube" style="width:50px;">
             </a>
           </div>
         </div>
@@ -107,7 +107,7 @@
             <div class="col-md-6">
               <h4>Ubicación en el Mapa</h4>
               <div class="ratio ratio-16x9">
-                <iframe src="https://www.google.com/maps/embed/v1/place?q=EcoCiudad,+España&key=YOUR_GOOGLE_MAPS_API_KEY" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3013.6776589509514!2d-4.1084988232893584!3d40.94473127135959!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd413f1f30373af1%3A0x7591302428ee44ad!2sIES%20Mar%C3%ADa%20Moliner!5e0!3m2!1ses!2ses!4v1747034521396!5m2!1ses!2ses" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
               </div>
             </div>
           </div>

@@ -54,7 +54,7 @@ header .container {
 }
 
 header .navbar-brand img {
-  width: 100px;
+  width: 150px;
 }
 
 header .navbar-search form input{
@@ -495,12 +495,12 @@ footer .container p {
     order: 0;
     display: flex;
     justify-content: center;
-    margin-bottom: 0.5rem;
+    margin:0px;
   }
 
   header div:nth-child(1) img{
-    width: 60px;
-    margin: auto; /*ALINEAR EL LOGOOOOOOOOOOOOO*/
+    width: 200px;
+    margin: auto;
   }
 
   header div:nth-child(3) { /* El div donde están los botones */
@@ -509,13 +509,11 @@ footer .container p {
     display: flex;
     justify-content: center;
     gap: 0.5rem;
-    margin-bottom: 0.5rem;
   }
 
   header .navbar-search {
     order: 2;
     width: 90%;
-    margin-bottom: 0.5rem;
   }
 
   header .navbar-search .form-control {

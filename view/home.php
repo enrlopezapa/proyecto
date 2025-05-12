@@ -55,7 +55,7 @@
         <a href="nosotros.php" class="btn btn-light">Saber más</a>
       </div>
       <div class="col-md-5 d-none d-md-block">
-        <img src="https://via.placeholder.com/400x300.png?text=Promo" alt="Banner promo" class="img-fluid">
+        <img src="img/carrito.png" alt="Banner promo" class="img-fluid">
       </div>
     </div>
   </section>
@@ -65,26 +65,22 @@
       <div class="row">
         <div class="col-6 col-md-3 mb-3">
           <button class="btn-category d-flex flex-column align-items-center justify-content-center">
-            <img src="img/house-heart-fill.svg">
-            <span>Fruta</span>
+            <img src="img/fruta.png">
           </button>
         </div>
         <div class="col-6 col-md-3 mb-3">
           <button class="btn-category d-flex flex-column align-items-center justify-content-center">
-            <img src="img/house-heart-fill.svg">
-            <span>Verdura</span>
+            <img src="img/verdura.png">
           </button>
         </div>
         <div class="col-6 col-md-3 mb-3">
           <button class="btn-category d-flex flex-column align-items-center justify-content-center">
-            <img src="img/house-heart-fill.svg">
-            <span>Hortaliza</span>
+            <img src="img/hortaliza.png">
           </button>
         </div>
         <div class="col-6 col-md-3 mb-3">
           <button class="btn-category d-flex flex-column align-items-center justify-content-center">
-            <img src="img/house-heart-fill.svg">
-            <span>Otros</span>
+            <img src="img/otros.png">
           </button>
         </div>
       </div>
