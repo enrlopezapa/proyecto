@@ -509,6 +509,7 @@ footer .container p {
     display: flex;
     justify-content: center;
     gap: 0.5rem;
+    margin-bottom: 10px;
   }
 
   header .navbar-search {
@@ -529,5 +530,14 @@ footer .container p {
   nav .navbar-toggler {
     margin-left: auto;
   }
+
+  .btn-category {
+  height: 120px; /* Altura del botón */
+  width: 120px; /* Ancho del botón */
+  margin-left: 15px;
+}
+.btn-category img {
+  width: 80px;
+}
 }
 

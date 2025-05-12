@@ -46,8 +46,8 @@
   <section id="historia" class="py-5 bg-light mb-4">
     <div class="container">
       <div class="row align-items-center">
-        <div class="col-md-6">
-          <img src="img/logoGrande.png" alt="Nuestra historia" class="img-fluid shadow-lg" style="width: 300px;"/>
+        <div class="col-md-6 d-flex justify-content-center mb-4">
+          <img src="img/logoGrande.png" alt="Nuestra historia" class="img-fluid shadow-lg border-0" style="width: 300px;"/>
         </div>
         <div class="col-md-6">
           <h2 class="text-success mb-4">Nuestra Historia</h2>
