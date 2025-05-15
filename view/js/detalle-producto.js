@@ -54,7 +54,7 @@ $(document).ready(function () {
                 .html(`<strong>Vendedor:</strong> ${p.vendedor || 'No disponible'}`);
 
             $('.col-md-7').find('p:contains("Valoración")')
-                .html(`<strong>Valoración media del vendedor:</strong> ${generarEstrellas(p.valoracion_media)})`);
+                .html(`<strong>Valoración media del vendedor:</strong> ${generarEstrellas(p.valoracion_media)}`);
 
             // Crear gráfico de historial de precios
             const ctx = document.getElementById('graficoPrecios').getContext('2d');

@@ -63,7 +63,7 @@ $(document).ready(function () {
   });
 
   $('.btn-category').on('click', function () {
-    const categoria = $(this).find('span').text().toLowerCase();
-    window.location.href = `productos.php?categoria=${categoria}`;
-  });
+  const categoria = $(this).attr('title').toLowerCase();
+  window.location.href = `productos.php?categoria=${categoria}`;
+});
 });

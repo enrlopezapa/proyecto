@@ -110,10 +110,10 @@
               <label for="ordenar" class="form-label">Ordenar por</label>
               <select id="ordenar" name="ordenar" class="form-select">
                 <option value="">Seleccionar opcion</option>
-                <option value="relevancia">Relevancia</option>
+                <option value="fecha_produccion">Fecha: más nuevo</option>
                 <option value="precio_asc">Precio: más bajo</option>
                 <option value="precio_desc">Precio: más alto</option>
-                <option value="calificacion">Mejor calificación</option>
+                <option value="valoracion">Mejor calificación</option>
               </select>
             </div>
             <button type="button" class="btn btn-success w-100">Aplicar filtros</button>

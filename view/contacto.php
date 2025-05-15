@@ -105,11 +105,11 @@
           <div class="row">
             <div class="col-md-6">
               <h4>Dirección</h4>
-              <p>Calle de la Sostenibilidad, 123</p>
-              <p>EcoCiudad, 45678</p>
+              <p>Calle Ávila, 1</p>
+              <p>Segovia, 40004</p>
     
               <h4>Teléfono</h4>
-              <p>(+34) 123 456 789</p>
+              <p>(+34) 921 456 789</p>
     
               <h4>Correo Electrónico</h4>
               <p>administracion@wallafood.es</p>
