@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,12 +12,12 @@
   <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="js/jquery-3.7.1.min.js"></script>
   <script src="js/carrito.js"></script>
-  <script type="module" src="../model/components/index.js"></script>
-  <script src="https://www.paypal.com/sdk/js?client-id=AbEsu8ppCP7di0RzjTzm8bNPUEn9Hkx4B3-VIIgBy3ZSfNBIhukU4JvdeBROdxi0nCPrLk44kStbiihy&currency=EUR"></script>
-  <?php session_start(); ?>
   <script>
     window.usuarioLogueado = <?= isset($_SESSION['usuario_id']) ? 'true' : 'false' ?>;
   </script>
+  <script type="module" src="../model/components/index.js"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=AbEsu8ppCP7di0RzjTzm8bNPUEn9Hkx4B3-VIIgBy3ZSfNBIhukU4JvdeBROdxi0nCPrLk44kStbiihy&currency=EUR"></script>
+	<link rel="icon" href="img/favicon.ico" type="image/x-icon">
 </head>
 <body>
 

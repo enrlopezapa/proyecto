@@ -495,7 +495,7 @@ footer .container p {
     order: 0;
     display: flex;
     justify-content: center;
-    margin:0px;
+    margin: 0px;
   }
 
   header div:nth-child(1) img{
@@ -515,6 +515,7 @@ footer .container p {
   header .navbar-search {
     order: 2;
     width: 90%;
+    margin-bottom: 0.5rem;
   }
 
   header .navbar-search .form-control {
@@ -530,7 +531,6 @@ footer .container p {
   nav .navbar-toggler {
     margin-left: auto;
   }
-
   .btn-category {
   height: 120px; /* Altura del botón */
   width: 120px; /* Ancho del botón */

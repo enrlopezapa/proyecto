@@ -1,9 +1,6 @@
 <?php
 session_start();
-$usuario_id_session = $_SESSION['usuario_id'];
-session_write_close();
-session_name($usuario_id_session);
-session_start();
+
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['usuario_id'])) {

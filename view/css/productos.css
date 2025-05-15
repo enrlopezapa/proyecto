@@ -3,3 +3,10 @@
     top: 200px;
     z-index: 100;
   }
+
+  @media (max-width:450px){
+  .btn-detalle, .btn-buy{
+   	max-width: 75px;
+    padding: 0.25rem;
+  }
+}

@@ -1,10 +1,7 @@
 <?php
 require '../model/conexion.php';
 
-session_start();
-$usuario_id_session = $_SESSION['usuario_id'];
-session_write_close();
-session_name($usuario_id_session);
+// Iniciar sesión si no está iniciada
 session_start();
 
 // Verificar si existe el ID de usuario en la sesión

@@ -1,3 +1,6 @@
+<?php
+  session_start();
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -5,17 +8,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WallaFood</title>
-
+	<script>
+    window.usuarioLogueado = <?= isset($_SESSION['usuario_id']) ? 'true' : 'false' ?>;
+  </script>
+  <script type="module" src="../model/components/index.js"></script>
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
   <link rel="stylesheet" href="css/index.css" />
   <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="js/jquery-3.7.1.min.js"></script>
   <script src="js/index.js"></script>
-  <?php session_start(); ?>
-  <script>
-    window.usuarioLogueado = <?= isset($_SESSION['usuario_id']) ? 'true' : 'false' ?>;
-  </script>
-  <script type="module" src="../model/components/index.js"></script>
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
@@ -64,22 +66,22 @@
     <section class="container text-center my-4">
       <div class="row">
         <div class="col-6 col-md-3 mb-3">
-          <button class="btn-category d-flex flex-column align-items-center justify-content-center">
+          <button class="btn-category d-flex flex-column align-items-center justify-content-center" data-bs-toggle="tooltip" title="Fruta">
             <img src="img/fruta.png">
           </button>
         </div>
         <div class="col-6 col-md-3 mb-3">
-          <button class="btn-category d-flex flex-column align-items-center justify-content-center">
+          <button class="btn-category d-flex flex-column align-items-center justify-content-center" data-bs-toggle="tooltip" title="Verdura">
             <img src="img/verdura.png">
           </button>
         </div>
         <div class="col-6 col-md-3 mb-3">
-          <button class="btn-category d-flex flex-column align-items-center justify-content-center">
+          <button class="btn-category d-flex flex-column align-items-center justify-content-center" data-bs-toggle="tooltip" title="Hortaliza">
             <img src="img/hortaliza.png">
           </button>
         </div>
         <div class="col-6 col-md-3 mb-3">
-          <button class="btn-category d-flex flex-column align-items-center justify-content-center">
+          <button class="btn-category d-flex flex-column align-items-center justify-content-center" data-bs-toggle="tooltip" title="Otros">
             <img src="img/otros.png">
           </button>
         </div>

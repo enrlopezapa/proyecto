@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,11 +12,11 @@
   <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="js/jquery-3.7.1.min.js"></script>
   <script src="js/registro.js"></script>
-  <script type="module" src="../model/components/index.js"></script>
-  <?php session_start(); ?>
-  <script>
+    <script>
     window.usuarioLogueado = <?= isset($_SESSION['usuario_id']) ? 'true' : 'false' ?>;
   </script>
+  <script type="module" src="../model/components/index.js"></script>
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 </head>
 <body>
 
@@ -55,24 +56,24 @@
             <div class="card-body">
               <form id="registerForm">
                 <div class="mb-3">
-                  <label for="fullName" class="form-label">Nombre Completo</label>
+                  <label for="fullName" class="form-label">Nombre Completo</label><span style="color:red;">*</span>
                   <input type="text" class="form-control" id="fullName" required>
                 </div>
                 <div class="mb-3">
-                  <label for="emailReg" class="form-label">Correo Electrónico</label>
+                  <label for="emailReg" class="form-label">Correo Electrónico</label><span style="color:red;">*</span>
                   <input type="email" class="form-control" id="emailReg" required>
                 </div>
                 <div class="mb-3">
-                  <label for="passwordReg" class="form-label">Contraseña</label>
+                  <label for="passwordReg" class="form-label">Contraseña</label><span style="color:red;">*</span>
                   <input type="password" class="form-control" id="passwordReg" required>
                 </div>
                 <div class="mb-3">
-                  <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+                  <label for="confirmPassword" class="form-label">Confirmar Contraseña</label><span style="color:red;">*</span>
                   <input type="password" class="form-control" id="confirmPassword" required>
                 </div>
                 <div class="mb-3 form-check">
                   <input type="checkbox" class="form-check-input" id="termsAndConditions" required>
-                  <label class="form-check-label" for="termsAndConditions">Acepto los <a href="termsConditions.php">términos y condiciones</a></label>
+                  <label class="form-check-label" for="termsAndConditions">Acepto los <a href="termsConditions.php">términos y condiciones</a></label><span style="color:red;">*</span>
                 </div>
                 <div id="register-error" class="alert alert-danger d-none mt-3"></div>
                 <div id="register-success" class="alert alert-success d-none mt-3"></div>

@@ -99,7 +99,7 @@ $('.btn.btn-success').on('click', function () {
     const card = `
       <article class="col-6 col-md-3">
         <figure class="card h-100 product-card">
-          <img src="${p.imgSrc}" class="card-img-top" alt="${p.alt}">
+          <img src="${p.imgSrc}" class="card-img-top" alt="${p.alt}" loading="lazy">
           <figcaption class="card-body">
             <div class="price">
               <span class="old-price">${(p.oldPrice != p.currentPrice) ? (p.oldPrice ?? '') : ''}</span>

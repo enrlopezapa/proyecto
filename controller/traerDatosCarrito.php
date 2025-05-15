@@ -1,10 +1,5 @@
 <?php
 session_start();
-$usuario_id_session = $_SESSION['usuario_id'];
-session_write_close();
-session_name($usuario_id_session);
-session_start();
-header('Content-Type: application/json');
 
 // Verificar si el carrito está vacío
 if (!isset($_SESSION['carrito']) || empty($_SESSION['carrito'])) {

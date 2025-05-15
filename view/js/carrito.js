@@ -6,14 +6,15 @@ function cargarCarrito() {
         let subtotal = 0;
         const productoIds = [];
         console.log(productos)
-
+		index = 0;
         productos.forEach(producto => {
             subtotal += parseFloat(producto.precio_actual);
             productoIds.push(producto.id);
+          index += 1;
 
             const fila = `
                 <tr>
-                    <td>${producto.id}</td>
+                    <td>${index}</td>
                     <td>${producto.nombre}</td>
                     <td>${producto.precio_actual}€</td>
                     <td><button class="btn btn-danger btn-sm eliminar" data-id="${producto.id}">Eliminar</button></td>
@@ -25,10 +26,16 @@ function cargarCarrito() {
             renderResumenCarrito(subtotal, productoIds);
         }
     });
+  $(document).on('click', '.eliminar', function() {
+        const id = $(this).data('id');
+        eliminarProducto(id);
+    });
 }
 
 function eliminarProducto(id) {
     $.post('../controller/eliminarProductoCarrito.php', { id }, function(response) {
+      console.log("Cambios")
+      console.log(response)
             cargarCarrito();
     }, 'json');
 }
@@ -52,8 +59,12 @@ function renderResumenCarrito(subtotal, productoIds) {
             <input type="text" id="nombre" class="form-control" required>
           </div>
           <div class="mb-2">
-            <label>Direccion</label>
+            <label>Direccion entrega</label>
             <input type="text" id="calle" class="form-control" required>
+          </div>
+          <div class="mb-2">
+            <label>Direccion fiscal</label>
+            <input type="text" id="dirFiscal" class="form-control" required>
           </div>
         </form>
 
@@ -86,6 +97,7 @@ $('#resumen-carrito-container').html(resumenHTML);
     const usuario = JSON.parse(data);
     $('#nombre').val(usuario.nombre);
     $('#calle').val(usuario.direccion);
+    $('#dirFiscal').val(usuario.direccion);
   },
   error: function() {
     alert("No se pudieron cargar los datos del usuario.");
@@ -107,11 +119,13 @@ $('#resumen-carrito-container').html(resumenHTML);
                 alert('Pago completado por ' + details.payer.name.given_name);
                 const nombre = $('#nombre').val();
                 const calle = $('#calle').val();
+                const direccionFiscal = $('#dirFiscal').val();
 
                 // Datos que necesitas
                 const datosCompra = {
                     direccion_entrega: calle,
-                    destinatario: nombre
+                    destinatario: nombre,
+                    direccionFiscal: direccionFiscal
                 };
 
                 // Enviar datos de la compra al servidor
@@ -155,8 +169,4 @@ $('#resumen-carrito-container').html(resumenHTML);
 
 $(document).ready(function() {
     cargarCarrito();
-    $('.table').on('click', '.eliminar', function() {
-        const id = $(this).data('id');
-        eliminarProducto(id);
-    });
 });

@@ -61,7 +61,7 @@ try {
     
     require "../model/class/Envios.php";
     $nuevoMail = new Envios();
-    $mensaje = "Hola $nombre,\n\nTu código de verificación es: $codigo_verificacion\n\nValida tu cuenta aquí:\nhttps://localhost/proyecto/html/validar.php";
+    $mensaje = "Hola $nombre,\n\nTu código de verificación es: $codigo_verificacion\n\nValida tu cuenta aquí:\nhttp://wallafood.es/view/validar.php";
     $asunto = "Verificación de cuenta";
     $destinatario = $email;
 

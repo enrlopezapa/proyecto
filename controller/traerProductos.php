@@ -68,7 +68,7 @@ try {
             'alt' => $producto['nombre'],
             'oldPrice' => $oldPrice ? "$" . number_format($oldPrice, 2) : null,
             'currentPrice' => "$" . number_format($producto['precio_actual'], 2),
-            'description' => ucfirst(mb_strtolower($producto['descripcion'], 'UTF-8')),
+            'nombre' => ucfirst(mb_strtolower($producto['nombre'], 'UTF-8')),
             'rating' => round($producto['valoracion_media'])
         ];
     }, $productosRaw);

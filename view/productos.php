@@ -1,3 +1,12 @@
+<?php session_start();
+ if (isset($_GET['busqueda'])) {
+      setcookie('busqueda', $_GET['busqueda'], time() + 3600, '/'); // Expira en 1 hora
+  }
+
+  if (isset($_GET['categoria'])) {
+      setcookie('categoria', $_GET['categoria'], time() + 3600, '/'); // Expira en 1 hora
+  }
+  ?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -12,21 +21,11 @@
   <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="js/jquery-3.7.1.min.js"></script>
   <script src="js/productos.js"></script>
-  <script type="module" src="../model/components/index.js"></script>
-  <?php
-  session_start();
-
-  if (isset($_GET['busqueda'])) {
-      setcookie('busqueda', $_GET['busqueda'], time() + 3600, '/'); // Expira en 1 hora
-  }
-
-  if (isset($_GET['categoria'])) {
-      setcookie('categoria', $_GET['categoria'], time() + 3600, '/'); // Expira en 1 hora
-  }
-?>
-  <script>
+    <script>
     window.usuarioLogueado = <?= isset($_SESSION['usuario_id']) ? 'true' : 'false' ?>;
   </script>
+  <script type="module" src="../model/components/index.js"></script>
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 </head>
 
 <body>

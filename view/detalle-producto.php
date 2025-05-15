@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -13,11 +14,11 @@
   <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="js/detalle-producto.js"></script>
-  <script type="module" src="../model/components/index.js"></script>
-  <?php session_start(); ?>
-  <script>
+    <script>
     window.usuarioLogueado = <?= isset($_SESSION['usuario_id']) ? 'true' : 'false' ?>;
   </script>
+  <script type="module" src="../model/components/index.js"></script>
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 </head>
 <body>
 

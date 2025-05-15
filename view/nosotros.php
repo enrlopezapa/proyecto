@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,11 +11,11 @@
   <link rel="stylesheet" href="css/nosotros.css" />
   <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="js/jquery-3.7.1.min.js"></script>
-  <script type="module" src="../model/components/index.js"></script>
-  <?php session_start(); ?>
-  <script>
+    <script>
     window.usuarioLogueado = <?= isset($_SESSION['usuario_id']) ? 'true' : 'false' ?>;
   </script>
+  <script type="module" src="../model/components/index.js"></script>
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 </head>
 <body>
 
@@ -46,7 +47,7 @@
   <section id="historia" class="py-5 bg-light mb-4">
     <div class="container">
       <div class="row align-items-center">
-        <div class="col-md-6 d-flex justify-content-center mb-4">
+        <div class="col-md-6">
           <img src="img/logoGrande.png" alt="Nuestra historia" class="img-fluid shadow-lg border-0" style="width: 300px;"/>
         </div>
         <div class="col-md-6">
@@ -144,7 +145,7 @@
   <section class="py-5 bg-white mb-4">
     <div class="container text-center">
       <h2 class="text-success mb-4">Nuestro Compromiso Social</h2>
-      <p>En EcoMarket estamos comprometidos con el bienestar de nuestra comunidad. Colaboramos con asociaciones locales, promovemos el comercio justo y realizamos donaciones regulares de productos a quienes más lo necesitan.</p>
+      <p>En WallaFood estamos comprometidos con el bienestar de nuestra comunidad. Colaboramos con asociaciones locales, promovemos el comercio justo y realizamos donaciones regulares de productos a quienes más lo necesitan.</p>
       <a href="contacto.php" class="btn btn-lg btn-success">Únete a nuestro compromiso</a>
     </div>
   </section>

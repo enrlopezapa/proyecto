@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -12,11 +13,11 @@
   <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="js/jquery-3.7.1.min.js"></script>
   <script src="js/login.js"></script>
-  <script type="module" src="../model/components/index.js"></script>
-  <?php session_start(); ?>
-  <script>
+    <script>
     window.usuarioLogueado = <?= isset($_SESSION['usuario_id']) ? 'true' : 'false' ?>;
   </script>
+  <script type="module" src="../model/components/index.js"></script>
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 </head>
 <body>
 
@@ -81,8 +82,6 @@
               </div>
             </div>
             </div>
-      
-          </div>
         </div>
       </section>
   </main>

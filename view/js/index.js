@@ -26,11 +26,9 @@ $(document).ready(function () {
                     <span class="old-price">${(producto.oldPrice != producto.currentPrice) ? (producto.oldPrice ?? '') : ''}</span>
                     <span class="current-price">${producto.currentPrice}</span>
                   </div>
-                  <p class="text-muted mb-0">${producto.description}</p>
+                  <p class="text-muted mb-0">${producto.nombre}</p>
                   <div class="card-actions">
-                    <button class="btn-favorite"><img src="img/heart.svg" alt="favorito"></button>
                     <div class="rating">${stars}</div>
-                    <button class="btn btn-buy">Comprar</button>
                   </div>
                 </figcaption>
               </figure>

@@ -61,7 +61,7 @@ $(document).ready(function () {
             productos.forEach(function(producto, index) {
                 filas += `
                     <tr>
-                        <td>${producto.id}</td>
+                        <td>${index + 1}</td>
                         <td>${producto.nombre}</td>
                         <td>${producto.descripcion}</td>
                         <td><img src="${producto.imagen_url}" alt="${producto.nombre}" style="width: 50px; height: auto;"></td>

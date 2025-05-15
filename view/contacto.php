@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,14 +8,13 @@
 
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
   <link rel="stylesheet" href="css/index.css" />
-  <link rel="stylesheet" href="css/productos.css" />
   <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="js/jquery-3.7.1.min.js"></script>
-  <script type="module" src="../model/components/index.js"></script>
-  <?php session_start(); ?>
   <script>
     window.usuarioLogueado = <?= isset($_SESSION['usuario_id']) ? 'true' : 'false' ?>;
   </script>
+  <script type="module" src="../model/components/index.js"></script>
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
 </head>
 <body>
 
@@ -71,20 +71,28 @@
       <section class="py-5 bg-success text-white text-center mb-4">
         <div class="container">
           <h2 class="mb-4">Síguenos en nuestras redes sociales</h2>
-          <div class="d-flex justify-content-center gap-4">
-            <a href="https://es-es.facebook.com/" class="btn btn-outline-light" style="border:1px transparent;">
-              <img src="img/fb.png" alt="facebook" style="width:50px;">
-            </a>
-            <a href="https://x.com/" class="btn btn-outline-light" style="border:1px transparent;">
-              <img src="img/x.png" alt="X" style="width:50px;">
-            </a>
-            <a href="https://www.instagram.com/" class="btn btn-outline-light" style="border:1px transparent;">
-              <img src="img/instagram.png" alt="instagram" style="width:50px;">
-            </a>
-            <a href="https://www.youtube.com/" class="btn btn-outline-light" style="border:1px transparent;">
-              <img src="img/youtube.png" alt="youtube" style="width:50px;">
-            </a>
-          </div>
+          <div class="row justify-content-center">
+  <div class="col-3 col-sm-2 col-md-1 mb-3 text-center">
+    <a href="https://es-es.facebook.com/">
+      <img src="img/fb.png" alt="facebook" class="img-fluid" style="max-width: 50px;">
+    </a>
+  </div>
+  <div class="col-3 col-sm-2 col-md-1 mb-3 text-center">
+    <a href="https://x.com/">
+      <img src="img/x.png" alt="X" class="img-fluid" style="max-width: 50px;">
+    </a>
+  </div>
+  <div class="col-3 col-sm-2 col-md-1 mb-3 text-center">
+    <a href="https://www.instagram.com/">
+      <img src="img/instagram.png" alt="instagram" class="img-fluid" style="max-width: 50px;">
+    </a>
+  </div>
+  <div class="col-3 col-sm-2 col-md-1 mb-3 text-center">
+    <a href="https://www.youtube.com/">
+      <img src="img/youtube.png" alt="youtube" class="img-fluid" style="max-width: 50px;">
+    </a>
+  </div>
+</div>
         </div>
       </section>
     
@@ -102,7 +110,7 @@
               <p>(+34) 123 456 789</p>
     
               <h4>Correo Electrónico</h4>
-              <p>contacto@ecomarket.com</p>
+              <p>administracion@wallafood.es</p>
             </div>
             <div class="col-md-6">
               <h4>Ubicación en el Mapa</h4>

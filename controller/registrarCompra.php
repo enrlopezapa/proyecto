@@ -1,9 +1,5 @@
 <?php
 session_start();
-$usuario_id_session = $_SESSION['usuario_id'];
-session_write_close();
-session_name($usuario_id_session);
-session_start();
 
 // Conecta a la base de datos
 if (!isset($_SESSION['usuario_id']) || !isset($_SESSION['usuario_email'])) {
@@ -39,6 +35,7 @@ try {
     // Recibir los datos de la compra
     $direccionEntrega = $data['direccion_entrega'];
     $destinatario = $data['destinatario'];
+    $direccionFiscal = $data['direccionFiscal'];
 
     // Insertar la compra en la base de datos
     $stmt = $conn->prepare("INSERT INTO compras (usuario_comprador_id, nombre_pagador, direccion_entrega, destinatario) VALUES (:usuarioId, :nombrePagador, :direccionEntrega, :destinatario)");
@@ -60,6 +57,7 @@ try {
             <p><strong>Nombre del Pagador:</strong> $nombrePagador</p>
             <p><strong>Destinatario:</strong> $destinatario</p>
             <p><strong>Dirección de Entrega:</strong><br>" . nl2br(htmlspecialchars($direccionEntrega)) . "</p>
+            <p><strong>Dirección de Fiscal:</strong><br>" . nl2br(htmlspecialchars($direccionFiscal)) . "</p>
             <p><strong>Fecha:</strong> " . date('Y-m-d H:i:s') . "</p>
             <p><strong>El equipo de Wallafood le da las gracias!</strong></p>
         ";

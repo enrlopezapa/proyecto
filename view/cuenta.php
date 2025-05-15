@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,14 +11,14 @@
   <link rel="stylesheet" href="css/cuenta.css" />
   <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="js/jquery-3.7.1.min.js"></script>
+  <link rel="icon" href="img/favicon.ico" type="image/x-icon">
   <script src="js/cuenta.js"></script>
-  <script type="module" src="../model/components/index.js"></script>
-  <?php session_start(); ?>
   <script>
     window.usuarioLogueado = <?= isset($_SESSION['usuario_id']) ? 'true' : 'false' ?>;
   </script>
+  <script type="module" src="../model/components/index.js"></script>
   <?php 
-  if(isset($_SESSION['usuario_id'])){$usuario_id_session = $_SESSION['usuario_id'];}
+  isset($_SESSION['usuario_id'])?$usuario_id_session = $_SESSION['usuario_id']:$usuario_id_session ='';
   session_write_close(); ?>
 </head>
 <body>
@@ -49,7 +50,7 @@
       <div class="col-md-3 bg-light sidebar pt-4">
         <ul class="nav flex-column">
           <?php 
-          if(isset($usuario_id_session)){session_name($usuario_id_session);}
+          session_name($usuario_id_session);
           session_start();
           $isAdmin = isset($_SESSION['usuario_admin']) && $_SESSION['usuario_admin'] == true;
           if (!$isAdmin){ ?>
