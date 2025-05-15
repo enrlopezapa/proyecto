@@ -20,7 +20,7 @@ class Envios
             $mail->Host = "smtp.ionos.es";
             $mail->Port = 587;
             $mail->Username = "administracion@wallafood.es";
-            $mail->Password = "3nr1qu3C0rr30W4ll4f00d!";
+            $mail->Password = "3nr1qu3I0n0sC0rr30";
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
             $mail->SetFrom('administracion@wallafood.es', 'Adimistracion Wallafood');
             $mail->addAddress($destinatario, 'Destino');

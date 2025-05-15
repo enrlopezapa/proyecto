@@ -27,7 +27,8 @@ $sql = "
             ORDER BY pp.fecha_inicio DESC 
             LIMIT 1
         ) AS oldPrice,
-        p.valoracion_media AS estrellas
+        p.valoracion_media AS estrellas,
+        p.vendido
     FROM productos p
     INNER JOIN favoritos_producto f ON f.producto_id = p.id
     WHERE f.usuario_id = ?

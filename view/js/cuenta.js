@@ -616,36 +616,47 @@ $(document).ready(function () {
       `;
 
         favoritos.forEach(p => {
-          const estrellas = generarEstrellas(p.estrellas); // Asume que tienes esta función
-          const card = `
+        const estrellas = generarEstrellas(p.estrellas); // Asume que tienes esta función
+
+        // Si el producto fue vendido, no se muestran los botones
+        const acciones = p.vendido == 1
+          ? `<div class="alert alert-danger mt-3 mb-0" role="alert">Este producto ya fue vendido</div>`
+          : `
+            <div class="mt-3 d-flex justify-content-between">
+              <form class="d-flex gap-2">
+                <input type="hidden" name="productoId" value="${p.id}" />
+                <button type="button" class="btn btn-outline-secondary btn-detalle">Ver detalles</button>
+                <button type="button" class="btn btn-buy">Comprar</button>
+              </form>
+            </div>
+          `;
+
+        const card = `
           <article class="col-6 col-md-3">
-            <figure class="card h-100 product-card">
-            <button class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 btn-eliminar-fav" data-id="${p.id}" title="Eliminar">
-              &times;
-            </button>
+            <figure class="card h-100 product-card position-relative">
+              <button class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 btn-eliminar-fav" data-id="${p.id}" title="Eliminar">
+                &times;
+              </button>
               <img src="${p.imgSrc || 'img/default.svg'}" class="card-img-top" alt="${p.alt}">
-              <figcaption class="card-body">
-                <div class="price">
-                  <span class="old-price">${(p.oldPrice != p.currentPrice) ? (p.oldPrice ?? '') : ''}</span>
-                  <span class="current-price">${p.currentPrice}</span>
+              <figcaption class="card-body d-flex flex-column justify-content-between">
+                <div>
+                  <div class="price">
+                    <span class="old-price">${(p.oldPrice != p.currentPrice) ? (p.oldPrice ?? '') : ''}</span>
+                    <span class="current-price">${p.currentPrice}</span>
+                  </div>
+                  <p class="text-muted mb-0">${p.alt}</p>
+                  <div class="card-actions">
+                    <div class="rating">${estrellas}</div>
+                  </div>
                 </div>
-                <p class="text-muted mb-0">${p.alt}</p>
-                <div class="card-actions">
-                  <div class="rating">${estrellas}</div>
-                </div>
-                <div class="mt-3 d-flex justify-content-between">
-                  <form class="d-flex gap-2">
-                    <input type="hidden" name="productoId" value="${p.id}" />
-                    <button type="button" class="btn btn-outline-secondary btn-detalle">Ver detalles</button>
-                    <button type="button" class="btn btn-buy">Comprar</button>
-                  </form>
-                </div>
+                ${acciones}
               </figcaption>
             </figure>
           </article>
         `;
-          contenido += card;
-        });
+
+        contenido += card;
+      });
 
         contenido += `</div>`;
         $panel.hide().html(contenido).fadeIn();

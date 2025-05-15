@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="css/index.css" />
   <script src="bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="js/jquery-3.7.1.min.js"></script>
+  <script src="js/contacto.js"></script>
   <script>
     window.usuarioLogueado = <?= isset($_SESSION['usuario_id']) ? 'true' : 'false' ?>;
   </script>
@@ -47,23 +48,24 @@
           <h2 class="text-center text-success mb-4">¡Contáctanos!</h2>
           <p class="text-center mb-5">Si tienes alguna pregunta o consulta, por favor completa el siguiente formulario y nos pondremos en contacto contigo a la mayor brevedad.</p>
     
-          <form>
-            <div class="row">
-              <div class="col-md-6 mb-4">
-                <label for="nombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="nombre" placeholder="Tu nombre" required>
-              </div>
-              <div class="col-md-6 mb-4">
-                <label for="email" class="form-label">Correo electrónico</label>
-                <input type="email" class="form-control" id="email" placeholder="Tu correo electrónico" required>
-              </div>
-            </div>
-            <div class="mb-4">
-              <label for="mensaje" class="form-label">Mensaje</label>
-              <textarea class="form-control" id="mensaje" rows="4" placeholder="Escribe tu mensaje" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-success w-100">Enviar mensaje</button>
-          </form>
+          <form id="form-contacto">
+  <div class="row">
+    <div class="col-md-6 mb-4">
+      <label for="nombre" class="form-label">Nombre</label>
+      <input type="text" class="form-control" id="nombre" name="nombre" required>
+    </div>
+    <div class="col-md-6 mb-4">
+      <label for="email" class="form-label">Correo electrónico</label>
+      <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+  </div>
+  <div class="mb-4">
+    <label for="mensaje" class="form-label">Mensaje</label>
+    <textarea class="form-control" id="mensaje" name="mensaje" rows="4" required></textarea>
+  </div>
+  <button type="submit" class="btn btn-success w-100">Enviar mensaje</button>
+  <div id="mensaje-estado" class="mt-3"></div>
+</form>
         </div>
       </section>
     
